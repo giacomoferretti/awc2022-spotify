@@ -1,21 +1,18 @@
-import { useState } from "react";
+import { useSpotify } from "@context";
 
 const App = () => {
-  const [count, setCount] = useState(0);
-
-  const onClick = () => {
-    setCount((count) => count + 1);
-  };
+  const spotify = useSpotify();
 
   return (
-    <div className="h-full bg-neutral-900 flex items-center justify-center flex-col">
-      <h1 className="font-bold text-4xl text-white mb-4">Vite Starter</h1>
-      <button
-        className="bg-blue-500 p-4 rounded text-white"
-        type="button"
-        onClick={onClick}>
-        Count is: <span className="font-bold">{count}</span>
-      </button>
+    <div className="h-full bg-neutral-900 flex items-center justify-center flex-col text-white gap-4">
+      <h1 className="text-4xl mb-4 font-bold">Spotify</h1>
+      <h2 className="text-2xl font-mono">
+        {import.meta.env.VITE_SPOTIFY_CLIENT_ID}
+      </h2>
+      <h2 className="text-2xl font-mono">
+        {import.meta.env.VITE_SPOTIFY_CLIENT_SECRET}
+      </h2>
+      <h2>{spotify.token ? spotify.token : "Loading"}</h2>
     </div>
   );
 };
