@@ -23,3 +23,7 @@ node_modules
 .env.test.local
 .env.production.local
 .env.local
+
+# Coverage
+dist
+coverage
