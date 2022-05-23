@@ -3,9 +3,13 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    @apply text-white bg-neutral-900;
+  }
+
   html,
   body,
   #root {
-    @apply h-full;
+    @apply min-h-screen;
   }
 }

@@ -1,5 +1,5 @@
 import axios from "redaxios";
-import { TOKEN_URL } from "./constants";
+import { BASE_API_URL, TOKEN_URL } from "./constants";
 import { SearchType, SpotifyToken } from "./types";
 
 export const getClientCredentialsToken = async (
@@ -23,6 +23,18 @@ export const getClientCredentialsToken = async (
   };
 };
 
-export const search = async (query: string, type: SearchType[]) => {
+export const search = async (
+  token: string,
+  query: string,
+  type: SearchType[]
+) => {
   // https://developer.spotify.com/documentation/web-api/reference/#/operations/search
+  const response = await axios.get(`${BASE_API_URL}/search`, {
+    params: { q: query, type: type },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
 };

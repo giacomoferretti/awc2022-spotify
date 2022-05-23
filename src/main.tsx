@@ -1,19 +1,33 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 
 import "@/index.css";
-import App from "@/App";
 import { SpotifyProvider } from "@context";
+import { SpotifyDebug } from "./pages/Debug/SpotifyDebug";
+import { TokenProvider } from "./context/tokenContext";
+import { NotFound } from "./pages/NotFound";
+
+// Disable console.log() if in production
+if (import.meta.env.PROD) console.log = () => {};
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
-  <SpotifyProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />}></Route>
-      </Routes>
-    </BrowserRouter>
-  </SpotifyProvider>
+  <HelmetProvider>
+    <SpotifyProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* <Route path="/" element={<App />}></Route> */}
+          <Route path="/" element={<Navigate to={"/debug"} />}></Route>
+          <Route path="/debug">
+            <Route path="spotify" element={<SpotifyDebug />}></Route>
+          </Route>
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </SpotifyProvider>
+  </HelmetProvider>
   // </React.StrictMode>
 );
