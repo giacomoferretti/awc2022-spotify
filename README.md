@@ -16,3 +16,7 @@
     -   [ ] Edit
     -   [ ] Delete
 -   [ ] Song search (eg. author, singer, genre, type)
+
+## Technical requirements
+
+-   [ ] Spotify token
