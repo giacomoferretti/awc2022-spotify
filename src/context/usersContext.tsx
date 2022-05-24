@@ -36,6 +36,26 @@ const useProvideUsers = () => {
   const [users, setUsers] = useLocalStorage<UserType[]>(LS_KEYS.USERS, []);
 
   const addUser = (newUser: UserType) => {
+    // Check for necessary arguments
+    if (!newUser.username) {
+      throw new Error("username it's empty.");
+    } else if (!newUser.password) {
+      throw new Error("password it's empty.");
+    }
+
+    // Check if user already exists
+    if (
+      users.some((user) => {
+        if (user.username === newUser.username) {
+          return true;
+        }
+
+        return false;
+      })
+    ) {
+      throw new Error(`${newUser.username} already exists.`);
+    }
+
     setUsers((users) => [...users, newUser]);
   };
 
