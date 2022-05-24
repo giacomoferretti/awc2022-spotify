@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@tailwindcss/forms': ^0.5.2
   '@types/react': ^18.0.9
-  '@types/react-dom': ^18.0.4
+  '@types/react-dom': ^18.0.5
   '@vitejs/plugin-react': ^1.3.2
   autoprefixer: ^10.4.7
   c8: ^7.11.3
@@ -18,7 +18,7 @@ specifiers:
   reduce-function-call: ^1.0.3
   rimraf: ^3.0.2
   tailwindcss: ^3.0.24
-  typescript: ^4.6.4
+  typescript: ^4.7.2
   vite: ^2.9.9
   vite-tsconfig-paths: ^3.4.1
   vitest: ^0.12.9
@@ -33,7 +33,7 @@ dependencies:
 
 devDependencies:
   '@types/react': 18.0.9
-  '@types/react-dom': 18.0.4
+  '@types/react-dom': 18.0.5
   '@vitejs/plugin-react': 1.3.2
   autoprefixer: 10.4.7_postcss@8.4.14
   c8: 7.11.3
@@ -43,7 +43,7 @@ devDependencies:
   reduce-function-call: 1.0.3
   rimraf: 3.0.2
   tailwindcss: 3.0.24
-  typescript: 4.6.4
+  typescript: 4.7.2
   vite: 2.9.9
   vite-tsconfig-paths: 3.4.1_vite@2.9.9
   vitest: 0.12.9_c8@7.11.3
@@ -428,8 +428,8 @@ packages:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
     dev: true
 
-  /@types/react-dom/18.0.4:
-    resolution: {integrity: sha512-FgTtbqPOCI3dzZPZoC2T/sx3L34qxy99ITWn4eoSA95qPyXDMH0ALoAqUp49ITniiJFsXUVBtalh/KffMpg21Q==}
+  /@types/react-dom/18.0.5:
+    resolution: {integrity: sha512-OWPWTUrY/NIrjsAPkAk1wW9LZeIjSvkXRhclsFO8CZcZGCOg2G0YZy4ft+rOyYxy8B7ui5iZzi9OkDebZ7/QSA==}
     dependencies:
       '@types/react': 18.0.9
     dev: true
@@ -556,7 +556,7 @@ packages:
       caniuse-lite: 1.0.30001342
       electron-to-chromium: 1.4.137
       escalade: 3.1.1
-      node-releases: 2.0.4
+      node-releases: 2.0.5
       picocolors: 1.0.0
     dev: true
 
@@ -1484,8 +1484,8 @@ packages:
     resolution: {integrity: sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==}
     dev: true
 
-  /node-releases/2.0.4:
-    resolution: {integrity: sha512-gbMzqQtTtDz/00jQzZ21PQzdI9PyLYqUSvD0p3naOhX4odFji0ZxYdnVwPTxmSwkmxhcFImpozceidSG+AgoPQ==}
+  /node-releases/2.0.5:
+    resolution: {integrity: sha512-U9h1NLROZTq9uE1SNffn6WuPDg8icmi3ns4rEl/oTfIle4iLjTliCzgTsbaIFMq/Xn078/lfY/BL0GWZ+psK4Q==}
     dev: true
 
   /normalize-package-data/2.5.0:
@@ -2087,8 +2087,8 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /typescript/4.6.4:
-    resolution: {integrity: sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg==}
+  /typescript/4.7.2:
+    resolution: {integrity: sha512-Mamb1iX2FDUpcTRzltPxgWMKy3fhg0TN378ylbktPGPK/99KbDtMQ4W1hwgsbPAsG3a0xKa1vmw4VKZQbkvz5A==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
