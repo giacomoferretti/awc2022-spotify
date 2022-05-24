@@ -6,7 +6,7 @@ import { HelmetProvider } from "react-helmet-async";
 import "@/index.css";
 import { SpotifyProvider } from "@context";
 import { SpotifyDebug } from "./pages/Debug/SpotifyDebug";
-import { NotFound } from "./pages/NotFound";
+import { NoMatch } from "./pages/NoMatch";
 
 // Disable console.log() if in production
 if (import.meta.env.PROD) console.log = () => {};
@@ -23,7 +23,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="spotify" element={<SpotifyDebug />}></Route>
           </Route>
 
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<NoMatch />} />
         </Routes>
       </BrowserRouter>
     </SpotifyProvider>
