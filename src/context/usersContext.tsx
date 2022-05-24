@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext } from "react";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 type UserType = {
   username: string;
@@ -32,40 +33,18 @@ const LS_KEYS = {
 };
 
 const useProvideUsers = () => {
-  const [users, setUsers] = useState<UserType[]>([]);
+  const [users, setUsers] = useLocalStorage<UserType[]>(LS_KEYS.USERS, []);
 
-  useEffect(() => {
-    // Load from localStorage
-    const users = JSON.parse(
-      window.localStorage.getItem(LS_KEYS.USERS) || "[]"
-    );
-    setUsers(users);
-  }, []);
-
-  const addUser = (user: UserType) => {
-    setUsers((prevUsers) => [...prevUsers, user]);
-    window.localStorage.setItem(
-      LS_KEYS.USERS,
-      JSON.stringify([...users, user])
-    );
+  const addUser = (newUser: UserType) => {
+    setUsers((users) => [...users, newUser]);
   };
 
   const removeUser = (targetUser: UserType) => {
     setUsers(users.filter((user) => user.username !== targetUser.username));
-    window.localStorage.setItem(
-      LS_KEYS.USERS,
-      JSON.stringify(
-        users.filter((user) => user.username !== targetUser.username)
-      )
-    );
   };
 
   const removeUserByUsername = (username: string) => {
     setUsers(users.filter((user) => user.username !== username));
-    window.localStorage.setItem(
-      LS_KEYS.USERS,
-      JSON.stringify(users.filter((user) => user.username !== username))
-    );
   };
 
   return { users, addUser, removeUser, removeUserByUsername };
