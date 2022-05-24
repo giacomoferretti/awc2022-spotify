@@ -75,7 +75,9 @@ const RemoveUserForm = () => {
           id="username"
           className="w-full bg-[#2f2f2f] border-0 rounded focus:ring-inset focus:ring-2 focus:ring-spotify-accent-base focus:border-spotify-accent-base">
           {users.map((user) => (
-            <option value={user.username}>{user.username}</option>
+            <option key={user.username} value={user.username}>
+              {user.username}
+            </option>
           ))}
         </select>
       </label>
@@ -94,7 +96,7 @@ const ListUsers = () => {
   return (
     <ul>
       {users.map((user) => (
-        <li>{user.username}</li>
+        <li key={user.username}>{user.username}</li>
       ))}
     </ul>
   );
