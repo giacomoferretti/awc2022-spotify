@@ -63,11 +63,18 @@ export const SpotifySearch = () => {
               className="w-12 h-12 rounded"
               src={entry.album.images[0].url}
             />
-            <div className="flex flex-col">
-              <span>{entry.name}</span>
-              <span className="opacity-50">{entry.album.artists[0].name}</span>
+            <div className="flex flex-col basis-0 grow-[1.5] overflow-hidden">
+              <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+                {entry.name}
+              </span>
+              <span className="text-[#a7a7a7] whitespace-nowrap overflow-hidden text-ellipsis">
+                {entry.album.artists[0].name}
+              </span>
             </div>
-            <span className="self-center ml-auto tabular-nums">
+            <span className="self-center grow-[1] basis-0 text-ellipsis overflow-hidden whitespace-nowrap">
+              {entry.album.name}
+            </span>
+            <span className="self-center ml-auto tabular-nums mr-2">
               {msToTime(entry.duration_ms)}
             </span>
           </div>
