@@ -73,12 +73,17 @@ const RemoveUserForm = () => {
         <span className="block mb-2 text-sm font-medium">Utente</span>
         <select
           id="username"
-          className="w-full bg-[#2f2f2f] border-0 rounded focus:ring-inset focus:ring-2 focus:ring-spotify-accent-base focus:border-spotify-accent-base">
-          {users.map((user) => (
-            <option key={user.username} value={user.username}>
-              {user.username}
-            </option>
-          ))}
+          className="w-full bg-[#2f2f2f] border-0 rounded focus:ring-inset focus:ring-2 focus:ring-spotify-accent-base focus:border-spotify-accent-base"
+          disabled={users.length === 0}>
+          {users.length > 0 ? (
+            users.map((user) => (
+              <option key={user.username} value={user.username}>
+                {user.username}
+              </option>
+            ))
+          ) : (
+            <option value="">No user available</option>
+          )}
         </select>
       </label>
       <button
@@ -95,9 +100,11 @@ const ListUsers = () => {
 
   return (
     <ul>
-      {users.map((user) => (
-        <li key={user.username}>{user.username}</li>
-      ))}
+      {users.length > 0 ? (
+        users.map((user) => <li key={user.username}>{user.username}</li>)
+      ) : (
+        <h2>No user available</h2>
+      )}
     </ul>
   );
 };
