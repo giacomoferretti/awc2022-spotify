@@ -17,7 +17,13 @@ const AddUserForm = () => {
 
     console.table({ username, password });
 
-    addUser({ username, password });
+    addUser({
+      username,
+      password,
+      email: "",
+      favoriteArtists: [],
+      favoriteGenres: [],
+    });
 
     e.currentTarget.reset();
   };

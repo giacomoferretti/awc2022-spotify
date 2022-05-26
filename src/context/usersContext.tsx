@@ -4,7 +4,9 @@ import { useLocalStorage } from "@/hooks/useLocalStorage";
 type UserType = {
   username: string;
   password: string;
-  // email: string;
+  email: string;
+  favoriteGenres: string[];
+  favoriteArtists: string[];
 };
 
 type UsersContextType = {

@@ -103,6 +103,7 @@ const useProvideSpotify = () => {
   const callEndpoint = async (path: string) => {
     const updatedToken = await getNewToken();
 
+    // TODO: Handle 401
     return await (
       await fetch(`${BASE_API_URL}${path}`, {
         headers: {
