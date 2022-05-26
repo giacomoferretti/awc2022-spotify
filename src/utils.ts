@@ -12,3 +12,5 @@ const buildParams = (data: any) => {
 
   return params.toString();
 };
+
+export {};
