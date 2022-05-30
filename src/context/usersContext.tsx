@@ -14,6 +14,7 @@ type UsersContextType = {
   addUser: (user: UserType) => void;
   removeUser: (targetUser: UserType) => void;
   removeUserByUsername: (username: string) => void;
+  usernameExists: (username: string) => boolean;
 };
 
 const UsersContext = createContext<UsersContextType>(null!);
@@ -36,6 +37,16 @@ const LS_KEYS = {
 
 const useProvideUsers = () => {
   const [users, setUsers] = useLocalStorage<UserType[]>(LS_KEYS.USERS, []);
+
+  const usernameExists = (username: string) => {
+    return users.some((user) => {
+      if (user.username === username) {
+        return true;
+      }
+
+      return false;
+    });
+  };
 
   const addUser = (newUser: UserType) => {
     // Check for necessary arguments
@@ -69,5 +80,5 @@ const useProvideUsers = () => {
     setUsers(users.filter((user) => user.username !== username));
   };
 
-  return { users, addUser, removeUser, removeUserByUsername };
+  return { users, addUser, removeUser, removeUserByUsername, usernameExists };
 };

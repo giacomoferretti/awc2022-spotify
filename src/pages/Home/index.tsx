@@ -1,7 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Logo } from "@/components/Logo";
-import { useUsers } from "@/context/usersContext";
-import { ChevronRightIcon } from "@heroicons/react/solid";
 
 const Header = () => {
   return (
@@ -19,8 +17,11 @@ const Main = () => {
   const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // TODO: Pass email state
-    navigate("/signup");
+    const email = (
+      e.currentTarget.elements.namedItem("email") as HTMLInputElement
+    ).value;
+
+    navigate("/signup", { state: { email } });
   };
 
   return (
@@ -35,6 +36,7 @@ const Main = () => {
       </h3>
       <form onSubmit={onSubmitHandler} className="mt-4 flex">
         <input
+          id="email"
           type="email"
           placeholder="La tua email"
           className="p-2.5 text-sm rounded-l border-0 bg-[#ffffff1a] text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:ring-inset focus:ring-2 focus:ring-spotify-accent-base focus:border-spotify-accent-base"
@@ -54,9 +56,10 @@ const Main = () => {
 
 const Footer = () => {
   return (
-    <footer className="mb-4 text-sm text-center text-neutral-600">
-      &copy; 2022 CMO
-    </footer>
+    // <footer className="mb-4 text-sm text-center text-neutral-600">
+    //   &copy; 2022 CMO
+    // </footer>
+    <></>
   );
 };
 

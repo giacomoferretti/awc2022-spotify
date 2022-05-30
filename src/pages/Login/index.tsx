@@ -1,70 +1,31 @@
 import { Logo } from "@/components/Logo";
+import { PasswordInput } from "@/components/PasswordInput";
+import { Spinner } from "@/components/Spinner";
+import { ValidationError } from "@/components/ValidationError";
 import { useUsers } from "@/context/usersContext";
-import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
-import { DetailedHTMLProps, InputHTMLAttributes, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
-type ButtonInputProps = {
-  id: string;
-  label: string;
-  placeholder: string;
-  className?: string;
-  type?: string;
-} & DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
-
-const PasswordInput = ({
-  id,
-  label,
-  placeholder,
-  className,
-  type = "text",
-  ...props
-}: ButtonInputProps) => {
-  const [passwordShown, setPasswordShown] = useState(false);
-
-  const togglePassword = (e: React.PointerEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setPasswordShown(!passwordShown);
-  };
-
-  return (
-    <div className="flex flex-col">
-      <label htmlFor={id} className="mb-2 text-sm font-medium">
-        {label}
-      </label>
-      <div className="flex border-0 rounded bg-[#ffffff1a] text-[#ffffffb3] focus-within:ring-inset focus-within:ring-2 focus-within:ring-spotify-accent-base focus-within:border-spotify-accent-base">
-        <input
-          id={id}
-          type={passwordShown ? "text" : type}
-          className="flex-1 text-sm p-2.5 pr-0 border-none focus:ring-0 focus:outline-none bg-transparent placeholder:text-[#ffffffb3]"
-          placeholder={placeholder}
-          {...props}
-        />
-        <button
-          className="h-10 w-10 p-2.5"
-          onClick={togglePassword}
-          type="button">
-          {passwordShown ? <EyeIcon /> : <EyeOffIcon />}
-        </button>
-      </div>
-    </div>
-  );
+type LoginFormInputs = {
+  username: string;
+  password: string;
 };
 
 export const Login = () => {
-  // const { checkUser } = useUsers();
+  const { usernameExists } = useUsers();
 
-  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormInputs>({ mode: "onBlur" });
 
-    const username = (
-      e.currentTarget.elements.namedItem("username") as HTMLInputElement
-    ).value;
-    const password = (
-      e.currentTarget.elements.namedItem("password") as HTMLInputElement
-    ).value;
-
-    console.log(username, ":", password);
+  const onSubmit: SubmitHandler<LoginFormInputs> = (data) => {
+    return new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 300);
+    });
   };
 
   return (
@@ -77,52 +38,69 @@ export const Login = () => {
             </h1>
 
             <div className="p-4 rounded-lg bg-spotify-elevated-base sm:p-6 lg:p-8">
-              <form className="flex flex-col gap-6" onSubmit={onSubmitHandler}>
+              <form
+                className="flex flex-col gap-6"
+                onSubmit={handleSubmit(onSubmit)}>
                 <h2 className="text-xl font-medium">Bentornato!</h2>
 
-                <label>
-                  <span className="block mb-2 text-sm font-medium">
-                    Il tuo username o la tua email
-                  </span>
-                  <input
-                    id="username"
-                    type="text"
-                    placeholder="Inserisci il tuo username o la tua email."
-                    className="w-full p-2.5 text-sm rounded border-0 bg-[#ffffff1a] text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:ring-inset focus:ring-2 focus:ring-spotify-accent-base focus:border-spotify-accent-base"
-                  />
-                </label>
-
-                <PasswordInput
-                  id="password"
-                  label="La tua password"
-                  placeholder="Inserisci la tua password."
-                  type="password"
-                />
-
-                {/* <div className="flex items-center justify-between">
-                  <div className="flex items-center">
+                <div>
+                  <label>
+                    <span className="block mb-2 text-sm font-medium">
+                      Il tuo username
+                    </span>
                     <input
-                      id="remember-me"
-                      name="remember-me"
-                      type="checkbox"
-                      className="h-4 w-4 text-spotify-accent-base focus:ring-spotify-accent-base border-gray-300 rounded"
+                      id="username"
+                      type="text"
+                      placeholder="Inserisci il tuo username."
+                      aria-invalid={errors.username ? "true" : "false"}
+                      className="w-full p-2.5 text-sm rounded border-0 bg-[#ffffff1a] text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:ring-inset focus:ring-2 focus:ring-spotify-accent-base focus:border-spotify-accent-base"
+                      {...register("username", {
+                        pattern: {
+                          value: /^[a-z0-9._]+$/i,
+                          message:
+                            "Sono consentiti solo lettere (a-z), numeri (0-9), punti (.) e i trattini bassi (_)",
+                        },
+                        required: "Inserisci un nome utente",
+                        validate: {
+                          checkUser: (v) =>
+                            usernameExists(v) || "L'utente inserito non esiste",
+                        },
+                      })}
                     />
-                    <label htmlFor="remember-me" className="ml-2 block text-sm">
-                      Remember me
-                    </label>
-                  </div>
+                  </label>
+                  {errors.username && (
+                    <ValidationError message={errors.username.message} />
+                  )}
+                </div>
 
-                  <div className="text-sm">
-                    <a
-                      href="#"
-                      className="font-medium text-spotify-accent-base hover:underline">
-                      Forgot your password?
-                    </a>
-                  </div>
-                </div> */}
+                <div>
+                  <PasswordInput
+                    id="password"
+                    label="La tua password"
+                    placeholder="Inserisci la tua password."
+                    type="password"
+                    aria-invalid={errors.password ? "true" : "false"}
+                    {...register("password", {
+                      minLength: {
+                        value: 8,
+                        message:
+                          "La tua password deve contenere almeno 8 caratteri.",
+                      },
+                      required: "Inserisci una password",
+                    })}
+                  />
+                  {errors.password && (
+                    <ValidationError message={errors.password.message} />
+                  )}
+                </div>
 
                 <div className="flex justify-center">
-                  <button className="bg-spotify-accent-base hover:bg-spotify-accent-highlight py-3 px-8 rounded-full text-black font-bold self-center">
+                  <button
+                    className="flex items-center bg-spotify-accent-base hover:bg-spotify-accent-highlight py-3 px-8 rounded-full text-black font-bold self-center"
+                    disabled={isSubmitting}>
+                    {isSubmitting && (
+                      <Spinner className="animate-spin -ml-1 mr-3 h-5 w-5" />
+                    )}{" "}
                     Entra
                   </button>
                 </div>

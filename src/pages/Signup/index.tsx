@@ -1,83 +1,55 @@
 import { Logo } from "@/components/Logo";
+import { PasswordInput } from "@/components/PasswordInput";
+import { Spinner } from "@/components/Spinner";
+import { ValidationError } from "@/components/ValidationError";
 import { useUsers } from "@/context/usersContext";
-import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
-import { DetailedHTMLProps, InputHTMLAttributes, useState } from "react";
-import { Link } from "react-router-dom";
+import { wait } from "@/utils/wait";
+import { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Link, useLocation } from "react-router-dom";
 
-type ButtonInputProps = {
-  id: string;
-  label: string;
-  placeholder: string;
-  className?: string;
-  type?: string;
-} & DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
+type SignupFormInputs = {
+  username: string;
+  password: string;
+  email: string;
+};
 
-const PasswordInput = ({
-  id,
-  label,
-  placeholder,
-  className,
-  type = "text",
-  ...props
-}: ButtonInputProps) => {
-  const [passwordShown, setPasswordShown] = useState(false);
-
-  const togglePassword = (e: React.PointerEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setPasswordShown(!passwordShown);
-  };
-
-  return (
-    <div className="flex flex-col">
-      <label htmlFor={id} className="mb-2 text-sm font-medium">
-        {label}
-      </label>
-      <div className="flex border-0 rounded bg-[#ffffff1a] text-[#ffffffb3] focus-within:ring-inset focus-within:ring-2 focus-within:ring-spotify-accent-base focus-within:border-spotify-accent-base">
-        <input
-          id={id}
-          type={passwordShown ? "text" : type}
-          className="flex-1 text-sm p-2.5 pr-0 border-none focus:ring-0 focus:outline-none bg-transparent placeholder:text-[#ffffffb3]"
-          placeholder={placeholder}
-          {...props}
-        />
-        <button
-          className="h-10 w-10 p-2.5"
-          onClick={togglePassword}
-          type="button">
-          {passwordShown ? <EyeIcon /> : <EyeOffIcon />}
-        </button>
-      </div>
-    </div>
-  );
+type CustomizedState = {
+  email?: string;
 };
 
 // TODO: Wizard signup, split into different steps
 export const Signup = () => {
-  const { addUser } = useUsers();
+  const { addUser, usernameExists } = useUsers();
+  const location = useLocation();
 
-  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm<SignupFormInputs>({ mode: "onBlur" });
 
-    const username = (
-      e.currentTarget.elements.namedItem("username") as HTMLInputElement
-    ).value;
-    const email = (
-      e.currentTarget.elements.namedItem("email") as HTMLInputElement
-    ).value;
-    const password = (
-      e.currentTarget.elements.namedItem("password") as HTMLInputElement
-    ).value;
-
-    // TODO: add favorites genres and artists
-    // TODO: error handling
+  const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
+    await wait(10000);
     addUser({
-      username,
-      email,
-      password,
+      username: data.username,
+      email: data.email,
+      password: data.password,
       favoriteArtists: [],
       favoriteGenres: [],
     });
   };
+
+  // Get email from useNavigate, if available
+  useEffect(() => {
+    const state = location.state as CustomizedState;
+
+    if (state && state.email) {
+      setValue("email", state.email);
+    }
+  }, []);
 
   return (
     <>
@@ -89,42 +61,95 @@ export const Signup = () => {
             </h1>
 
             <div className="p-4 rounded-lg bg-spotify-elevated-base sm:p-6 lg:p-8">
-              <form className="flex flex-col gap-6" onSubmit={onSubmitHandler}>
+              <form
+                className="flex flex-col gap-6"
+                onSubmit={handleSubmit(onSubmit)}>
                 <h2 className="text-xl font-medium">Crea un account</h2>
 
-                <label>
-                  <span className="block mb-2 text-sm font-medium">
-                    Il tuo username
-                  </span>
-                  <input
-                    id="username"
-                    type="text"
-                    placeholder="Inserisci il tuo username."
-                    className="w-full p-2.5 text-sm rounded border-0 bg-[#ffffff1a] text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:ring-inset focus:ring-2 focus:ring-spotify-accent-base focus:border-spotify-accent-base"
-                  />
-                </label>
+                <div>
+                  <label>
+                    <span className="block mb-2 text-sm font-medium">
+                      Il tuo username
+                    </span>
+                    <input
+                      id="username"
+                      type="text"
+                      placeholder="Inserisci il tuo username."
+                      aria-invalid={errors.username ? "true" : "false"}
+                      className="w-full p-2.5 text-sm rounded border-0 bg-[#ffffff1a] text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:ring-inset focus:ring-2 focus:ring-spotify-accent-base focus:border-spotify-accent-base"
+                      {...register("username", {
+                        pattern: {
+                          value: /^[a-z0-9._]+$/i,
+                          message:
+                            "Sono consentiti solo lettere (a-z), numeri (0-9), punti (.) e i trattini bassi (_)",
+                        },
+                        required: "Inserisci un nome utente",
+                        validate: {
+                          checkUser: (v) =>
+                            !usernameExists(v) ||
+                            "Il nome utente inserito è già stato preso",
+                        },
+                      })}
+                    />
+                  </label>
+                  {errors.username && (
+                    <ValidationError message={errors.username.message} />
+                  )}
+                </div>
 
-                <label>
-                  <span className="block mb-2 text-sm font-medium">
-                    La tua email
-                  </span>
-                  <input
-                    id="email"
-                    type="email"
-                    placeholder="Inserisci la tua email."
-                    className="w-full p-2.5 text-sm rounded border-0 bg-[#ffffff1a] text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:ring-inset focus:ring-2 focus:ring-spotify-accent-base focus:border-spotify-accent-base"
-                  />
-                </label>
+                <div>
+                  <label>
+                    <span className="block mb-2 text-sm font-medium">
+                      La tua email
+                    </span>
+                    <input
+                      id="email"
+                      type="email"
+                      placeholder="Inserisci la tua email."
+                      aria-invalid={errors.email ? "true" : "false"}
+                      className="w-full p-2.5 text-sm rounded border-0 bg-[#ffffff1a] text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:ring-inset focus:ring-2 focus:ring-spotify-accent-base focus:border-spotify-accent-base"
+                      {...register("email", {
+                        pattern: {
+                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                          message: "Email non valida",
+                        },
+                        required: "Inserisci una email",
+                      })}
+                    />
+                  </label>
+                  {errors.email && (
+                    <ValidationError message={errors.email.message} />
+                  )}
+                </div>
 
-                <PasswordInput
-                  id="password"
-                  label="La tua password"
-                  placeholder="Inserisci la tua password."
-                  type="password"
-                />
+                <div>
+                  <PasswordInput
+                    label="La tua password"
+                    id="password"
+                    type="password"
+                    placeholder="Inserisci la tua password."
+                    aria-invalid={errors.password ? "true" : "false"}
+                    {...register("password", {
+                      minLength: {
+                        value: 8,
+                        message:
+                          "Per la tua password utilizza almeno 8 caratteri.",
+                      },
+                      required: "Inserisci una password",
+                    })}
+                  />
+                  {errors.password && (
+                    <ValidationError message={errors.password.message} />
+                  )}
+                </div>
 
                 <div className="flex justify-center">
-                  <button className="bg-spotify-accent-base hover:bg-spotify-accent-highlight py-3 px-8 rounded-full text-black font-bold self-center">
+                  <button
+                    className="flex items-center bg-spotify-accent-base hover:bg-spotify-accent-highlight py-3 px-8 rounded-full text-black font-bold self-center"
+                    disabled={isSubmitting}>
+                    {isSubmitting && (
+                      <Spinner className="animate-spin -ml-1 mr-3 h-5 w-5" />
+                    )}{" "}
                     Crea il tuo account
                   </button>
                 </div>
