@@ -19,4 +19,14 @@
 
 ## Technical requirements
 
--   [ ] Spotify token
+-   [ ] Spotify
+    -   [*] Token retrieval
+    -   [*] Auto-refresh
+    -   [ ] Search song
+    -   [ ] Get genres
+    -   [ ] Get artists
+
+## Features
+
+-   [*] Automatic token refresh
+-   [ ] Language selection
