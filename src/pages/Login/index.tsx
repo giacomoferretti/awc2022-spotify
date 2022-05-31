@@ -3,41 +3,74 @@ import { PasswordInput } from "@/components/PasswordInput";
 import { Spinner } from "@/components/Spinner";
 import { ValidationError } from "@/components/ValidationError";
 import { useUsers } from "@/context/usersContext";
+import { useEffect, useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 type LoginFormInputs = {
   username: string;
   password: string;
 };
 
+type CustomizedState = {
+  username?: string;
+};
+
 export const Login = () => {
-  const { usernameExists } = useUsers();
+  const { login, usernameExists, session } = useUsers();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const navigatePathname = useMemo(() => {
+    const state = location.state as { from: Location };
+
+    if (state && state.from) {
+      return state.from;
+    }
+
+    // return "/debug/auth";
+    return "/dashboard";
+  }, [location]);
+
+  // Get username from useNavigate, if available
+  useEffect(() => {
+    const state = location.state as CustomizedState;
+
+    if (state && state.username) {
+      setValue("username", state.username);
+    }
+
+    if (session) {
+      navigate("/dashboard");
+    }
+  }, []);
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormInputs>({ mode: "onBlur" });
 
-  const onSubmit: SubmitHandler<LoginFormInputs> = (data) => {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 300);
+  const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
+    // await wait(300);
+    // navigate(navigatePathname);
+    login(data, () => {
+      navigate(navigatePathname);
     });
   };
 
   return (
     <>
-      <div className="min-h-screen flex flex-col">
-        <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-md w-full flex flex-col gap-8">
-            <h1 className="flex justify-center items-center gap-2 text-4xl font-bold">
-              <Logo className="w-10 h-10" /> CMO
+      <div className="flex min-h-screen flex-col">
+        <div className="flex flex-1 items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+          <div className="flex w-full max-w-md flex-col gap-8">
+            <h1 className="flex items-center justify-center gap-2 text-4xl font-bold">
+              <Logo className="h-10 w-10" /> CMO
             </h1>
 
-            <div className="p-4 rounded-lg bg-spotify-elevated-base sm:p-6 lg:p-8">
+            <div className="rounded-lg bg-spotify-elevated-base p-4 sm:p-6 lg:p-8">
               <form
                 className="flex flex-col gap-6"
                 onSubmit={handleSubmit(onSubmit)}>
@@ -45,7 +78,7 @@ export const Login = () => {
 
                 <div>
                   <label>
-                    <span className="block mb-2 text-sm font-medium">
+                    <span className="mb-2 block text-sm font-medium">
                       Il tuo username
                     </span>
                     <input
@@ -53,7 +86,7 @@ export const Login = () => {
                       type="text"
                       placeholder="Inserisci il tuo username."
                       aria-invalid={errors.username ? "true" : "false"}
-                      className="w-full p-2.5 text-sm rounded border-0 bg-[#ffffff1a] text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:ring-inset focus:ring-2 focus:ring-spotify-accent-base focus:border-spotify-accent-base"
+                      className="w-full rounded border-0 bg-[#ffffff1a] p-2.5 text-sm text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:border-spotify-accent-base focus:ring-2 focus:ring-inset focus:ring-spotify-accent-base"
                       {...register("username", {
                         pattern: {
                           value: /^[a-z0-9._]+$/i,
@@ -96,10 +129,10 @@ export const Login = () => {
 
                 <div className="flex justify-center">
                   <button
-                    className="flex items-center bg-spotify-accent-base hover:bg-spotify-accent-highlight py-3 px-8 rounded-full text-black font-bold self-center"
+                    className="flex items-center self-center rounded-full bg-spotify-accent-base py-3 px-8 font-bold text-black hover:bg-spotify-accent-highlight"
                     disabled={isSubmitting}>
                     {isSubmitting && (
-                      <Spinner className="animate-spin -ml-1 mr-3 h-5 w-5" />
+                      <Spinner className="-ml-1 mr-3 h-5 w-5 animate-spin" />
                     )}{" "}
                     Entra
                   </button>

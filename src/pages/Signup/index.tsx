@@ -6,7 +6,7 @@ import { useUsers } from "@/context/usersContext";
 import { wait } from "@/utils/wait";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 type SignupFormInputs = {
   username: string;
@@ -20,8 +20,9 @@ type CustomizedState = {
 
 // TODO: Wizard signup, split into different steps
 export const Signup = () => {
-  const { addUser, usernameExists } = useUsers();
+  const { session, signup, usernameExists } = useUsers();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -32,14 +33,20 @@ export const Signup = () => {
   } = useForm<SignupFormInputs>({ mode: "onBlur" });
 
   const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
-    await wait(10000);
-    addUser({
-      username: data.username,
-      email: data.email,
-      password: data.password,
-      favoriteArtists: [],
-      favoriteGenres: [],
-    });
+    if (import.meta.env.DEV) await wait(500);
+
+    signup(
+      {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        favoriteArtists: [],
+        favoriteGenres: [],
+      },
+      () => {
+        navigate("/dashboard");
+      }
+    );
   };
 
   // Get email from useNavigate, if available
@@ -48,6 +55,10 @@ export const Signup = () => {
 
     if (state && state.email) {
       setValue("email", state.email);
+    }
+
+    if (session) {
+      navigate("/dashboard");
     }
   }, []);
 

@@ -31,14 +31,14 @@ export const PasswordInput = forwardRef<HTMLInputElement, ButtonInputProps>(
         </label>
         <div
           className={classNames(
-            "flex border-0 rounded bg-[#ffffff1a] text-[#ffffffb3] focus-within:ring-inset focus-within:ring-2 focus-within:ring-spotify-accent-base focus-within:border-spotify-accent-base",
+            "flex rounded border-0 bg-[#ffffff1a] text-[#ffffffb3] focus-within:border-spotify-accent-base focus-within:ring-2 focus-within:ring-inset focus-within:ring-spotify-accent-base",
             className
           )}>
           <input
             id={id}
             ref={ref}
             type={passwordShown ? "text" : type}
-            className="flex-1 text-sm p-2.5 pr-0 border-none focus:ring-0 focus:outline-none bg-transparent placeholder:text-[#ffffffb3]"
+            className="flex-1 rounded border-none bg-transparent p-2.5 pr-0 text-sm placeholder:text-[#ffffffb3] focus:outline-none focus:ring-0"
             placeholder={placeholder}
             {...props}
           />
