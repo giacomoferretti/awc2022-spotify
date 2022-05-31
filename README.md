@@ -28,5 +28,6 @@
 
 ## Features
 
+-   [ ] Authentication
 -   [*] Automatic token refresh
 -   [ ] Language selection
