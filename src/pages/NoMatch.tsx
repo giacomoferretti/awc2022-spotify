@@ -1,9 +1,12 @@
+import { useUsers } from "@/context/usersContext";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 
 export const NoMatch = () => {
+  const { session } = useUsers();
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
+    <div className="flex min-h-screen flex-col items-center justify-center">
       <Helmet>
         <title>Pagina non trovata</title>
       </Helmet>
@@ -12,8 +15,8 @@ export const NoMatch = () => {
         Non riusciamo a trovare la pagina che stai cercando.
       </p>
       <Link
-        className="bg-spotify-accent-base hover:bg-spotify-accent-highlight py-3 px-8 rounded-full mt-12 text-black font-bold"
-        to="/">
+        className="mt-12 rounded-full bg-spotify-accent-base py-3 px-8 font-bold text-black hover:bg-spotify-accent-highlight"
+        to={!session ? "/" : "/dashboard"}>
         Home
       </Link>
     </div>

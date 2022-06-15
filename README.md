@@ -15,7 +15,7 @@
     -   [ ] Create
     -   [ ] Edit
     -   [ ] Delete
--   [ ] Song search (eg. author, singer, genre, type)
+-   [ ] Song search (eg. artist, genre, type)
 
 ## Technical requirements
 
@@ -31,3 +31,4 @@
 -   [ ] Authentication
 -   [*] Automatic token refresh
 -   [ ] Language selection
+-   [ ] PWA

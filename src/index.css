@@ -4,7 +4,7 @@
 
 @layer base {
   html {
-    @apply text-white bg-neutral-900;
+    @apply bg-neutral-900 text-white;
   }
 
   html,

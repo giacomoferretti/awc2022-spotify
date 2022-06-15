@@ -23,14 +23,16 @@ export const Login = () => {
   const location = useLocation();
 
   const navigatePathname = useMemo(() => {
-    const state = location.state as { from: Location };
+    // const state = location.state as { from: Location };
 
-    if (state && state.from) {
-      return state.from;
-    }
+    // if (state && state.from) {
+    //   return state.from;
+    // }
 
-    // return "/debug/auth";
-    return "/dashboard";
+    let params = new URLSearchParams(location.search);
+
+    return params.get("from") || "/debug/auth";
+    // return "/dashboard";
   }, [location]);
 
   // Get username from useNavigate, if available

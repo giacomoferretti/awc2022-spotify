@@ -1,10 +1,10 @@
 import ReactDOM from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 
-import "@/index.css";
 import { App } from "@/App";
 import { SpotifyProvider } from "@/context/spotifyContext";
 import { UsersProvider } from "@/context/usersContext";
+import "@/index.css";
 
 // Disable console.log() if in production
 if (import.meta.env.PROD) console.log = () => {};

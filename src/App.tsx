@@ -1,19 +1,22 @@
+import { useEffect } from "react";
 import {
   BrowserRouter,
   Navigate,
   Outlet,
   Route,
   Routes,
+  createSearchParams,
   useLocation,
   useNavigate,
 } from "react-router-dom";
+
+import { Home, Login, NoMatch, Signup } from "@/pages";
 import { AuthDebug } from "@/pages/Debug/AuthDebug";
 import { Debug, DebugAbsoluteNav } from "@/pages/Debug/Debug";
 import { SpotifyDebug } from "@/pages/Debug/SpotifyDebug";
-import { Home, Login, Signup, NoMatch } from "@/pages";
-import { TestForm } from "./pages/Debug/TestForm";
+
 import { useUsers } from "./context/usersContext";
-import { useEffect } from "react";
+import { TestForm } from "./pages/Debug/TestForm";
 
 const RequireAuth = ({ children }: { children: React.ReactNode }) => {
   // let auth = useAuth();
@@ -26,27 +29,21 @@ const RequireAuth = ({ children }: { children: React.ReactNode }) => {
     // trying to go to when they were redirected. This allows us to send them
     // along to that page after they login, which is a nicer user experience
     // than dropping them off on the home page.
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return (
+      <Navigate
+        to={
+          "/login?" +
+          createSearchParams({
+            from: location.pathname,
+          })
+        }
+        replace
+      />
+    );
   }
 
   return <>{children}</>;
 };
-
-// const ProtectedRoute = ({
-//   isAllowed,
-//   redirectPath = "/login",
-//   children,
-// }: {
-//   isAllowed: boolean;
-//   redirectPath?: string;
-//   children?: React.ReactNode;
-// }) => {
-//   if (!isAllowed) {
-//     return <Navigate to={redirectPath} replace />;
-//   }
-
-//   return children ? children : <Outlet />;
-// };
 
 const Dashboard = () => {
   const { logout } = useUsers();
@@ -98,7 +95,7 @@ export const App = () => {
           `}
         </script>
       </Helmet> */}
-      {import.meta.env.DEV && <DebugAbsoluteNav />}
+      {/* {import.meta.env.DEV && <DebugAbsoluteNav />} */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
