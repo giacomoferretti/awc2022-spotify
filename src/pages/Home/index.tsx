@@ -1,14 +1,20 @@
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { Logo } from "@/components/Logo";
 import { useEffect } from "react";
-import { useUsers } from "@/context/usersContext";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+
+import { Logo } from "@/components/Logo";
+import { useUsers } from "@/context/usersContext";
 
 const Header = () => {
   return (
-    <header className="flex p-4">
+    <header className="flex flex-row-reverse gap-4 p-4">
       <Link
-        className="ml-auto flex items-center self-center rounded-full border py-3 px-8 font-bold"
+        className="flex items-center self-center rounded-full bg-spotify-accent-base py-3 px-8 font-bold text-black hover:bg-spotify-accent-highlight" // bg-spotify-accent-base hover:bg-spotify-accent-highlight py-3 px-8 rounded-full text-black font-bold self-center
+        to="/signup">
+        Signup
+      </Link>
+      <Link
+        className="flex items-center self-center rounded-full font-bold"
         to="/login">
         Login
       </Link>
@@ -28,7 +34,7 @@ const Main = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    // formState: { errors, isSubmitting },
   } = useForm<HomeFormInputs>({ mode: "onBlur" });
 
   const onSubmit: SubmitHandler<HomeFormInputs> = async (data) => {
@@ -43,28 +49,26 @@ const Main = () => {
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-4 px-8">
-      <h1 className="flex items-center gap-2 bg-red-500 text-4xl font-bold">
-        <Logo className="h-10 w-10" /> CMO
+      <h1 className="flex items-center gap-2  text-4xl font-bold">
+        <Logo className="h-10 w-10" /> {import.meta.env.VITE_SITE_TITLE}
       </h1>
-      <h2 className="mt-4 bg-red-500 text-2xl font-bold">
-        Comunità Musicali Online
+      <h2 className="mt-4 text-2xl font-bold">
+        {import.meta.env.VITE_SITE_LONG_TITLE}
       </h2>
-      <h3 className="bg-red-500">
+      <h3>
         Condividi le tue playlist con altri intenditori. Entra a far parte della
         community!
       </h3>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="mt-4 flex min-w-0 flex-1 bg-red-500">
-        <p className="min-w-0 flex-1">
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-4 flex">
+        {/* <p className="min-w-0 flex-1">
           A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A
           A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A
           A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A
           A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A
           A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A
         </p>
-        <input className="min-w-0 flex-1" type="text" />
-        {/* <input
+        <input className="min-w-0 flex-1" type="text" /> */}
+        <input
           id="email"
           type="email"
           placeholder="La tua email"
@@ -81,7 +85,7 @@ const Main = () => {
           className="flex self-center rounded-r bg-spotify-accent-base py-3 px-8 font-bold text-black focus:bg-spotify-accent-highlight"
           type="submit">
           Inizia
-        </button> */}
+        </button>
       </form>
       <Link className="hover:underline" to="/login">
         Hai già un account?
@@ -116,6 +120,9 @@ const Footer = () => {
     //     //   required: "Inserisci una email",
     //     // })}
     //   />
+    // </div>
+    // <div className="flex flex-1 items-end ">
+    //   <img src="/hero.jpg" />
     // </div>
     <></>
   );

@@ -10,6 +10,6 @@
   html,
   body,
   #root {
-    @apply min-h-screen;
+    @apply h-full;
   }
 }

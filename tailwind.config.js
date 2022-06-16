@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {

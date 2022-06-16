@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getClientCredentialsToken } from "@api/spotify";
-import { BASE_API_URL } from "@api/spotify/constants";
+
+import { getClientCredentialsToken } from "@/api/spotify";
+import { BASE_API_URL } from "@/api/spotify/constants";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 interface SpotifyContextType {
@@ -9,7 +10,9 @@ interface SpotifyContextType {
   search: (query: string) => Promise<any>;
 }
 
-const SpotifyContext = createContext<SpotifyContextType>(null!);
+const SpotifyContext = createContext<SpotifyContextType>(
+  {} as SpotifyContextType
+);
 
 export const SpotifyProvider = ({
   children,

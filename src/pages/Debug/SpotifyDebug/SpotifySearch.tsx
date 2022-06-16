@@ -1,6 +1,7 @@
-import { msToTime } from "@/utils/time";
-import { useSpotify } from "@context";
 import { useEffect, useState } from "react";
+
+import { useSpotify } from "@/context";
+import { msToTime } from "@/utils/time";
 
 export const SpotifySearch = () => {
   const { search } = useSpotify();
@@ -34,11 +35,11 @@ export const SpotifySearch = () => {
   };
 
   return (
-    <div className="max-w-3xl mt-4">
+    <div className="mt-4 max-w-3xl">
       <form onSubmit={onSubmitHandler}>
         <input
           type="text"
-          className="w-full p-2.5 text-sm rounded border-0 bg-[#ffffff1a] text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:ring-inset focus:ring-2 focus:ring-spotify-accent-base focus:border-spotify-accent-base"
+          className="w-full rounded border-0 bg-[#ffffff1a] p-2.5 text-sm text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:border-spotify-accent-base focus:ring-2 focus:ring-inset focus:ring-spotify-accent-base"
           value={query}
           onChange={onChangeHandler}
         />
@@ -49,32 +50,34 @@ export const SpotifySearch = () => {
         </h2>
       ) : (
         <>
-          <h2>No results found for "{query}"</h2>
+          <h2>No results found for &quot;{query}&quot;</h2>
           <h3>
             Please make sure your words are spelled correctly or use less or
             different keywords.
           </h3>
         </>
       )}
-      <div className="flex flex-col gap-2 mt-4">
+      <div className="mt-4 flex flex-col gap-2">
         {result.map((entry: any) => (
-          <div className="flex bg-[#ffffff1a] p-2 rounded gap-4">
+          <div
+            key={entry.album.images[0].url}
+            className="flex gap-4 rounded bg-[#ffffff1a] p-2">
             <img
-              className="w-12 h-12 rounded"
+              className="h-12 w-12 rounded"
               src={entry.album.images[0].url}
             />
-            <div className="flex flex-col basis-0 grow-[1.5] overflow-hidden">
-              <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+            <div className="flex grow-[1.5] basis-0 flex-col overflow-hidden">
+              <span className="overflow-hidden text-ellipsis whitespace-nowrap">
                 {entry.name}
               </span>
-              <span className="text-[#a7a7a7] whitespace-nowrap overflow-hidden text-ellipsis">
+              <span className="overflow-hidden text-ellipsis whitespace-nowrap text-[#a7a7a7]">
                 {entry.album.artists[0].name}
               </span>
             </div>
-            <span className="self-center grow-[1] basis-0 text-ellipsis overflow-hidden whitespace-nowrap">
+            <span className="grow-[1] basis-0 self-center overflow-hidden text-ellipsis whitespace-nowrap">
               {entry.album.name}
             </span>
-            <span className="self-center ml-auto tabular-nums mr-2">
+            <span className="ml-auto mr-2 self-center tabular-nums">
               {msToTime(entry.duration_ms)}
             </span>
           </div>

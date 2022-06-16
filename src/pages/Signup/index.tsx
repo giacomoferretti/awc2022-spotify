@@ -1,12 +1,13 @@
+import { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
 import { Logo } from "@/components/Logo";
 import { PasswordInput } from "@/components/PasswordInput";
 import { Spinner } from "@/components/Spinner";
 import { ValidationError } from "@/components/ValidationError";
 import { useUsers } from "@/context/usersContext";
 import { wait } from "@/utils/wait";
-import { useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useLocation, useNavigate } from "react-router-dom";
 
 type SignupFormInputs = {
   username: string;
@@ -64,14 +65,14 @@ export const Signup = () => {
 
   return (
     <>
-      <div className="min-h-screen flex flex-col">
-        <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-md w-full flex flex-col gap-8">
-            <h1 className="flex justify-center items-center gap-2 text-4xl font-bold">
-              <Logo className="w-10 h-10" /> CMO
+      <div className="flex min-h-screen flex-col">
+        <div className="flex flex-1 items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+          <div className="flex w-full max-w-md flex-col gap-8">
+            <h1 className="flex items-center justify-center gap-2 text-4xl font-bold">
+              <Logo className="h-10 w-10" /> {import.meta.env.VITE_SITE_TITLE}
             </h1>
 
-            <div className="p-4 rounded-lg bg-spotify-elevated-base sm:p-6 lg:p-8">
+            <div className="rounded-lg bg-spotify-elevated-base p-4 sm:p-6 lg:p-8">
               <form
                 className="flex flex-col gap-6"
                 onSubmit={handleSubmit(onSubmit)}>
@@ -79,7 +80,7 @@ export const Signup = () => {
 
                 <div>
                   <label>
-                    <span className="block mb-2 text-sm font-medium">
+                    <span className="mb-2 block text-sm font-medium">
                       Il tuo username
                     </span>
                     <input
@@ -87,7 +88,7 @@ export const Signup = () => {
                       type="text"
                       placeholder="Inserisci il tuo username."
                       aria-invalid={errors.username ? "true" : "false"}
-                      className="w-full p-2.5 text-sm rounded border-0 bg-[#ffffff1a] text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:ring-inset focus:ring-2 focus:ring-spotify-accent-base focus:border-spotify-accent-base"
+                      className="w-full rounded border-0 bg-[#ffffff1a] p-2.5 text-sm text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:border-spotify-accent-base focus:ring-2 focus:ring-inset focus:ring-spotify-accent-base"
                       {...register("username", {
                         pattern: {
                           value: /^[a-z0-9._]+$/i,
@@ -110,7 +111,7 @@ export const Signup = () => {
 
                 <div>
                   <label>
-                    <span className="block mb-2 text-sm font-medium">
+                    <span className="mb-2 block text-sm font-medium">
                       La tua email
                     </span>
                     <input
@@ -118,7 +119,7 @@ export const Signup = () => {
                       type="email"
                       placeholder="Inserisci la tua email."
                       aria-invalid={errors.email ? "true" : "false"}
-                      className="w-full p-2.5 text-sm rounded border-0 bg-[#ffffff1a] text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:ring-inset focus:ring-2 focus:ring-spotify-accent-base focus:border-spotify-accent-base"
+                      className="w-full rounded border-0 bg-[#ffffff1a] p-2.5 text-sm text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:border-spotify-accent-base focus:ring-2 focus:ring-inset focus:ring-spotify-accent-base"
                       {...register("email", {
                         pattern: {
                           value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -156,11 +157,11 @@ export const Signup = () => {
 
                 <div className="flex justify-center">
                   <button
-                    className="flex items-center bg-spotify-accent-base hover:bg-spotify-accent-highlight py-3 px-8 rounded-full text-black font-bold self-center"
+                    className="flex items-center self-center rounded-full bg-spotify-accent-base py-3 px-8 font-bold text-black hover:bg-spotify-accent-highlight"
                     disabled={isSubmitting}>
                     {isSubmitting && (
-                      <Spinner className="animate-spin -ml-1 mr-3 h-5 w-5" />
-                    )}{" "}
+                      <Spinner className="-ml-1 mr-3 h-5 w-5 animate-spin" />
+                    )}
                     Crea il tuo account
                   </button>
                 </div>

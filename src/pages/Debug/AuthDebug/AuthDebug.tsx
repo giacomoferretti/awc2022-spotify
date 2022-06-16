@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 
-import { useUsers } from "@/context/usersContext";
+import { useUsers } from "@/context";
 
 const AddUserForm = () => {
   const { addUser } = useUsers();
@@ -31,26 +31,26 @@ const AddUserForm = () => {
   return (
     <form className="flex flex-col gap-4" onSubmit={onSubmitHandler}>
       <label>
-        <span className="block mb-2 text-sm font-medium">Il tuo username</span>
+        <span className="mb-2 block text-sm font-medium">Il tuo username</span>
         <input
           id="username"
           type="text"
           placeholder="Inserisci il tuo username."
-          className="w-full p-2.5 text-sm rounded border-0 bg-[#ffffff1a] text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:ring-inset focus:ring-2 focus:ring-spotify-accent-base focus:border-spotify-accent-base"
+          className="w-full rounded border-0 bg-[#ffffff1a] p-2.5 text-sm text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:border-spotify-accent-base focus:ring-2 focus:ring-inset focus:ring-spotify-accent-base"
         />
       </label>
       <label>
-        <span className="block mb-2 text-sm font-medium">La tua password</span>
+        <span className="mb-2 block text-sm font-medium">La tua password</span>
         <input
           id="password"
           type="text"
           placeholder="Inserisci la tua password."
-          className="w-full p-2.5 text-sm rounded border-0 bg-[#ffffff1a] text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:ring-inset focus:ring-2 focus:ring-spotify-accent-base focus:border-spotify-accent-base"
+          className="w-full rounded border-0 bg-[#ffffff1a] p-2.5 text-sm text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:border-spotify-accent-base focus:ring-2 focus:ring-inset focus:ring-spotify-accent-base"
         />
       </label>
       <button
         type="submit"
-        className="bg-spotify-accent-base hover:bg-spotify-accent-highlight py-3 px-8 rounded-full text-black font-bold self-center">
+        className="self-center rounded-full bg-spotify-accent-base py-3 px-8 font-bold text-black hover:bg-spotify-accent-highlight">
         Add user
       </button>
     </form>
@@ -76,10 +76,10 @@ const RemoveUserForm = () => {
   return (
     <form className="flex flex-col gap-4" onSubmit={onSubmitHandler}>
       <label>
-        <span className="block mb-2 text-sm font-medium">Utente</span>
+        <span className="mb-2 block text-sm font-medium">Utente</span>
         <select
           id="username"
-          className="w-full bg-[#2f2f2f] border-0 rounded focus:ring-inset focus:ring-2 focus:ring-spotify-accent-base focus:border-spotify-accent-base"
+          className="w-full rounded border-0 bg-[#2f2f2f] focus:border-spotify-accent-base focus:ring-2 focus:ring-inset focus:ring-spotify-accent-base"
           disabled={users.length === 0}>
           {users.length > 0 ? (
             users.map((user) => (
@@ -94,7 +94,7 @@ const RemoveUserForm = () => {
       </label>
       <button
         type="submit"
-        className="bg-spotify-error py-3 px-8 rounded-full text-black font-bold self-center">
+        className="self-center rounded-full bg-spotify-error py-3 px-8 font-bold text-black">
         Remove user
       </button>
     </form>
@@ -121,16 +121,16 @@ export const AuthDebug = () => {
       <Helmet>
         <title>Auth Debug</title>
       </Helmet>
-      <div className="p-4 max-w-lg">
-        <h2 className="text-4xl font-bold mb-4">Add user</h2>
+      <div className="max-w-lg p-4">
+        <h2 className="mb-4 text-4xl font-bold">Add user</h2>
         <AddUserForm />
       </div>
-      <div className="p-4 max-w-lg">
-        <h2 className="text-4xl font-bold mb-4">Remove user</h2>
+      <div className="max-w-lg p-4">
+        <h2 className="mb-4 text-4xl font-bold">Remove user</h2>
         <RemoveUserForm />
       </div>
-      <div className="p-4 max-w-lg">
-        <h2 className="text-4xl font-bold mb-4">List users</h2>
+      <div className="max-w-lg p-4">
+        <h2 className="mb-4 text-4xl font-bold">List users</h2>
         <ListUsers />
       </div>
     </>

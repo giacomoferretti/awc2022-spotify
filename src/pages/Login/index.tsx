@@ -1,11 +1,12 @@
+import { useEffect, useMemo } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
 import { Logo } from "@/components/Logo";
 import { PasswordInput } from "@/components/PasswordInput";
 import { Spinner } from "@/components/Spinner";
 import { ValidationError } from "@/components/ValidationError";
 import { useUsers } from "@/context/usersContext";
-import { useEffect, useMemo } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useLocation, useNavigate } from "react-router-dom";
 
 type LoginFormInputs = {
   username: string;
@@ -29,10 +30,19 @@ export const Login = () => {
     //   return state.from;
     // }
 
-    let params = new URLSearchParams(location.search);
+    const params = new URLSearchParams(location.search);
 
-    return params.get("from") || "/debug/auth";
-    // return "/dashboard";
+    const getLocation = (href: string) => {
+      const a = document.createElement("a");
+      a.href = href;
+      return a;
+    };
+
+    const redirect = params.get("from") || "/dashboard";
+
+    return getLocation(redirect).hostname === window.location.hostname
+      ? redirect
+      : "/dashboard";
   }, [location]);
 
   // Get username from useNavigate, if available
@@ -69,14 +79,18 @@ export const Login = () => {
         <div className="flex flex-1 items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
           <div className="flex w-full max-w-md flex-col gap-8">
             <h1 className="flex items-center justify-center gap-2 text-4xl font-bold">
-              <Logo className="h-10 w-10" /> CMO
+              <Logo className="h-10 w-10" /> {import.meta.env.VITE_SITE_TITLE}
             </h1>
 
             <div className="rounded-lg bg-spotify-elevated-base p-4 sm:p-6 lg:p-8">
               <form
                 className="flex flex-col gap-6"
                 onSubmit={handleSubmit(onSubmit)}>
-                <h2 className="text-xl font-medium">Bentornato!</h2>
+                <h2 className="text-xl font-medium">
+                  {navigatePathname === "/dashboard"
+                    ? "Bentornato!"
+                    : "Accedi per visualizzare il contenuto!"}
+                </h2>
 
                 <div>
                   <label>
@@ -135,7 +149,7 @@ export const Login = () => {
                     disabled={isSubmitting}>
                     {isSubmitting && (
                       <Spinner className="-ml-1 mr-3 h-5 w-5 animate-spin" />
-                    )}{" "}
+                    )}
                     Entra
                   </button>
                 </div>

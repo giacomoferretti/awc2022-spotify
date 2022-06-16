@@ -1,6 +1,8 @@
-import { useUsers } from "@/context/usersContext";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
+
+import { Logo } from "@/components/Logo";
+import { useUsers } from "@/context/usersContext";
 
 export const NoMatch = () => {
   const { session } = useUsers();
@@ -10,6 +12,7 @@ export const NoMatch = () => {
       <Helmet>
         <title>Pagina non trovata</title>
       </Helmet>
+      <Logo className="mb-12 h-12 w-12" />
       <h1 className="text-4xl font-bold">Ooops... questa pagina non esiste.</h1>
       <p className="mt-4">
         Non riusciamo a trovare la pagina che stai cercando.

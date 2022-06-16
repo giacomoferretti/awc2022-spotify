@@ -9,6 +9,7 @@ export const Logo = (props: SVGProps<SVGSVGElement>) => (
     viewBox="0 0 30 30"
     xmlns="http://www.w3.org/2000/svg"
     {...props}>
+    <title>{import.meta.env.VITE_SITE_TITLE}</title>
     <path
       d="M22.419 13.371a3.656 3.656 0 0 0-1.046 2.929l-.018-.018a4.344 4.344 0 0 1-4.694 4.694l.018.018A3.678 3.678 0 1 0 20 24.312l.019.018a4.344 4.344 0 0 1 4.694-4.694l-.019-.018a3.672 3.672 0 1 0-2.272-6.247h-.003Z"
       fill="#ffffff"

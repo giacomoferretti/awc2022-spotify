@@ -10,57 +10,52 @@ import {
   useNavigate,
 } from "react-router-dom";
 
-import { Home, Login, NoMatch, Signup } from "@/pages";
+import { useUsers } from "@/context/usersContext";
+import { Dashboard, Home, Login, NoMatch, Signup } from "@/pages";
 import { AuthDebug } from "@/pages/Debug/AuthDebug";
 import { Debug, DebugAbsoluteNav } from "@/pages/Debug/Debug";
 import { SpotifyDebug } from "@/pages/Debug/SpotifyDebug";
+import { TestForm } from "@/pages/Debug/TestForm";
 
-import { useUsers } from "./context/usersContext";
-import { TestForm } from "./pages/Debug/TestForm";
+import { UserProfile } from "./pages/UserProfile";
 
 const RequireAuth = ({ children }: { children: React.ReactNode }) => {
-  // let auth = useAuth();
   const location = useLocation();
 
   const { session } = useUsers();
 
-  if (!session) {
-    // Redirect them to the /login page, but save the current location they were
-    // trying to go to when they were redirected. This allows us to send them
-    // along to that page after they login, which is a nicer user experience
-    // than dropping them off on the home page.
-    return (
-      <Navigate
-        to={
-          "/login?" +
-          createSearchParams({
-            from: location.pathname,
-          })
-        }
-        replace
-      />
-    );
-  }
-
-  return <>{children}</>;
+  return session ? (
+    <>{children}</>
+  ) : (
+    <Navigate
+      to={
+        "/login?" +
+        createSearchParams({
+          from: location.pathname,
+        })
+      }
+      replace
+    />
+  );
 };
 
-const Dashboard = () => {
-  const { logout } = useUsers();
+const RequireAuthWrapper = () => {
+  const location = useLocation();
 
-  const onClick = () => {
-    logout(() => {
-      console.log("logout!");
-    });
-  };
+  const { session } = useUsers();
 
-  return (
-    <>
-      <h1 className="text-4xl">Dashboard</h1>
-      <button type="button" onClick={onClick}>
-        Logout
-      </button>
-    </>
+  return session ? (
+    <Outlet />
+  ) : (
+    <Navigate
+      to={
+        "/login?" +
+        createSearchParams({
+          from: location.pathname,
+        })
+      }
+      replace
+    />
   );
 };
 
@@ -97,19 +92,17 @@ export const App = () => {
       </Helmet> */}
       {/* {import.meta.env.DEV && <DebugAbsoluteNav />} */}
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/logout" element={<Logout />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route
-          path="/dashboard"
-          element={
-            <RequireAuth>
-              <Dashboard />
-            </RequireAuth>
-          }
-        />
-        <Route path="/debug" element={<Debug />}>
+        <Route index element={<Home />} />
+        <Route path="login" element={<Login />} />
+        <Route path="logout" element={<Logout />} />
+        <Route path="signup" element={<Signup />} />
+
+        <Route element={<RequireAuthWrapper />}>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="user/:username" element={<UserProfile />} />
+        </Route>
+
+        <Route path="debug" element={<Debug />}>
           <Route path="spotify" element={<SpotifyDebug />} />
           <Route path="auth" element={<AuthDebug />} />
           <Route path="form" element={<TestForm />} />

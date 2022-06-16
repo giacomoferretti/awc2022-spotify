@@ -8,8 +8,8 @@ export const ValidationError = ({ message }: ValidationErrorProps) => {
   return (
     <span
       role="alert"
-      className="flex text-sm mt-2 text-spotify-error space-x-1">
-      <ExclamationCircleIcon className="flex-shrink-0 h-5 w-5" />
+      className="mt-2 flex space-x-1 text-sm text-spotify-error">
+      <ExclamationCircleIcon className="h-5 w-5 flex-shrink-0" />
       <span>{message ? message : "Errore sconosciuto"}</span>
     </span>
   );

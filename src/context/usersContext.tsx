@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 type UserCredentials = {
@@ -27,7 +28,7 @@ type UsersContextType = {
   signup: (newUser: User, callback: VoidFunction) => void;
 };
 
-const UsersContext = createContext<UsersContextType>(null!);
+const UsersContext = createContext<UsersContextType>({} as UsersContextType);
 
 export const UsersProvider = ({ children }: { children: React.ReactNode }) => {
   const users = useProvideUsers();

@@ -2,8 +2,8 @@ import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
 import classNames from "classnames";
 import {
   DetailedHTMLProps,
-  forwardRef,
   InputHTMLAttributes,
+  forwardRef,
   useState,
 } from "react";
 

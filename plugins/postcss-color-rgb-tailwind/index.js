@@ -1,6 +1,8 @@
 /**
  * @type {import('postcss').PluginCreator}
  */
+
+/* eslint-disable @typescript-eslint/no-var-requires */
 const helpers = require("postcss-message-helpers");
 const reduceFunctionCall = require("reduce-function-call");
 
@@ -46,7 +48,7 @@ module.exports = () => {
           const values = parseRgbValues(body);
 
           if (values.length === 4) {
-            const alpha = values.pop();
+            let alpha = values.pop();
             if (alpha.indexOf("%") === alpha.length - 1) {
               alpha = parseFloat(alpha) / 100;
             }

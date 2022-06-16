@@ -1,6 +1,6 @@
 export const TestForm = () => {
   return (
-    <div className="p-4 bg-white rounded-lg border border-gray-200 shadow-md sm:p-6 lg:p-8">
+    <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-md sm:p-6 lg:p-8">
       <form className="space-y-6" action="#">
         {/* onSubmit={handleSubmit(onSubmit)} */}
         <h5 className="text-xl font-medium text-gray-900">
@@ -9,12 +9,12 @@ export const TestForm = () => {
         <div>
           <label
             htmlFor="email"
-            className="block mb-2 text-sm font-medium text-gray-900">
+            className="mb-2 block text-sm font-medium text-gray-900">
             Your email
           </label>
           <input
             type="email"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-orange-500 focus:ring-orange-500"
             placeholder="name@company.com"
             // {...register("email", { required: true })}
           />
@@ -23,23 +23,23 @@ export const TestForm = () => {
         <div>
           <label
             htmlFor="password"
-            className="block mb-2 text-sm font-medium text-gray-900">
+            className="mb-2 block text-sm font-medium text-gray-900">
             Your password
           </label>
           <input
             type="password"
             placeholder="••••••••"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-orange-500 focus:ring-orange-500"
             // {...register("password", { required: true })}
           />
         </div>
         <div className="flex items-start">
           <div className="flex items-start">
-            <div className="flex items-center h-5">
+            <div className="flex h-5 items-center">
               <input
                 aria-describedby="remember"
                 type="checkbox"
-                className="w-4 h-4 text-orange-500 bg-gray-50 rounded border border-gray-300 focus:ring-3 focus:ring-orange-300"
+                className="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 text-orange-500 focus:ring-orange-300"
                 // {...register("remember")}
               />
             </div>
@@ -57,7 +57,7 @@ export const TestForm = () => {
         </div>
         <button
           type="submit"
-          className="w-full text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+          className="w-full rounded-lg bg-orange-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-orange-800 focus:outline-none focus:ring-4 focus:ring-orange-300">
           Login to your account
         </button>
         <div className="text-sm font-medium text-gray-500">

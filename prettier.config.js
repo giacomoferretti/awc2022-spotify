@@ -1,9 +1,6 @@
 module.exports = {
   bracketSameLine: true,
-  plugins: [
-    require("prettier-plugin-tailwindcss"),
-    require("@trivago/prettier-plugin-sort-imports"),
-  ],
+  plugins: [require("./plugins/prettier-tailwind-sort-fix")],
   importOrder: ["^@/(.*)$", "^[./]"],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
