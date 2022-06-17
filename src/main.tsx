@@ -2,8 +2,7 @@ import ReactDOM from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 
 import { App } from "@/App";
-import { SpotifyProvider } from "@/context/spotifyContext";
-import { UsersProvider } from "@/context/usersContext";
+import { PlaylistsProvider, SpotifyProvider, UsersProvider } from "@/context";
 import "@/index.css";
 
 // Disable console.log() if in production
@@ -15,7 +14,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <HelmetProvider>
     <SpotifyProvider>
       <UsersProvider>
-        <App />
+        <PlaylistsProvider>
+          <App />
+        </PlaylistsProvider>
       </UsersProvider>
     </SpotifyProvider>
   </HelmetProvider>

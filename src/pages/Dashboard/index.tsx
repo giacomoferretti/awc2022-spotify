@@ -1,11 +1,17 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import {
+  BellIcon,
+  MenuIcon,
+  MusicNoteIcon,
+  UserIcon,
+  XIcon,
+} from "@heroicons/react/outline";
 import classNames from "classnames";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { Logo } from "@/components/Logo";
-import { useUsers } from "@/context";
+import { usePlaylists, useUsers } from "@/context";
 
 const user = {
   name: "Tom Cook",
@@ -215,6 +221,8 @@ const TailwindUi = () => {
 };
 
 const Header = () => {
+  const { session } = useUsers();
+
   return (
     <nav>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -247,23 +255,30 @@ const Header = () => {
           </div>
           <div className="hidden md:block">
             <div className="ml-4 flex items-center md:ml-6">
-              <button
+              {/* <button
                 type="button"
                 className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                 <span className="sr-only">View notifications</span>
                 <BellIcon className="h-6 w-6" aria-hidden="true" />
-              </button>
+              </button> */}
 
               {/* Profile dropdown */}
               <Menu as="div" className="relative ml-3">
                 <div>
-                  <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                  <Menu.Button className="flex max-w-[10rem] items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-neutral-900">
                     <span className="sr-only">Open user menu</span>
-                    <img
+                    {/* <img
                       className="h-8 w-8 rounded-full"
                       src={user.imageUrl}
                       alt=""
+                    /> */}
+                    <UserIcon
+                      className="h-8 w-8 shrink-0 rounded-full bg-[#282828] p-1"
+                      aria-hidden="true"
                     />
+                    {/* <span className="ml-3 overflow-hidden overflow-ellipsis">
+                      {session}
+                    </span> */}
                   </Menu.Button>
                 </div>
                 <Transition
@@ -274,7 +289,7 @@ const Header = () => {
                   leave="transition ease-in duration-75"
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95">
-                  <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-[#282828] py-1 px-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <Menu.Items className="absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-md bg-[#282828] py-1 px-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <Menu.Item>
                       {({ active }) => (
                         <Link
@@ -311,9 +326,42 @@ const Header = () => {
 };
 
 export const Dashboard = () => {
+  const { session } = useUsers();
+  const { playlists, generatePlaylist } = usePlaylists();
+
+  useEffect(() => {
+    try {
+      generatePlaylist();
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
   return (
     <>
       <Header />
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* <h2 className="text-2xl">Bentornato, {session}!</h2> */}
+        <h2 className="text-xl font-bold">Le tue playlist</h2>
+        <div className="flex flex-wrap gap-4">
+          {playlists.map((item) => (
+            <div className="w-40 rounded bg-[#ffffff1a] p-4" key={item.id}>
+              <div className="relative mb-4">
+                <div className="w-full rounded bg-[#ffffff1a] pb-[100%]">
+                  {/* <MusicNoteIcon className="absolute top-1/2 left-1/2 h-8 w-8 -translate-y-1/2 -translate-x-1/2" /> */}
+                  <img className="absolute h-full rounded" src="/nocover.png" />
+                </div>
+              </div>
+              <div className="min-h-[1em]">
+                <div className="lin overflow-hidden overflow-ellipsis whitespace-nowrap font-bold">
+                  {item.name}
+                </div>
+                <div className="text-sm line-clamp-2">{item.description}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </>
   );
 };
