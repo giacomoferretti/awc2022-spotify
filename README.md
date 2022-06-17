@@ -2,19 +2,20 @@
 
 ## Tasks
 
--   [ ] Signup
+-   [*] Signup
     -   [ ] Username, email, password
     -   [ ] Musical preferences
     -   [ ] Favorite groups
--   [ ] Login
--   [ ] Private playlists
-    -   [ ] Create
-    -   [ ] Edit
-    -   [ ] Delete
--   [ ] Public playlists
-    -   [ ] Create
-    -   [ ] Edit
-    -   [ ] Delete
+-   [*] Login
+-   [ ] Playlists
+    -   [ ] Private
+        -   [ ] Create
+        -   [ ] Edit
+        -   [ ] Delete
+    -   [ ] Public
+        -   [ ] Create
+        -   [ ] Edit
+        -   [ ] Delete
 -   [ ] Song search (eg. artist, genre, type)
 
 ## Technical requirements
@@ -22,13 +23,13 @@
 -   [ ] Spotify
     -   [*] Token retrieval
     -   [*] Auto-refresh
-    -   [ ] Search song
+    -   [*] Search song
     -   [ ] Get genres
     -   [ ] Get artists
 
 ## Features
 
--   [ ] Authentication
+-   [*] Authentication
 -   [*] Automatic token refresh
 -   [ ] Language selection
 -   [ ] PWA
