@@ -2,11 +2,11 @@
 
 ## Tasks
 
--   [*] Signup
+-   [x] Signup
     -   [ ] Username, email, password
     -   [ ] Musical preferences
     -   [ ] Favorite groups
--   [*] Login
+-   [x] Login
 -   [ ] Playlists
     -   [ ] Private
         -   [ ] Create
@@ -21,15 +21,15 @@
 ## Technical requirements
 
 -   [ ] Spotify
-    -   [*] Token retrieval
-    -   [*] Auto-refresh
-    -   [*] Search song
+    -   [x] Token retrieval
+    -   [x] Auto-refresh
+    -   [x] Search song
     -   [ ] Get genres
     -   [ ] Get artists
 
 ## Features
 
--   [*] Authentication
--   [*] Automatic token refresh
+-   [x] Authentication
+-   [x] Automatic token refresh
 -   [ ] Language selection
 -   [ ] PWA
