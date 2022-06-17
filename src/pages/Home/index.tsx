@@ -134,7 +134,7 @@ export const Home = () => {
 
   useEffect(() => {
     if (session) {
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
     }
   }, [session]);
 

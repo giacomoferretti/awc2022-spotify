@@ -54,7 +54,7 @@ export const Login = () => {
     }
 
     if (session) {
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
     }
   }, []);
 
