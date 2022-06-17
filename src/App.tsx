@@ -73,61 +73,10 @@ const Logout = () => {
   return <Navigate to="/" replace />;
 };
 
-const history = createBrowserHistory();
-
-const CustomRouter = ({
-  history,
-  children,
-}: {
-  history: BrowserHistory;
-  children?: React.ReactNode;
-}) => {
-  const [state, setState] = useState({
-    action: history.action,
-    location: history.location,
-  });
-
-  useLayoutEffect(() => history.listen(setState), [history]);
-
-  return (
-    <Router
-      location={state.location}
-      navigationType={state.action}
-      navigator={history}>
-      {children}
-    </Router>
-  );
-};
-
 export const App = () => {
-  useEffect(() => {
-    const unlisten = history.listen((update) => {
-      console.log(update.location);
-      console.log(update.action);
-    });
-
-    return unlisten;
-  }, []);
-
   return (
-    <CustomRouter history={history}>
-      {/* <Helmet>
-        <script
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${
-            import.meta.env.VITE_GOOGLE_ANALYTICS
-          }`}></script>
-        <script>
-          {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', '${import.meta.env.VITE_GOOGLE_ANALYTICS}');
-          `}
-        </script>
-      </Helmet> */}
-      {/* {import.meta.env.DEV && <DebugAbsoluteNav />} */}
+    <BrowserRouter>
+      {import.meta.env.DEV && <DebugAbsoluteNav />}
       <Routes>
         <Route index element={<Home />} />
         <Route path="login" element={<Login />} />
@@ -149,6 +98,6 @@ export const App = () => {
 
         <Route path="*" element={<NoMatch />} />
       </Routes>
-    </CustomRouter>
+    </BrowserRouter>
   );
 };
