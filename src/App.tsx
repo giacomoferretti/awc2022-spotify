@@ -18,6 +18,7 @@ import { AuthDebug } from "@/pages/Debug/AuthDebug";
 import { Debug, DebugAbsoluteNav } from "@/pages/Debug/Debug";
 import { SpotifyDebug } from "@/pages/Debug/SpotifyDebug";
 import { TestForm } from "@/pages/Debug/TestForm";
+import { Playlist } from "@/pages/Playlist";
 import { UserProfile, UserRedirect } from "@/pages/UserProfile";
 
 const RequireAuth = ({ children }: { children: React.ReactNode }) => {
@@ -136,7 +137,8 @@ export const App = () => {
         <Route element={<RequireAuthWrapper />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="user" element={<UserRedirect />} />
-          <Route path="user/:username" element={<UserProfile />} />
+          <Route path="user/:id" element={<UserProfile />} />
+          <Route path="playlist/:id" element={<Playlist />} />
         </Route>
 
         <Route path="debug" element={<Debug />}>

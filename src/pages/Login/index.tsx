@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from "react";
+import { Helmet } from "react-helmet-async";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -7,6 +8,7 @@ import { PasswordInput } from "@/components/PasswordInput";
 import { Spinner } from "@/components/Spinner";
 import { ValidationError } from "@/components/ValidationError";
 import { useUsers } from "@/context/usersContext";
+import { wait } from "@/utils/wait";
 
 type LoginFormInputs = {
   username: string;
@@ -66,8 +68,8 @@ export const Login = () => {
   } = useForm<LoginFormInputs>({ mode: "onBlur" });
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
-    // await wait(300);
-    // navigate(navigatePathname);
+    if (import.meta.env.DEV) await wait(500);
+
     login(data, () => {
       navigate(navigatePathname);
     });
@@ -75,6 +77,9 @@ export const Login = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Login - {import.meta.env.VITE_SITE_TITLE}</title>
+      </Helmet>
       <div className="flex min-h-screen flex-col">
         <div className="flex flex-1 items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
           <div className="flex w-full max-w-md flex-col gap-8">

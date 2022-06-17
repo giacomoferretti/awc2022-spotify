@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -28,7 +29,7 @@ export const Signup = () => {
   const {
     register,
     handleSubmit,
-    watch,
+    // watch,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<SignupFormInputs>({ mode: "onBlur" });
@@ -65,6 +66,9 @@ export const Signup = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Login - {import.meta.env.VITE_SITE_TITLE}</title>
+      </Helmet>
       <div className="flex min-h-screen flex-col">
         <div className="flex flex-1 items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
           <div className="flex w-full max-w-md flex-col gap-8">

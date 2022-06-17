@@ -2,12 +2,12 @@ import { useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { Navigate, useParams } from "react-router-dom";
 
+import { Header } from "@/components/Header";
 import { useUsers } from "@/context";
-
-import { NoMatch } from "..";
+import { NoMatch } from "@/pages";
 
 type UserProfileParams = {
-  username: string;
+  id: string;
 };
 
 export const UserRedirect = () => {
@@ -23,24 +23,26 @@ export const UserProfile = () => {
 
   const user = useMemo(() => {
     try {
-      return getUserByUsername(params.username!);
+      return getUserByUsername(params.id!);
     } catch {
       return null;
     }
   }, [session]);
 
-  return user ? (
+  // If not found, show NoMatch
+  if (!user) return <NoMatch />;
+
+  return (
     <>
       <Helmet>
         <title>
           {user.username} - {import.meta.env.VITE_SITE_TITLE}
         </title>
       </Helmet>
+      <Header />
       <p>{user.username}</p>
       <p>{user.email}</p>
       <p>{user.password}</p>
     </>
-  ) : (
-    <NoMatch />
   );
 };

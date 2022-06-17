@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 
@@ -141,10 +142,15 @@ export const Home = () => {
   return session ? (
     <Navigate to="/dashboard" replace />
   ) : (
-    <div className="flex min-h-screen flex-col">
-      <Header />
-      <Main />
-      <Footer />
-    </div>
+    <>
+      <Helmet>
+        <title>{import.meta.env.VITE_SITE_TITLE}</title>
+      </Helmet>
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        <Main />
+        <Footer />
+      </div>
+    </>
   );
 };

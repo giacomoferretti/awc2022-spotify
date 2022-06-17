@@ -10,7 +10,7 @@ export const NoMatch = () => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
       <Helmet>
-        <title>Pagina non trovata</title>
+        <title>Pagina non trovata - {import.meta.env.VITE_SITE_TITLE}</title>
       </Helmet>
       <Logo className="mb-12 h-12 w-12" />
       <h1 className="text-4xl font-bold">Ooops... questa pagina non esiste.</h1>
