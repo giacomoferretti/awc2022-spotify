@@ -3,7 +3,7 @@
 ## Tasks
 
 -   [x] Signup
-    -   [ ] Username, email, password
+    -   [x] Username, email, password
     -   [ ] Musical preferences
     -   [ ] Favorite groups
 -   [x] Login
