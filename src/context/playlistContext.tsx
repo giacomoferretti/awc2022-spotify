@@ -17,6 +17,7 @@ type Playlist = {
 type PlaylistContextType = {
   playlists: Playlist[];
   generatePlaylist: () => void;
+  getPlaylistById: (id: string) => Playlist;
 };
 
 const PlaylistsContext = createContext<PlaylistContextType>(
@@ -51,6 +52,10 @@ const useProvidePlaylists = (): PlaylistContextType => {
     []
   );
 
+  const getPlaylistById = (id: string) => {
+    return playlists[playlists.findIndex((playlist) => playlist.id === id)];
+  };
+
   const generatePlaylist = () => {
     // Only for debug purposes
     if (import.meta.env.PROD)
@@ -66,5 +71,5 @@ const useProvidePlaylists = (): PlaylistContextType => {
     setPlaylists((playlists) => [...playlists, newPlaylist]);
   };
 
-  return { playlists, generatePlaylist };
+  return { playlists, generatePlaylist, getPlaylistById };
 };
