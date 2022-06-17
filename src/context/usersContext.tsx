@@ -23,6 +23,7 @@ type UsersContextType = {
   emailExists: (email: string) => boolean;
   getUserByUsername: (username: string) => User;
   getUserByEmail: (email: string) => User;
+  getCurrentUser: () => User | null;
   login: (loginUser: UserCredentials, callback: VoidFunction) => void;
   logout: (callback: VoidFunction) => void;
   signup: (newUser: User, callback: VoidFunction) => void;
@@ -47,7 +48,7 @@ const LS_KEYS = {
   SESSION: "SESSION",
 };
 
-const useProvideUsers = () => {
+const useProvideUsers = (): UsersContextType => {
   const [users, setUsers] = useLocalStorage<User[]>(LS_KEYS.USERS, []);
   const [session, setSession] = useLocalStorage<string | null>(
     LS_KEYS.SESSION,
@@ -131,6 +132,10 @@ const useProvideUsers = () => {
     return users[userIndex];
   };
 
+  const getCurrentUser = () => {
+    return session ? getUserByUsername(session) : null;
+  };
+
   const login = (loginUser: UserCredentials, callback: VoidFunction) => {
     const user = getUserByUsername(loginUser.username);
 
@@ -168,6 +173,7 @@ const useProvideUsers = () => {
     emailExists,
     getUserByUsername,
     getUserByEmail,
+    getCurrentUser,
     login,
     logout,
     signup,
