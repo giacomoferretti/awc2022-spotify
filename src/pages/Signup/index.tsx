@@ -67,7 +67,7 @@ export const Signup = () => {
   return (
     <>
       <Helmet>
-        <title>Login - {import.meta.env.VITE_SITE_TITLE}</title>
+        <title>Crea un account - {import.meta.env.VITE_SITE_TITLE}</title>
       </Helmet>
       <div className="flex min-h-screen flex-col">
         <div className="flex flex-1 items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
