@@ -1,4 +1,4 @@
-import { UserIcon } from "@heroicons/react/outline";
+import { GlobeIcon, LockClosedIcon, UserIcon } from "@heroicons/react/outline";
 import { useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
@@ -40,7 +40,19 @@ export const Playlist = () => {
           </div>
           <div className="flex flex-1 flex-col justify-end">
             {/* <button type="button" onClick={openModal} title="Modifica dettagli"> */}
-            <span className="pb-1 line-clamp-3">
+
+            <span className="mb-2 flex items-center gap-2 text-sm text-neutral-400">
+              {playlist.isPublic ? (
+                <>
+                  <GlobeIcon className="h-4 w-4" /> {"Playlist pubblica"}
+                </>
+              ) : (
+                <>
+                  <LockClosedIcon className="h-4 w-4" /> {"Playlist privata"}
+                </>
+              )}
+            </span>
+            <span className="py-1 line-clamp-3">
               <h2 className="text-left text-5xl font-bold">{playlist.name}</h2>
             </span>
             {playlist.description && (

@@ -56,6 +56,7 @@ const useProvidePlaylists = (): PlaylistContextType => {
     const newPlaylist: Playlist = {
       id: getRandomUid(),
       owner: "",
+      isPublic: true,
       name: "A very long name containing spaces",
       description: "A very long description containing spaces",
       tracks: [],
@@ -72,6 +73,7 @@ const useProvidePlaylists = (): PlaylistContextType => {
     const newPlaylist: Playlist = {
       id: getRandomUid(),
       owner: ownerId,
+      isPublic: true,
       name: "Playlist senza titolo",
       description: "",
       tracks: [],
