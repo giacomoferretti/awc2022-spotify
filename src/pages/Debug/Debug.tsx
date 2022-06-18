@@ -4,7 +4,7 @@ import { usePlaylists, useUsers } from "@/context";
 
 export const DebugAbsoluteNav = () => {
   const { clearAll: clearAllUsers } = useUsers();
-  const { clearAll: clearAllPlaylists } = usePlaylists();
+  const { clearAll: clearAllPlaylists, generatePlaylist } = usePlaylists();
 
   const clearUsersOnClick = () => {
     clearAllUsers();
@@ -12,6 +12,10 @@ export const DebugAbsoluteNav = () => {
 
   const clearPlaylistOnClick = () => {
     clearAllPlaylists();
+  };
+
+  const createRandomPlaylist = () => {
+    generatePlaylist();
   };
 
   return (
@@ -56,6 +60,12 @@ export const DebugAbsoluteNav = () => {
         type="button"
         onClick={clearPlaylistOnClick}>
         Clear PLAYLISTS
+      </button>
+      <button
+        className="rounded bg-gray-700 py-1 px-2 font-mono"
+        type="button"
+        onClick={createRandomPlaylist}>
+        Create PLAYLIST
       </button>
     </div>
   );
