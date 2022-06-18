@@ -4,6 +4,7 @@ type Track = {
 
 type Playlist = {
   id: string;
+  owner: string;
   name: string;
   description: string;
   tracks: Track[];

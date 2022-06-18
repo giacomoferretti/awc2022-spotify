@@ -8,6 +8,7 @@ type PlaylistContextType = {
   generatePlaylist: () => void;
   getPlaylistById: (id: string) => Playlist;
   clearAll: () => void;
+  createUserPlaylist: (owner: string) => string;
 };
 
 const PlaylistsContext = createContext<PlaylistContextType>(
@@ -53,6 +54,7 @@ const useProvidePlaylists = (): PlaylistContextType => {
 
     const newPlaylist: Playlist = {
       id: getRandomUid(),
+      owner: "",
       name: "A very long name containing spaces",
       description: "A very long description containing spaces",
       tracks: [],
@@ -65,5 +67,25 @@ const useProvidePlaylists = (): PlaylistContextType => {
     setPlaylists([]);
   };
 
-  return { playlists, generatePlaylist, getPlaylistById, clearAll };
+  const createUserPlaylist = (ownerId: string) => {
+    const newPlaylist: Playlist = {
+      id: getRandomUid(),
+      owner: ownerId,
+      name: "Playlist senza titolo",
+      description: "",
+      tracks: [],
+    };
+
+    setPlaylists((playlists) => [...playlists, newPlaylist]);
+
+    return newPlaylist.id;
+  };
+
+  return {
+    playlists,
+    generatePlaylist,
+    getPlaylistById,
+    clearAll,
+    createUserPlaylist,
+  };
 };
