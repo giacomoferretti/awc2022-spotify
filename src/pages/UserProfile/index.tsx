@@ -8,6 +8,7 @@ import { Navigate, useParams } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { useUsers } from "@/context";
 import { NoMatch } from "@/pages";
+import { User } from "@/types";
 
 type UserProfileParams = Pick<User, "username">;
 

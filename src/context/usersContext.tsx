@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react";
 
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { User, UserCredentials } from "@/types";
 
 type UsersContextType = {
   users: User[];

@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react";
 
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { Playlist } from "@/types";
 import { getRandomUid } from "@/utils/uid";
 
 type PlaylistContextType = {

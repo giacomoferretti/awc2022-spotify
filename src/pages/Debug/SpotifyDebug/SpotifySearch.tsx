@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 
 import { useSpotify } from "@/context";
+import { SpotifyTrack } from "@/types";
 import { msToTime } from "@/utils/time";
 
 export const SpotifySearch = () => {
   const { search } = useSpotify();
 
   const [query, setQuery] = useState("");
-  const [result, setResult] = useState([]);
+  const [result, setResult] = useState<SpotifyTrack[]>([]);
 
   useEffect(() => {
     if (query) {

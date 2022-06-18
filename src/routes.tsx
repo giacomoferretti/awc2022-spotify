@@ -8,7 +8,7 @@ import {
   Login,
   Logout,
   NoMatch,
-  Playlist,
+  ShowPlaylist,
   Signup,
   UserProfile,
   UserRedirect,
@@ -37,7 +37,7 @@ export default (
       {/* Playlist */}
       <Route path="playlist">
         <Route path="new" element={<CreatePlaylist />} />
-        <Route path=":id" element={<Playlist />} />
+        <Route path=":id" element={<ShowPlaylist />} />
       </Route>
 
       {/* Search */}

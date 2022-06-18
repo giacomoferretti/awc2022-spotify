@@ -3,11 +3,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { getClientCredentialsToken } from "@/api/spotify";
 import { BASE_API_URL } from "@/api/spotify/constants";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { SpotifyTrack } from "@/types";
 
 interface SpotifyContextType {
   token: string | null;
   tokenExpiration: number | null;
-  search: (query: string) => Promise<any>;
+  search: (query: string) => Promise<SpotifyTrack[]>;
 }
 
 const SpotifyContext = createContext<SpotifyContextType>(
@@ -106,7 +107,7 @@ const useProvideSpotify = () => {
   const callEndpoint = async (path: string) => {
     const updatedToken = await getNewToken();
 
-    // TODO: Handle 401
+    // FIXME: Handle 401 and 404
     return await (
       await fetch(`${BASE_API_URL}${path}`, {
         headers: {
