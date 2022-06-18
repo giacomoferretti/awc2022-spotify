@@ -3,21 +3,11 @@ import { createContext, useContext } from "react";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { getRandomUid } from "@/utils/uid";
 
-type Track = {
-  id: string;
-};
-
-type Playlist = {
-  id: string;
-  name: string;
-  description: string;
-  tracks: Track[];
-};
-
 type PlaylistContextType = {
   playlists: Playlist[];
   generatePlaylist: () => void;
   getPlaylistById: (id: string) => Playlist;
+  clearAll: () => void;
 };
 
 const PlaylistsContext = createContext<PlaylistContextType>(
@@ -71,5 +61,9 @@ const useProvidePlaylists = (): PlaylistContextType => {
     setPlaylists((playlists) => [...playlists, newPlaylist]);
   };
 
-  return { playlists, generatePlaylist, getPlaylistById };
+  const clearAll = () => {
+    setPlaylists([]);
+  };
+
+  return { playlists, generatePlaylist, getPlaylistById, clearAll };
 };

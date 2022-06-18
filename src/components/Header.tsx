@@ -1,15 +1,16 @@
 import { Menu, Transition } from "@headlessui/react";
 import { UserIcon } from "@heroicons/react/outline";
 import classNames from "classnames";
-import { Fragment } from "react";
+import { Fragment, useMemo } from "react";
 import { Link } from "react-router-dom";
 
 import { Logo } from "@/components/Logo";
-
-// import { useUsers } from "@/context";
+import { useUsers } from "@/context";
 
 export const Header = () => {
-  // const { session } = useUsers();
+  const { getCurrentUser } = useUsers();
+
+  const user = useMemo(() => getCurrentUser(), []);
 
   return (
     <nav>
@@ -66,9 +67,9 @@ export const Header = () => {
                       className="h-8 w-8 shrink-0 rounded-full bg-[#282828] p-1"
                       aria-hidden="true"
                     />
-                    {/* <span className="ml-3 overflow-hidden overflow-ellipsis">
-                      {session}
-                    </span> */}
+                    <span className="ml-3 overflow-hidden overflow-ellipsis">
+                      {user?.displayName}
+                    </span>
                   </Menu.Button>
                 </div>
                 <Transition

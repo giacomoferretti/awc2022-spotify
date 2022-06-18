@@ -1,13 +1,16 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
+  ArrowRightIcon,
   BellIcon,
+  EmojiSadIcon,
   MenuIcon,
   MusicNoteIcon,
+  PlusIcon,
   UserIcon,
   XIcon,
 } from "@heroicons/react/outline";
 import classNames from "classnames";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 
@@ -223,51 +226,106 @@ const TailwindUi = () => {
   );
 };
 
-export const Dashboard = () => {
-  const { session } = useUsers();
-  const { playlists, generatePlaylist } = usePlaylists();
+const HelloSection = () => {
+  const { getCurrentUser } = useUsers();
+  const user = useMemo(() => getCurrentUser(), []);
 
-  useEffect(() => {
-    try {
-      generatePlaylist();
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
+  return (
+    <section>
+      <h1 className="my-4 text-3xl font-bold">
+        Bentornato, {user!.displayName}!
+      </h1>
+    </section>
+  );
+};
+
+const NoPlaylists = () => {
+  return (
+    <div className="flex items-center justify-center rounded border-2 border-dashed border-neutral-500 py-8 text-neutral-500">
+      {/* <div className="flex items-center">
+        <EmojiSadIcon className="mr-4 h-8 w-8" />
+        <h2>Non hai nessuna playlist.</h2>
+      </div> */}
+      <EmojiSadIcon className="mr-4 h-8 w-8" />
+      <div>
+        <h2>Non hai nessuna playlist.</h2>
+        <a className="cursor-pointer font-bold hover:underline">Creane una!</a>
+      </div>
+    </div>
+  );
+};
+
+const PersonalPlaylists = () => {
+  const { playlists } = usePlaylists();
+
+  return (
+    <section>
+      <h2 className="mb-2 text-xl font-bold">Le tue playlist</h2>
+
+      {playlists.length !== 0 && <NoPlaylists />}
+
+      {/* <div className="flex flex-wrap gap-4">
+         {playlists.slice(0, 6).map((item) => (
+          <Link key={item.id} to={`/playlist/${item.id}`}>
+            <div className="w-40 rounded bg-[#ffffff1a] p-4 hover:bg-spotify-accent-base">
+              <div className="relative mb-4">
+                <div className="w-full rounded bg-[#ffffff1a] pb-[100%]">
+                  <img className="absolute h-full rounded" src={noCoverImage} />
+                </div>
+              </div>
+              <div className="min-h-[1em]">
+                <div className="lin overflow-hidden overflow-ellipsis whitespace-nowrap font-bold">
+                  {item.name}
+                </div>
+                <div className="text-sm line-clamp-2">{item.description}</div>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div> */}
+    </section>
+  );
+};
+
+const SavedPlaylists = () => {
+  const { playlists } = usePlaylists();
+
+  return (
+    <section>
+      <h2 className="mb-2 text-xl font-bold">Le tue playlist</h2>
+
+      {playlists.length !== 0 && <NoPlaylists />}
+    </section>
+  );
+};
+
+export const Dashboard = () => {
+  // const { generatePlaylist } = usePlaylists();
+
+  // useEffect(() => {
+  //   try {
+  //     generatePlaylist();
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }, []);
 
   return (
     <>
       <Helmet>
         <title>Dashboard - {import.meta.env.VITE_SITE_TITLE}</title>
       </Helmet>
-      <Header />
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* <h2 className="text-2xl">Bentornato, {session}!</h2> */}
-        <h2 className="text-xl font-bold">Le tue playlist</h2>
-        <div className="flex flex-wrap gap-4">
-          {playlists.map((item) => (
-            <Link key={item.id} to={`/playlist/${item.id}`}>
-              <div className="w-40 rounded bg-[#ffffff1a] p-4 hover:bg-spotify-accent-base">
-                <div className="relative mb-4">
-                  <div className="w-full rounded bg-[#ffffff1a] pb-[100%]">
-                    {/* <MusicNoteIcon className="absolute top-1/2 left-1/2 h-8 w-8 -translate-y-1/2 -translate-x-1/2" /> */}
-                    <img
-                      className="absolute h-full rounded"
-                      src={noCoverImage}
-                    />
-                  </div>
-                </div>
-                <div className="min-h-[1em]">
-                  <div className="lin overflow-hidden overflow-ellipsis whitespace-nowrap font-bold">
-                    {item.name}
-                  </div>
-                  <div className="text-sm line-clamp-2">{item.description}</div>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
+
+      {/* Header */}
+      <header>
+        <Header />
+      </header>
+
+      {/* Main */}
+      <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <HelloSection />
+        <PersonalPlaylists />
+      </main>
     </>
   );
 };

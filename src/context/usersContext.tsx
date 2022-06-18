@@ -2,17 +2,6 @@ import { createContext, useContext } from "react";
 
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
-type UserCredentials = {
-  username: string;
-  password: string;
-};
-
-type User = {
-  email: string;
-  favoriteGenres: string[];
-  favoriteArtists: string[];
-} & UserCredentials;
-
 type UsersContextType = {
   users: User[];
   session: string | null;
@@ -27,6 +16,8 @@ type UsersContextType = {
   login: (loginUser: UserCredentials, callback: VoidFunction) => void;
   logout: (callback: VoidFunction) => void;
   signup: (newUser: User, callback: VoidFunction) => void;
+  clearAll: () => void;
+  updateDisplayName: (username: string, displayName: string) => void;
 };
 
 const UsersContext = createContext<UsersContextType>({} as UsersContextType);
@@ -163,6 +154,21 @@ const useProvideUsers = (): UsersContextType => {
     callback();
   };
 
+  const clearAll = () => {
+    setUsers([]);
+    setSession(null);
+  };
+
+  const updateDisplayName = (username: string, displayName: string) => {
+    const x = users.slice();
+
+    const i = x.findIndex((user) => user.username === username);
+
+    x[i].displayName = displayName;
+
+    setUsers(x);
+  };
+
   return {
     users,
     session,
@@ -177,5 +183,7 @@ const useProvideUsers = (): UsersContextType => {
     login,
     logout,
     signup,
+    clearAll,
+    updateDisplayName,
   };
 };

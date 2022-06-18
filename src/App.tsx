@@ -1,15 +1,12 @@
-import { BrowserHistory, createBrowserHistory } from "history";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   BrowserRouter,
   Navigate,
   Outlet,
   Route,
-  Router,
   Routes,
   createSearchParams,
   useLocation,
-  useNavigate,
 } from "react-router-dom";
 
 import { useUsers } from "@/context/usersContext";
@@ -17,7 +14,6 @@ import { Dashboard, Home, Login, NoMatch, Signup } from "@/pages";
 import { AuthDebug } from "@/pages/Debug/AuthDebug";
 import { Debug, DebugAbsoluteNav } from "@/pages/Debug/Debug";
 import { SpotifyDebug } from "@/pages/Debug/SpotifyDebug";
-import { TestForm } from "@/pages/Debug/TestForm";
 import { Playlist } from "@/pages/Playlist";
 import { UserProfile, UserRedirect } from "@/pages/UserProfile";
 
@@ -86,14 +82,13 @@ export const App = () => {
         <Route element={<RequireAuthWrapper />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="user" element={<UserRedirect />} />
-          <Route path="user/:id" element={<UserProfile />} />
+          <Route path="user/:username" element={<UserProfile />} />
           <Route path="playlist/:id" element={<Playlist />} />
         </Route>
 
         <Route path="debug" element={<Debug />}>
           <Route path="spotify" element={<SpotifyDebug />} />
           <Route path="auth" element={<AuthDebug />} />
-          <Route path="form" element={<TestForm />} />
         </Route>
 
         <Route path="*" element={<NoMatch />} />

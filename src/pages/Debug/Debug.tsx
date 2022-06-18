@@ -1,8 +1,21 @@
 import { Link, Outlet } from "react-router-dom";
 
+import { usePlaylists, useUsers } from "@/context";
+
 export const DebugAbsoluteNav = () => {
+  const { clearAll: clearAllUsers } = useUsers();
+  const { clearAll: clearAllPlaylists } = usePlaylists();
+
+  const clearUsersOnClick = () => {
+    clearAllUsers();
+  };
+
+  const clearPlaylistOnClick = () => {
+    clearAllPlaylists();
+  };
+
   return (
-    <nav className="absolute flex items-center gap-2 p-2 text-xs opacity-50">
+    <div className="fixed bottom-0 flex flex-wrap items-center gap-2 p-2 text-xs opacity-50">
       <h2>Navigation: </h2>
       <Link className="rounded bg-gray-700 py-1 px-2 font-mono" to="/">
         Home
@@ -32,7 +45,19 @@ export const DebugAbsoluteNav = () => {
         to="/debug/auth">
         (DEBUG) Auth
       </Link>
-    </nav>
+      <button
+        className="rounded bg-gray-700 py-1 px-2 font-mono"
+        type="button"
+        onClick={clearUsersOnClick}>
+        Clear USERS
+      </button>
+      <button
+        className="rounded bg-gray-700 py-1 px-2 font-mono"
+        type="button"
+        onClick={clearPlaylistOnClick}>
+        Clear PLAYLISTS
+      </button>
+    </div>
   );
 };
 
