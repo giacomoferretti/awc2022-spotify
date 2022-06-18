@@ -228,41 +228,70 @@ const TailwindUi = () => {
 
 const HelloSection = () => {
   const { getCurrentUser } = useUsers();
+
   const user = useMemo(() => getCurrentUser(), []);
+  if (!user) return <></>;
+
+  const welcomeMessage = useMemo(() => {
+    const hours = new Date().getHours();
+
+    if (hours >= 5 && hours < 12) {
+      return "Buongiorno";
+    } else if (hours >= 12 && hours <= 18) {
+      return "Buon pomeriggio";
+    } else {
+      return "Buonasera";
+    }
+  }, []);
 
   return (
     <section>
       <h1 className="my-4 text-3xl font-bold">
-        Bentornato, {user!.displayName}!
+        {welcomeMessage}, {user.displayName}!
       </h1>
     </section>
   );
 };
 
-const NoPlaylists = () => {
+const NoPlaylists = ({
+  message,
+  actionMessage,
+  action,
+}: {
+  message: string;
+  actionMessage: string;
+  action: string;
+}) => {
   return (
     <div className="flex items-center justify-center rounded border-2 border-dashed border-neutral-500 py-8 text-neutral-500">
-      {/* <div className="flex items-center">
-        <EmojiSadIcon className="mr-4 h-8 w-8" />
-        <h2>Non hai nessuna playlist.</h2>
-      </div> */}
       <EmojiSadIcon className="mr-4 h-8 w-8" />
       <div>
-        <h2>Non hai nessuna playlist.</h2>
-        <a className="cursor-pointer font-bold hover:underline">Creane una!</a>
+        <h2>{message}</h2>
+        <Link to={action} className="cursor-pointer font-bold hover:underline">
+          {actionMessage}
+        </Link>
       </div>
     </div>
   );
 };
 
 const PersonalPlaylists = () => {
-  const { playlists } = usePlaylists();
+  const { getCurrentUser } = useUsers();
+
+  const user = useMemo(() => getCurrentUser(), []);
+  if (!user) return <></>;
 
   return (
     <section>
-      <h2 className="mb-2 text-xl font-bold">Le tue playlist</h2>
+      <h2 className="mb-2 text-xl font-bold">Le tue playlist personali</h2>
 
-      {playlists.length !== 0 && <NoPlaylists />}
+      {user.personalPlaylists.length === 0 && (
+        <NoPlaylists
+          message="Non hai nessuna playlist."
+          actionMessage="Creane una!"
+          action="/playlist/new"
+        />
+      )}
 
       {/* <div className="flex flex-wrap gap-4">
          {playlists.slice(0, 6).map((item) => (
@@ -288,13 +317,22 @@ const PersonalPlaylists = () => {
 };
 
 const SavedPlaylists = () => {
-  const { playlists } = usePlaylists();
+  const { getCurrentUser } = useUsers();
+
+  const user = useMemo(() => getCurrentUser(), []);
+  if (!user) return <></>;
 
   return (
-    <section>
-      <h2 className="mb-2 text-xl font-bold">Le tue playlist</h2>
+    <section className="mt-4">
+      <h2 className="mb-2 text-xl font-bold">Le tue playlist salvate</h2>
 
-      {playlists.length !== 0 && <NoPlaylists />}
+      {user.savedPlaylists.length === 0 && (
+        <NoPlaylists
+          message="Non hai salvato nessuna playlist."
+          actionMessage="Cercane una!"
+          action="/search"
+        />
+      )}
     </section>
   );
 };
@@ -325,6 +363,7 @@ export const Dashboard = () => {
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <HelloSection />
         <PersonalPlaylists />
+        <SavedPlaylists />
       </main>
     </>
   );
