@@ -8,15 +8,20 @@ import { wait } from "@/utils/wait";
 
 export const CreatePlaylist = () => {
   const navigate = useNavigate();
-  const { session } = useUsers();
+  const { session, addUserPlaylist } = useUsers();
   const { createUserPlaylist } = usePlaylists();
 
   useEffect(() => {
     const asyncFun = async () => {
+      if (!session) return;
+
       if (import.meta.env.DEV) await wait(500);
 
-      let playlistId = "";
-      if (session) playlistId = createUserPlaylist(session);
+      // Create playlist
+      const playlistId = createUserPlaylist(session);
+
+      // Save playlist to owner
+      addUserPlaylist(session, playlistId);
 
       navigate(`/playlist/${playlistId}`, { replace: true });
     };

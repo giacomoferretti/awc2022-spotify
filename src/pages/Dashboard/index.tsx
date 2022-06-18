@@ -285,33 +285,15 @@ const PersonalPlaylists = () => {
     <section>
       <h2 className="mb-2 text-xl font-bold">Le tue playlist personali</h2>
 
-      {user.personalPlaylists.length === 0 && (
+      {user.personalPlaylists.length !== 0 ? (
+        <PlaylistFeed />
+      ) : (
         <NoPlaylists
           message="Non hai nessuna playlist."
           actionMessage="Creane una!"
           action="/playlist/new"
         />
       )}
-
-      {/* <div className="flex flex-wrap gap-4">
-         {playlists.slice(0, 6).map((item) => (
-          <Link key={item.id} to={`/playlist/${item.id}`}>
-            <div className="w-40 rounded bg-[#ffffff1a] p-4 hover:bg-spotify-accent-base">
-              <div className="relative mb-4">
-                <div className="w-full rounded bg-[#ffffff1a] pb-[100%]">
-                  <img className="absolute h-full rounded" src={noCoverImage} />
-                </div>
-              </div>
-              <div className="min-h-[1em]">
-                <div className="lin overflow-hidden overflow-ellipsis whitespace-nowrap font-bold">
-                  {item.name}
-                </div>
-                <div className="text-sm line-clamp-2">{item.description}</div>
-              </div>
-            </div>
-          </Link>
-        ))}
-      </div> */}
     </section>
   );
 };
@@ -326,7 +308,9 @@ const SavedPlaylists = () => {
     <section className="mt-4">
       <h2 className="mb-2 text-xl font-bold">Le tue playlist salvate</h2>
 
-      {user.savedPlaylists.length === 0 && (
+      {user.savedPlaylists.length !== 0 ? (
+        <PlaylistFeed />
+      ) : (
         <NoPlaylists
           message="Non hai salvato nessuna playlist."
           actionMessage="Cercane una!"
@@ -334,6 +318,48 @@ const SavedPlaylists = () => {
         />
       )}
     </section>
+  );
+};
+
+const PlaylistFeed = () => {
+  const { getCurrentUser } = useUsers();
+  const user = useMemo(() => getCurrentUser(), []);
+  if (!user) return <></>;
+
+  const { getUserPlaylists } = usePlaylists();
+  const userPlaylists = useMemo(() => getUserPlaylists(user.username), []);
+
+  useEffect(() => {
+    console.log(user);
+    console.log(userPlaylists);
+  }, []);
+
+  return (
+    <div className="flex flex-wrap gap-4">
+      {userPlaylists.map((item) => (
+        <Link key={item.id} to={`/playlist/${item.id}`}>
+          <div className="w-40 rounded bg-neutral-800 p-4 hover:bg-neutral-700">
+            <div className="relative mb-4">
+              <div className="w-full rounded bg-[#ffffff1a] pb-[100%]">
+                <img className="absolute h-full rounded" src={noCoverImage} />
+              </div>
+            </div>
+            <div className="min-h-[1em]">
+              <div className="lin overflow-hidden overflow-ellipsis whitespace-nowrap font-bold">
+                {item.name}
+              </div>
+              <div className="text-sm line-clamp-2">{item.description}</div>
+            </div>
+          </div>
+        </Link>
+      ))}
+      <Link to="/playlist/new">
+        <div className="flex h-full w-40 flex-col items-center justify-center rounded border-2 border-dashed border-neutral-500 p-4 text-neutral-500 hover:border-neutral-400 hover:text-neutral-400">
+          <PlusIcon className="h-24 w-24 fill-current" />
+          <span className="text-center">Crea nuova playlist</span>
+        </div>
+      </Link>
+    </div>
   );
 };
 

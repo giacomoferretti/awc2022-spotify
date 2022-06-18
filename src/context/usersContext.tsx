@@ -18,6 +18,8 @@ type UsersContextType = {
   signup: (newUser: User, callback: VoidFunction) => void;
   clearAll: () => void;
   updateDisplayName: (username: string, displayName: string) => void;
+  addUserPlaylist: (username: string, playlistId: string) => void;
+  addSavedPlaylist: (username: string, playlistId: string) => void;
 };
 
 const UsersContext = createContext<UsersContextType>({} as UsersContextType);
@@ -160,13 +162,27 @@ const useProvideUsers = (): UsersContextType => {
   };
 
   const updateDisplayName = (username: string, displayName: string) => {
-    const x = users.slice();
+    const usersCopy = users.slice();
+    const userIndex = usersCopy.findIndex((user) => user.username === username);
+    usersCopy[userIndex].displayName = displayName;
 
-    const i = x.findIndex((user) => user.username === username);
+    setUsers(usersCopy);
+  };
 
-    x[i].displayName = displayName;
+  const addUserPlaylist = (username: string, playlistId: string) => {
+    const usersCopy = users.slice();
+    const userIndex = usersCopy.findIndex((user) => user.username === username);
+    usersCopy[userIndex].personalPlaylists.push(playlistId);
 
-    setUsers(x);
+    setUsers(usersCopy);
+  };
+
+  const addSavedPlaylist = (username: string, playlistId: string) => {
+    const usersCopy = users.slice();
+    const userIndex = usersCopy.findIndex((user) => user.username === username);
+    usersCopy[userIndex].savedPlaylists.push(playlistId);
+
+    setUsers(usersCopy);
   };
 
   return {
@@ -185,5 +201,7 @@ const useProvideUsers = (): UsersContextType => {
     signup,
     clearAll,
     updateDisplayName,
+    addUserPlaylist,
+    addSavedPlaylist,
   };
 };

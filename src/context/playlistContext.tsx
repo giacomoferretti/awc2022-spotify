@@ -9,6 +9,7 @@ type PlaylistContextType = {
   getPlaylistById: (id: string) => Playlist;
   clearAll: () => void;
   createUserPlaylist: (owner: string) => string;
+  getUserPlaylists: (ownerId: string) => Playlist[];
 };
 
 const PlaylistsContext = createContext<PlaylistContextType>(
@@ -81,11 +82,16 @@ const useProvidePlaylists = (): PlaylistContextType => {
     return newPlaylist.id;
   };
 
+  const getUserPlaylists = (ownerId: string) => {
+    return playlists.filter((playlist) => playlist.owner === ownerId);
+  };
+
   return {
     playlists,
     generatePlaylist,
     getPlaylistById,
     clearAll,
     createUserPlaylist,
+    getUserPlaylists,
   };
 };
