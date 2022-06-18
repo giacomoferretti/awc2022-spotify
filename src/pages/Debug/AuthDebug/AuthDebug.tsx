@@ -22,6 +22,8 @@ const AddUserForm = () => {
       password,
       email: "",
       displayName: username,
+      personalPlaylists: [],
+      savedPlaylists: [],
       favoriteArtists: [],
       favoriteGenres: [],
     });

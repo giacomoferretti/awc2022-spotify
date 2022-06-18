@@ -43,6 +43,8 @@ export const Signup = () => {
         email: data.email,
         password: data.password,
         displayName: data.username,
+        personalPlaylists: [],
+        savedPlaylists: [],
         favoriteArtists: [],
         favoriteGenres: [],
       },
