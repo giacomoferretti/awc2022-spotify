@@ -14,13 +14,14 @@ const AddUserForm = () => {
     const password = (
       e.currentTarget.elements.namedItem("password") as HTMLInputElement
     ).value;
-
-    console.table({ username, password });
+    const email = (
+      e.currentTarget.elements.namedItem("email") as HTMLInputElement
+    ).value;
 
     addUser({
       username,
       password,
-      email: "",
+      email,
       displayName: username,
       personalPlaylists: [],
       savedPlaylists: [],
@@ -48,6 +49,15 @@ const AddUserForm = () => {
           id="password"
           type="text"
           placeholder="Inserisci la tua password."
+          className="w-full rounded border-0 bg-[#ffffff1a] p-2.5 text-sm text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:border-spotify-accent-base focus:ring-2 focus:ring-inset focus:ring-spotify-accent-base"
+        />
+      </label>
+      <label>
+        <span className="mb-2 block text-sm font-medium">La tua email</span>
+        <input
+          id="email"
+          type="email"
+          placeholder="Inserisci la tua email."
           className="w-full rounded border-0 bg-[#ffffff1a] p-2.5 text-sm text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:border-spotify-accent-base focus:ring-2 focus:ring-inset focus:ring-spotify-accent-base"
         />
       </label>
@@ -83,11 +93,11 @@ const RemoveUserForm = () => {
         <select
           id="username"
           className="w-full rounded border-0 bg-[#2f2f2f] focus:border-spotify-accent-base focus:ring-2 focus:ring-inset focus:ring-spotify-accent-base"
-          disabled={users.length === 0}>
-          {users.length > 0 ? (
-            users.map((user) => (
-              <option key={user.username} value={user.username}>
-                {user.username}
+          disabled={Object.keys(users).length === 0}>
+          {Object.keys(users).length > 0 ? (
+            Object.entries(users).map(([username]) => (
+              <option key={username} value={username}>
+                {username}
               </option>
             ))
           ) : (
@@ -109,8 +119,10 @@ const ListUsers = () => {
 
   return (
     <ul>
-      {users.length > 0 ? (
-        users.map((user) => <li key={user.username}>{user.username}</li>)
+      {Object.keys(users).length > 0 ? (
+        Object.entries(users).map(([, user]) => (
+          <li key={user.username}>{user.username}</li>
+        ))
       ) : (
         <h2>No user available</h2>
       )}

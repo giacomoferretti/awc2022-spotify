@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect } from "react";
 
 import { getClientCredentialsToken } from "@/api/spotify";
 import { BASE_API_URL } from "@/api/spotify/constants";
