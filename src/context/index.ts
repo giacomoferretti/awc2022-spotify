@@ -1,3 +1,3 @@
 export * from "./spotifyContext";
 export * from "./usersContext";
-export * from "./playlistContext";
+export * from "./playlistsContext";

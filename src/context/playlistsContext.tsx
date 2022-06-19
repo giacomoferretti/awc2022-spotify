@@ -5,14 +5,14 @@ import { Playlist, Track } from "@/types";
 import { getRandomUid } from "@/utils/uid";
 
 type PlaylistContextType = {
-  playlists: Playlist[];
+  playlists: Record<string, Playlist>;
   generatePlaylist: () => void;
   getPlaylistById: (id: string) => Playlist;
   clearAll: () => void;
   createUserPlaylist: (owner: string) => string;
-  getUserPlaylists: (ownerId: string) => Playlist[];
-  addTrackToPlaylist: (playlist: Playlist["id"], track: Track) => void;
-  setVisibilityPlaylist: (playlist: Playlist["id"], isPublic: boolean) => void;
+  // getUserPlaylists: (ownerId: string) => Playlist[];
+  addTrackToPlaylist: (id: Playlist["id"], track: Track["id"]) => void;
+  setVisibilityPlaylist: (id: Playlist["id"], isPublic: boolean) => void;
 };
 
 const PlaylistsContext = createContext<PlaylistContextType>(
@@ -42,13 +42,34 @@ const LS_KEYS = {
 };
 
 const useProvidePlaylists = (): PlaylistContextType => {
-  const [playlists, setPlaylists] = useLocalStorage<Playlist[]>(
+  const [playlists, setPlaylists] = useLocalStorage<Record<string, Playlist>>(
     LS_KEYS.PLAYLISTS,
-    []
+    {}
   );
 
+  const clearAll = () => {
+    setPlaylists({});
+  };
+
+  const playlistExists = (id: string) => {
+    return Object.prototype.hasOwnProperty.call(playlists, id);
+  };
+
+  const addPlaylist = (playlist: Playlist) => {
+    setPlaylists((playlists) => {
+      const copy = { ...playlists };
+      copy[playlist.id] = playlist;
+      return copy;
+    });
+  };
+
   const getPlaylistById = (id: string) => {
-    return playlists[playlists.findIndex((playlist) => playlist.id === id)];
+    // Check if user exists
+    if (!playlistExists(id)) {
+      throw new Error(`${id} doesn't exist.`);
+    }
+
+    return playlists[id];
   };
 
   const generatePlaylist = () => {
@@ -56,58 +77,49 @@ const useProvidePlaylists = (): PlaylistContextType => {
     if (import.meta.env.PROD)
       throw new Error(`This function can only be used in DEBUG.`);
 
-    const newPlaylist: Playlist = {
+    addPlaylist({
       id: getRandomUid(),
       owner: "",
       isPublic: true,
       name: "A very long name containing spaces",
       description: "A very long description containing spaces",
       tracks: [],
-    };
-
-    setPlaylists((playlists) => [...playlists, newPlaylist]);
+    });
   };
 
-  const clearAll = () => {
-    setPlaylists([]);
-  };
-
-  const createUserPlaylist = (ownerId: string) => {
-    const newPlaylist: Playlist = {
+  const blankPlaylist = (owner: string) => {
+    return {
       id: getRandomUid(),
-      owner: ownerId,
+      owner,
       isPublic: true,
       name: "Playlist senza titolo",
       description: "",
       tracks: [],
     };
+  };
 
-    setPlaylists((playlists) => [...playlists, newPlaylist]);
+  const createUserPlaylist = (ownerId: string) => {
+    const newPlaylist = blankPlaylist(ownerId);
+
+    addPlaylist(newPlaylist);
 
     return newPlaylist.id;
   };
 
-  const getUserPlaylists = (ownerId: string) => {
-    return playlists.filter((playlist) => playlist.owner === ownerId);
+  const addTrackToPlaylist = (id: Playlist["id"], track: Track["id"]) => {
+    setPlaylists((playlists) => {
+      const copy = { ...playlists };
+      copy[id].tracks.push({ id: track, addedTimestamp: Date.now() });
+      return copy;
+    });
   };
 
-  const addTrackToPlaylist = (playlist: Playlist["id"], track: Track) => {
-    const playlistsCopy = playlists.slice();
-    const playlistIndex = playlistsCopy.findIndex((x) => x.id === playlist);
-    playlistsCopy[playlistIndex].tracks.push(track);
-
-    setPlaylists(playlistsCopy);
-  };
-
-  const setVisibilityPlaylist = (
-    playlist: Playlist["id"],
-    isPublic: boolean
-  ) => {
-    const playlistsCopy = playlists.slice();
-    const playlistIndex = playlistsCopy.findIndex((x) => x.id === playlist);
-    playlistsCopy[playlistIndex].isPublic = isPublic;
-
-    setPlaylists(playlistsCopy);
+  const setVisibilityPlaylist = (id: Playlist["id"], isPublic: boolean) => {
+    setPlaylists((playlists) => {
+      const copy = { ...playlists };
+      copy[id].isPublic = isPublic;
+      return copy;
+    });
   };
 
   return {
@@ -116,7 +128,6 @@ const useProvidePlaylists = (): PlaylistContextType => {
     getPlaylistById,
     clearAll,
     createUserPlaylist,
-    getUserPlaylists,
     addTrackToPlaylist,
     setVisibilityPlaylist,
   };

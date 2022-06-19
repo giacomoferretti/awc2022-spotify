@@ -1,10 +1,15 @@
 import { Track } from ".";
 
+export type PlaylistTrack = {
+  id: Track["id"];
+  addedTimestamp: number;
+};
+
 export type Playlist = {
   id: string;
-  owner: string;
-  isPublic: boolean;
   name: string;
   description: string;
-  tracks: Track[];
+  owner: string;
+  isPublic: boolean;
+  tracks: PlaylistTrack[];
 };

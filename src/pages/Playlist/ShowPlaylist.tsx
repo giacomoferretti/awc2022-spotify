@@ -83,11 +83,7 @@ const SearchResult = ({
   const { addTrackToPlaylist } = usePlaylists();
 
   const addSong = () => {
-    const track: Track = {
-      id: entry.id,
-    };
-
-    addTrackToPlaylist(playlist.id, track);
+    addTrackToPlaylist(playlist.id, entry.id);
   };
 
   return (
@@ -122,7 +118,7 @@ const SearchResult = ({
         <button
           type="button"
           onClick={addSong}
-          className="h-auto  self-center rounded-full border px-4 py-2 text-sm">
+          className="h-auto self-center rounded-full border px-4 py-2 text-sm">
           Aggiungi
         </button>
       </div>
@@ -235,8 +231,10 @@ export const ShowPlaylist = () => {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <PlaylistHeader owner={owner} playlist={playlist} />
 
-          {playlist.tracks.map((item) => (
-            <p key={item.id}>{item.id}</p>
+          {playlist.tracks.map((key) => (
+            <p key={`${key.id}_${key.addedTimestamp}`} className="mt-2">
+              {key.id}
+            </p>
           ))}
 
           <div className="mt-8">

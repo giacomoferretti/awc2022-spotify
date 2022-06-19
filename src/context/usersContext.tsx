@@ -4,7 +4,7 @@ import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { User, UserCredentials } from "@/types";
 
 type UsersContextType = {
-  users: User[];
+  users: Record<string, User>;
   session: string | null;
   addUser: (user: User) => void;
   removeUser: (targetUser: User) => void;
@@ -43,25 +43,41 @@ const LS_KEYS = {
 };
 
 const useProvideUsers = (): UsersContextType => {
-  const [users, setUsers] = useLocalStorage<User[]>(LS_KEYS.USERS, []);
+  const [users, setUsers] = useLocalStorage<Record<string, User>>(
+    LS_KEYS.USERS,
+    {}
+  );
   const [session, setSession] = useLocalStorage<string | null>(
     LS_KEYS.SESSION,
     null
   );
 
-  const usernameExists = (username: string) => {
-    return users.some((user) => {
-      if (user.username === username) {
-        return true;
-      }
+  // useEffect(() => {
+  //   setUsers((users) => {
+  //     const copy = { ...users };
+  //     console.log(copy);
+  //     copy[getRandomUid()] = {
+  //       username: getRandomUid(),
+  //       password: getRandomUid(),
+  //       email: getRandomUid(),
+  //       displayName: getRandomUid(),
+  //       personalPlaylists: [getRandomUid()],
+  //       savedPlaylists: [getRandomUid()],
+  //       favoriteGenres: [getRandomUid()],
+  //       favoriteArtists: [getRandomUid()],
+  //     };
 
-      return false;
-    });
+  //     return copy;
+  //   });
+  // }, []);
+
+  const usernameExists = (username: string) => {
+    return Object.prototype.hasOwnProperty.call(users, username);
   };
 
   const emailExists = (email: string) => {
-    return users.some((user) => {
-      if (user.email === email) {
+    return Object.keys(users).some((key) => {
+      if (users[key].email === email) {
         return true;
       }
 
@@ -87,18 +103,23 @@ const useProvideUsers = (): UsersContextType => {
       throw new Error(`${newUser.email} is already used.`);
     }
 
-    setUsers((users) => [...users, newUser]);
+    setUsers((users) => {
+      const copy = { ...users };
+      copy[newUser.username] = newUser;
+      return copy;
+    });
   };
 
   const removeUser = (targetUser: User) => {
-    setUsers(users.filter((user) => user.username !== targetUser.username));
-
-    // Invalidate session
-    if (targetUser.username === session) setSession(null);
+    removeUserByUsername(targetUser.username);
   };
 
   const removeUserByUsername = (username: string) => {
-    setUsers(users.filter((user) => user.username !== username));
+    setUsers((users) => {
+      const copy = { ...users };
+      delete copy[username];
+      return copy;
+    });
 
     // Invalidate session
     if (username === session) setSession(null);
@@ -110,9 +131,7 @@ const useProvideUsers = (): UsersContextType => {
       throw new Error(`${username} doesn't exist.`);
     }
 
-    const userIndex = users.findIndex((user) => user.username === username);
-
-    return users[userIndex];
+    return users[username];
   };
 
   const getUserByEmail = (email: string) => {
@@ -121,7 +140,9 @@ const useProvideUsers = (): UsersContextType => {
       throw new Error(`${email} doesn't exist.`);
     }
 
-    const userIndex = users.findIndex((user) => user.email === email);
+    const userIndex = Object.keys(users).findIndex(
+      (key) => users[key].email === email
+    );
 
     return users[userIndex];
   };
@@ -158,32 +179,32 @@ const useProvideUsers = (): UsersContextType => {
   };
 
   const clearAll = () => {
-    setUsers([]);
+    setUsers({});
     setSession(null);
   };
 
   const updateDisplayName = (username: string, displayName: string) => {
-    const usersCopy = users.slice();
-    const userIndex = usersCopy.findIndex((user) => user.username === username);
-    usersCopy[userIndex].displayName = displayName;
-
-    setUsers(usersCopy);
+    setUsers((users) => {
+      const copy = { ...users };
+      copy[username].displayName = displayName;
+      return copy;
+    });
   };
 
   const addUserPlaylist = (username: string, playlistId: string) => {
-    const usersCopy = users.slice();
-    const userIndex = usersCopy.findIndex((user) => user.username === username);
-    usersCopy[userIndex].personalPlaylists.push(playlistId);
-
-    setUsers(usersCopy);
+    setUsers((users) => {
+      const copy = { ...users };
+      copy[username].personalPlaylists.push(playlistId);
+      return copy;
+    });
   };
 
   const addSavedPlaylist = (username: string, playlistId: string) => {
-    const usersCopy = users.slice();
-    const userIndex = usersCopy.findIndex((user) => user.username === username);
-    usersCopy[userIndex].savedPlaylists.push(playlistId);
-
-    setUsers(usersCopy);
+    setUsers((users) => {
+      const copy = { ...users };
+      copy[username].savedPlaylists.push(playlistId);
+      return copy;
+    });
   };
 
   return {
