@@ -1,5 +1,5 @@
 import { GlobeIcon, LockClosedIcon, UserIcon } from "@heroicons/react/outline";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useParams } from "react-router-dom";
 
@@ -7,7 +7,7 @@ import noCoverImage from "@/assets/nocover.png";
 import { Header } from "@/components/Header";
 import { usePlaylists, useSpotify, useUsers } from "@/context";
 import { NoMatch } from "@/pages/NoMatch";
-import { Playlist, SpotifyTrack, User } from "@/types";
+import { Playlist, SpotifyTrack, Track, User } from "@/types";
 import { msToTime } from "@/utils/time";
 
 const PlaylistHeader = ({
@@ -63,7 +63,64 @@ const PlaylistHeader = ({
   );
 };
 
-const SongSearch = () => {
+const SearchResult = ({
+  playlist,
+  entry,
+}: {
+  playlist: Playlist;
+  entry: SpotifyTrack;
+}) => {
+  const { addTrackToPlaylist } = usePlaylists();
+
+  const addSong = () => {
+    const track: Track = {
+      id: entry.id,
+    };
+
+    addTrackToPlaylist(playlist.id, track);
+  };
+
+  return (
+    <div
+      key={entry.id}
+      className="grid grid-cols-[3fr_2fr_auto] gap-4 rounded p-2 hover:bg-neutral-800">
+      {/* Image + Title + Artits */}
+      <div className="flex gap-4">
+        <img className="h-12 w-12 rounded" src={entry.album.images[2].url} />
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+          <span className="overflow-hidden overflow-ellipsis whitespace-nowrap">
+            {entry.name}
+          </span>
+          <span className="overflow-hidden overflow-ellipsis whitespace-nowrap text-neutral-600">
+            {entry.artists.map((x) => x.name).join(", ")}
+          </span>
+        </div>
+      </div>
+
+      {/* Album */}
+      <div className="flex items-center overflow-hidden">
+        <span className="overflow-hidden overflow-ellipsis whitespace-nowrap">
+          {entry.album.name}
+        </span>
+        <span className="ml-auto tabular-nums">
+          {msToTime(entry.duration_ms)}
+        </span>
+      </div>
+
+      {/* Button */}
+      <div className="flex">
+        <button
+          type="button"
+          onClick={addSong}
+          className="h-auto  self-center rounded-full border px-4 py-2 text-sm">
+          Aggiungi
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const SongSearch = ({ playlist }: { playlist: Playlist }) => {
   const { search } = useSpotify();
 
   const [query, setQuery] = useState("");
@@ -126,44 +183,7 @@ const SongSearch = () => {
       {result.length > 0 && (
         <div className="mt-4 flex flex-col">
           {result.map((entry) => (
-            <div
-              key={entry.id}
-              className="grid grid-cols-[3fr_2fr_auto] gap-4 rounded p-2 hover:bg-neutral-800">
-              {/* Image + Title + Artits */}
-              <div className="flex gap-4">
-                <img
-                  className="h-12 w-12 rounded"
-                  src={entry.album.images[2].url}
-                />
-                <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
-                  <span className="overflow-hidden overflow-ellipsis whitespace-nowrap">
-                    {entry.name}
-                  </span>
-                  <span className="overflow-hidden overflow-ellipsis whitespace-nowrap text-neutral-600">
-                    {entry.artists.map((x) => x.name).join(", ")}
-                  </span>
-                </div>
-              </div>
-
-              {/* Album */}
-              <div className="flex items-center overflow-hidden">
-                <span className="overflow-hidden overflow-ellipsis whitespace-nowrap">
-                  {entry.album.name}
-                </span>
-                <span className="ml-auto tabular-nums">
-                  {msToTime(entry.duration_ms)}
-                </span>
-              </div>
-
-              {/* Button */}
-              <div className="flex">
-                <button
-                  type="button"
-                  className="h-auto  self-center rounded-full border px-4 py-2 text-sm">
-                  Aggiungi
-                </button>
-              </div>
-            </div>
+            <SearchResult key={entry.id} entry={entry} playlist={playlist} />
           ))}
         </div>
       )}
@@ -180,6 +200,7 @@ export const ShowPlaylist = () => {
   const { getUserByUsername } = useUsers();
 
   const playlist = useMemo(() => {
+    console.log("Update");
     return getPlaylistById(params.id!);
   }, []);
 
@@ -203,8 +224,13 @@ export const ShowPlaylist = () => {
       <main className="mt-8">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <PlaylistHeader owner={owner} playlist={playlist} />
+
+          {playlist.tracks.map((item) => (
+            <p key={item.id}>{item.id}</p>
+          ))}
+
           <div className="mt-8">
-            <SongSearch />
+            <SongSearch playlist={playlist} />
           </div>
         </div>
       </main>

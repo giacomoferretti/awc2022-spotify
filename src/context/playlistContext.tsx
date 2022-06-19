@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { Playlist } from "@/types";
+import { Playlist, Track } from "@/types";
 import { getRandomUid } from "@/utils/uid";
 
 type PlaylistContextType = {
@@ -11,6 +11,7 @@ type PlaylistContextType = {
   clearAll: () => void;
   createUserPlaylist: (owner: string) => string;
   getUserPlaylists: (ownerId: string) => Playlist[];
+  addTrackToPlaylist: (playlist: Playlist["id"], track: Track) => void;
 };
 
 const PlaylistsContext = createContext<PlaylistContextType>(
@@ -89,6 +90,14 @@ const useProvidePlaylists = (): PlaylistContextType => {
     return playlists.filter((playlist) => playlist.owner === ownerId);
   };
 
+  const addTrackToPlaylist = (playlist: Playlist["id"], track: Track) => {
+    const playlistsCopy = playlists.slice();
+    const playlistIndex = playlistsCopy.findIndex((x) => x.id === playlist);
+    playlistsCopy[playlistIndex].tracks.push(track);
+
+    setPlaylists(playlistsCopy);
+  };
+
   return {
     playlists,
     generatePlaylist,
@@ -96,5 +105,6 @@ const useProvidePlaylists = (): PlaylistContextType => {
     clearAll,
     createUserPlaylist,
     getUserPlaylists,
+    addTrackToPlaylist,
   };
 };
