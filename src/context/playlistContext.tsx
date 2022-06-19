@@ -12,6 +12,7 @@ type PlaylistContextType = {
   createUserPlaylist: (owner: string) => string;
   getUserPlaylists: (ownerId: string) => Playlist[];
   addTrackToPlaylist: (playlist: Playlist["id"], track: Track) => void;
+  setVisibilityPlaylist: (playlist: Playlist["id"], isPublic: boolean) => void;
 };
 
 const PlaylistsContext = createContext<PlaylistContextType>(
@@ -98,6 +99,17 @@ const useProvidePlaylists = (): PlaylistContextType => {
     setPlaylists(playlistsCopy);
   };
 
+  const setVisibilityPlaylist = (
+    playlist: Playlist["id"],
+    isPublic: boolean
+  ) => {
+    const playlistsCopy = playlists.slice();
+    const playlistIndex = playlistsCopy.findIndex((x) => x.id === playlist);
+    playlistsCopy[playlistIndex].isPublic = isPublic;
+
+    setPlaylists(playlistsCopy);
+  };
+
   return {
     playlists,
     generatePlaylist,
@@ -106,5 +118,6 @@ const useProvidePlaylists = (): PlaylistContextType => {
     createUserPlaylist,
     getUserPlaylists,
     addTrackToPlaylist,
+    setVisibilityPlaylist,
   };
 };

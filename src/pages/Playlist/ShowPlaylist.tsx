@@ -17,6 +17,12 @@ const PlaylistHeader = ({
   owner: User;
   playlist: Playlist;
 }) => {
+  const { setVisibilityPlaylist } = usePlaylists();
+
+  const changePlaylistVisibility = (visibility: boolean) => () => {
+    setVisibilityPlaylist(playlist.id, visibility);
+  };
+
   return (
     <div className="flex gap-4">
       <div className="h-40 w-40 flex-shrink-0 self-end bg-neutral-800">
@@ -26,7 +32,11 @@ const PlaylistHeader = ({
       </div>
       <div className="flex flex-1 flex-col justify-end">
         {/* <button type="button" onClick={openModal} title="Modifica dettagli"> */}
-        <span className="mb-2 flex items-center gap-2 text-sm text-neutral-400">
+        <button
+          type="button"
+          onClick={changePlaylistVisibility(!playlist.isPublic)}
+          title={playlist.isPublic ? "Rendi privata" : "Rendi pubblica"}
+          className="mb-2 flex items-center gap-2 text-sm text-neutral-400 hover:underline">
           {playlist.isPublic ? (
             <>
               <GlobeIcon className="h-4 w-4" /> {"Playlist pubblica"}
@@ -36,7 +46,7 @@ const PlaylistHeader = ({
               <LockClosedIcon className="h-4 w-4" /> {"Playlist privata"}
             </>
           )}
-        </span>
+        </button>
         <span className="py-1 line-clamp-3">
           <h2 className="text-left text-5xl font-bold">{playlist.name}</h2>
         </span>
