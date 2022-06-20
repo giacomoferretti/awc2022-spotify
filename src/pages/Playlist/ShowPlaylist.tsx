@@ -278,18 +278,22 @@ export const ShowPlaylist = () => {
   const { getTrackById } = useTracks();
 
   const playlist = useMemo(() => {
-    console.log("Update");
-    return getPlaylistById(params.id!);
+    try {
+      return getPlaylistById(params.id!);
+    } catch (error) {
+      // console.error(error);
+      return null;
+    }
   }, []);
+
+  // If not found, show NoMatch
+  if (!playlist) return <NoMatch />;
 
   const playlistDuration = useMemo(() => {
     return playlist.tracks.reduce((sum, track) => {
       return sum + getTrackById(track.id).duration;
     }, 0);
   }, [playlist.tracks]);
-
-  // If not found, show NoMatch
-  if (!playlist) return <NoMatch />;
 
   const owner = useMemo(() => getUserByUsername(playlist.owner), []);
 
