@@ -13,6 +13,7 @@ type PlaylistContextType = {
   // getUserPlaylists: (ownerId: string) => Playlist[];
   addTrackToPlaylist: (id: Playlist["id"], track: Track["id"]) => void;
   setVisibilityPlaylist: (id: Playlist["id"], isPublic: boolean) => void;
+  removeTrackFromPlaylistAtPos: (id: Playlist["id"], pos: number) => void;
 };
 
 const PlaylistsContext = createContext<PlaylistContextType>(
@@ -109,7 +110,19 @@ const useProvidePlaylists = (): PlaylistContextType => {
   const addTrackToPlaylist = (id: Playlist["id"], track: Track["id"]) => {
     setPlaylists((playlists) => {
       const copy = { ...playlists };
-      copy[id].tracks.push({ id: track, addedTimestamp: Date.now() });
+      const tracks = copy[id].tracks.slice();
+      tracks.push({ id: track, addedTimestamp: Date.now() });
+      copy[id].tracks = tracks;
+      return copy;
+    });
+  };
+
+  const removeTrackFromPlaylistAtPos = (id: Playlist["id"], pos: number) => {
+    setPlaylists((playlists) => {
+      const copy = { ...playlists };
+      const tracks = copy[id].tracks.slice();
+      tracks.splice(pos, 1);
+      copy[id].tracks = tracks;
       return copy;
     });
   };
@@ -130,5 +143,6 @@ const useProvidePlaylists = (): PlaylistContextType => {
     createUserPlaylist,
     addTrackToPlaylist,
     setVisibilityPlaylist,
+    removeTrackFromPlaylistAtPos,
   };
 };
