@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Navigate, useParams } from "react-router-dom";
 
 import { Header } from "@/components/Header";
-import { useUsers } from "@/context";
+import { usePlaylists, useUsers } from "@/context";
 import { NoMatch } from "@/pages";
 import { User } from "@/types";
 
@@ -34,6 +34,16 @@ export const UserRedirect = () => {
 // }
 
 const UserHeader = ({ user }: { user: User }) => {
+  const { getPlaylistById } = usePlaylists();
+
+  const publicPlaylistsCount = useMemo(
+    () =>
+      user.personalPlaylists.reduce((sum, track) => {
+        return sum + (getPlaylistById(track).isPublic ? 1 : 0);
+      }, 0),
+    []
+  );
+
   return (
     <div className="flex gap-4">
       <div className="h-32 w-32 flex-shrink-0 rounded-full bg-neutral-800 p-8">
@@ -45,11 +55,14 @@ const UserHeader = ({ user }: { user: User }) => {
         <h2 className="text-left text-5xl font-bold">{user.displayName}</h2>
         {/* </button> */}
         <div className="mt-2 flex flex-wrap text-sm">
-          <span className="whitespace-nowrap">2 Playlist Pubbliche</span>
+          <span className="whitespace-nowrap">
+            {publicPlaylistsCount} Playlist Pubbliche
+          </span>
           <span
             data-before="•"
             className="whitespace-nowrap before:mx-1 before:content-[attr(data-before)]">
-            8 Playlist Private
+            {user.personalPlaylists.length - publicPlaylistsCount} Playlist
+            Private
           </span>
         </div>
       </div>
@@ -85,6 +98,10 @@ export const UserProfile = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <UserHeader user={user} />
       </div>
+
+      <div>Le tue playlist pubbliche</div>
+      <div>Le tue playlist private (VISIBILE SOLO A TE)</div>
+      <div>Le tue playlist salvate</div>
     </>
   );
 };
