@@ -140,11 +140,12 @@ const useProvideUsers = (): UsersContextType => {
       throw new Error(`${email} doesn't exist.`);
     }
 
-    const userIndex = Object.keys(users).findIndex(
-      (key) => users[key].email === email
-    );
+    const userKey =
+      Object.keys(users)[
+        Object.keys(users).findIndex((key) => users[key].email === email)
+      ];
 
-    return users[userIndex];
+    return users[userKey];
   };
 
   const getCurrentUser = () => {
