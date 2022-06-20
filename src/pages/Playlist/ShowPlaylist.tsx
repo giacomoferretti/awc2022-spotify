@@ -104,22 +104,22 @@ const SearchResult = ({
   return (
     <div
       key={entry.id}
-      className="grid grid-cols-[3fr_2fr_auto] gap-4 rounded p-2 hover:bg-neutral-800">
+      className="grid grid-cols-[3fr_2fr_minmax(7em,_auto)] gap-4 rounded p-2 hover:bg-neutral-800">
       {/* Image + Title + Artits */}
-      <div className="flex gap-4">
+      <div className="flex min-w-0 gap-4">
         <img className="h-12 w-12 rounded" src={entry.album.images[2].url} />
-        <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+        <div className="flex flex-1 flex-col overflow-hidden">
           <span className="overflow-hidden overflow-ellipsis whitespace-nowrap">
             {entry.name}
           </span>
-          <span className="overflow-hidden overflow-ellipsis whitespace-nowrap text-neutral-600">
+          <span className="overflow-hidden overflow-ellipsis whitespace-nowrap text-neutral-400">
             {entry.artists.map((x) => x.name).join(", ")}
           </span>
         </div>
       </div>
 
       {/* Album */}
-      <div className="flex items-center overflow-hidden">
+      <div className="flex min-w-0 items-center gap-4 overflow-hidden">
         <span className="overflow-hidden overflow-ellipsis whitespace-nowrap">
           {entry.album.name}
         </span>
@@ -129,11 +129,11 @@ const SearchResult = ({
       </div>
 
       {/* Button */}
-      <div className="flex">
+      <div className="flex justify-end">
         <button
           type="button"
           onClick={addSong}
-          className="h-auto self-center rounded-full border px-4 py-2 text-sm">
+          className="h-auto self-center rounded-full border border-neutral-500 px-4 py-2 text-sm hover:border-white">
           Aggiungi
         </button>
       </div>
@@ -212,6 +212,62 @@ const SongSearch = ({ playlist }: { playlist: Playlist }) => {
   );
 };
 
+const TrackEntry = ({
+  playlist,
+  index,
+  trackId,
+}: {
+  playlist: Playlist;
+  index: number;
+  trackId: Track["id"];
+}) => {
+  const { removeTrackFromPlaylistAtPos } = usePlaylists();
+  const { getTrackById } = useTracks();
+
+  const track = useMemo(() => getTrackById(trackId), []);
+
+  const removeSong = () => {
+    removeTrackFromPlaylistAtPos(playlist.id, index);
+  };
+
+  return (
+    <div
+      key={track.id}
+      className="grid grid-cols-[3fr_2fr_minmax(7em,_auto)] gap-4 rounded p-2 hover:bg-neutral-800">
+      {/* Image + Title + Artits */}
+      <div className="flex min-w-0 gap-4">
+        <img className="h-12 w-12 rounded" src={track.album.images[2].url} />
+        <div className="=flex-1 flex flex-col overflow-hidden">
+          <span className="overflow-hidden overflow-ellipsis whitespace-nowrap">
+            {track.name}
+          </span>
+          <span className="overflow-hidden overflow-ellipsis whitespace-nowrap text-neutral-600">
+            {track.artists.map((x) => x.name).join(", ")}
+          </span>
+        </div>
+      </div>
+
+      {/* Album */}
+      <div className="flex items-center gap-4 overflow-hidden">
+        <span className="overflow-hidden overflow-ellipsis whitespace-nowrap">
+          {track.album.name}
+        </span>
+        <span className="ml-auto tabular-nums">{msToTime(track.duration)}</span>
+      </div>
+
+      {/* Button */}
+      <div className="flex justify-end">
+        <button
+          type="button"
+          onClick={removeSong}
+          className="h-auto self-center rounded-full border border-neutral-500 px-4 py-2 text-sm hover:border-white">
+          Rimuovi
+        </button>
+      </div>
+    </div>
+  );
+};
+
 type PlaylistParams = Pick<Playlist, "id">;
 
 export const ShowPlaylist = () => {
@@ -257,10 +313,10 @@ export const ShowPlaylist = () => {
             duration={playlistDuration}
           />
 
-          {playlist.tracks.map((key) => (
-            <p key={`${key.id}_${key.addedTimestamp}`} className="mt-2">
-              {key.id}
-            </p>
+          {playlist.tracks.map((key, index) => (
+            <div key={`${key.id}_${key.addedTimestamp}`} className="mt-2">
+              <TrackEntry playlist={playlist} trackId={key.id} index={index} />
+            </div>
           ))}
 
           <div className="mt-8">
