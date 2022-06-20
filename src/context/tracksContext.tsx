@@ -6,6 +6,8 @@ import { Track } from "@/types";
 type TracksContextType = {
   tracks: Record<string, Track>;
   clearAll: () => void;
+  getTrackById: (id: Track["id"]) => Track;
+  addTrack: (track: Track) => void;
 };
 
 const TracksContext = createContext<TracksContextType>({} as TracksContextType);
@@ -32,12 +34,22 @@ const useProvideTracks = (): TracksContextType => {
     {}
   );
 
-  const clearAll = () => {
-    setTracks({});
+  const clearAll = () => setTracks({});
+
+  const getTrackById = (id: Track["id"]) => tracks[id];
+
+  const addTrack = (track: Track) => {
+    setTracks((tracks) => {
+      const copy = { ...tracks };
+      copy[track.id] = track;
+      return copy;
+    });
   };
 
   return {
     tracks,
     clearAll,
+    getTrackById,
+    addTrack,
   };
 };

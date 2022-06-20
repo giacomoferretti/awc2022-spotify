@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { msToTime } from "./time";
+import { msToTime, msToTimeLong } from "./time";
 
 describe("msToTime", () => {
   it("1 second", () => {
@@ -33,5 +33,19 @@ describe("msToTime", () => {
 
   it("10 hours", () => {
     expect(msToTime(36000000)).toBe("10:00:00");
+  });
+});
+
+describe("msToTimeLong", () => {
+  it("4 ore 21 minuti", () => {
+    expect(msToTimeLong(15695000)).toBe("4 ore 21 minuti");
+  });
+
+  it("3 minuti 39 secondi", () => {
+    expect(msToTimeLong(219000)).toBe("3 minuti 39 secondi");
+  });
+
+  it("29 secondi", () => {
+    expect(msToTimeLong(29000)).toBe("29 secondi");
   });
 });

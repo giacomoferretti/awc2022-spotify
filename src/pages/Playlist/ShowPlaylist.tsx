@@ -5,17 +5,19 @@ import { Link, useParams } from "react-router-dom";
 
 import noCoverImage from "@/assets/nocover.png";
 import { Header } from "@/components/Header";
-import { usePlaylists, useSpotify, useUsers } from "@/context";
+import { usePlaylists, useSpotify, useTracks, useUsers } from "@/context";
 import { NoMatch } from "@/pages/NoMatch";
 import { Playlist, SpotifyTrack, Track, User } from "@/types";
-import { msToTime } from "@/utils/time";
+import { msToTime, msToTimeLong } from "@/utils/time";
 
 const PlaylistHeader = ({
   owner,
   playlist,
+  duration,
 }: {
   owner: User;
   playlist: Playlist;
+  duration: number;
 }) => {
   const { setVisibilityPlaylist } = usePlaylists();
 
@@ -61,11 +63,16 @@ const PlaylistHeader = ({
             {owner.displayName}
           </Link>
           {playlist.tracks.length !== 0 && (
-            <span
-              data-before="•"
-              className="whitespace-nowrap before:mx-1 before:content-[attr(data-before)]">
-              {playlist.tracks.length} brani
-            </span>
+            <>
+              <span
+                data-before="•"
+                className="whitespace-nowrap before:mx-1 before:content-[attr(data-before)]">
+                {playlist.tracks.length} brani,{" "}
+                <span className="text-neutral-400">
+                  {msToTimeLong(duration)}
+                </span>
+              </span>
+            </>
           )}
         </div>
       </div>
@@ -81,9 +88,17 @@ const SearchResult = ({
   entry: SpotifyTrack;
 }) => {
   const { addTrackToPlaylist } = usePlaylists();
+  const { addTrack } = useTracks();
 
   const addSong = () => {
     addTrackToPlaylist(playlist.id, entry.id);
+    addTrack({
+      id: entry.id,
+      name: entry.name,
+      artists: entry.artists,
+      album: entry.album,
+      duration: entry.duration_ms,
+    });
   };
 
   return (
@@ -204,11 +219,18 @@ export const ShowPlaylist = () => {
 
   const { getPlaylistById } = usePlaylists();
   const { getUserByUsername } = useUsers();
+  const { getTrackById } = useTracks();
 
   const playlist = useMemo(() => {
     console.log("Update");
     return getPlaylistById(params.id!);
   }, []);
+
+  const playlistDuration = useMemo(() => {
+    return playlist.tracks.reduce((sum, track) => {
+      return sum + getTrackById(track.id).duration;
+    }, 0);
+  }, [playlist.tracks]);
 
   // If not found, show NoMatch
   if (!playlist) return <NoMatch />;
@@ -229,7 +251,11 @@ export const ShowPlaylist = () => {
 
       <main className="mt-8">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <PlaylistHeader owner={owner} playlist={playlist} />
+          <PlaylistHeader
+            owner={owner}
+            playlist={playlist}
+            duration={playlistDuration}
+          />
 
           {playlist.tracks.map((key) => (
             <p key={`${key.id}_${key.addedTimestamp}`} className="mt-2">
