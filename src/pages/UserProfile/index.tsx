@@ -93,15 +93,16 @@ export const UserProfile = () => {
           {user.username} - {import.meta.env.VITE_SITE_TITLE}
         </title>
       </Helmet>
-      <Header />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mt-4">
         <UserHeader user={user} />
       </div>
 
-      <div>Le tue playlist pubbliche</div>
-      <div>Le tue playlist private (VISIBILE SOLO A TE)</div>
-      <div>Le tue playlist salvate</div>
+      <div className="mt-4">
+        <div>Le tue playlist pubbliche</div>
+        <div>Le tue playlist private (VISIBILE SOLO A TE)</div>
+        <div>Le tue playlist salvate</div>
+      </div>
     </>
   );
 };

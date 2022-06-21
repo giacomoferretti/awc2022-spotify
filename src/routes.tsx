@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
 import { RequireAuthWrapper } from "@/helpers/RequireAuthWrapper";
+import { MainLayout } from "@/layout/MainLayout";
 import {
   CreatePlaylist,
   Dashboard,
@@ -26,22 +27,24 @@ export default (
 
     {/* Main app */}
     <Route element={<RequireAuthWrapper />}>
-      <Route path="dashboard" element={<Dashboard />} />
+      <Route element={<MainLayout />}>
+        <Route path="dashboard" element={<Dashboard />} />
 
-      {/* User */}
-      <Route path="user">
-        <Route index element={<UserRedirect />} />
-        <Route path=":username" element={<UserProfile />} />
+        {/* User */}
+        <Route path="user">
+          <Route index element={<UserRedirect />} />
+          <Route path=":username" element={<UserProfile />} />
+        </Route>
+
+        {/* Playlist */}
+        <Route path="playlist">
+          <Route path="new" element={<CreatePlaylist />} />
+          <Route path=":id" element={<ShowPlaylist />} />
+        </Route>
+
+        {/* Search */}
+        <Route path="search" element={<h1>SEARCH</h1>} />
       </Route>
-
-      {/* Playlist */}
-      <Route path="playlist">
-        <Route path="new" element={<CreatePlaylist />} />
-        <Route path=":id" element={<ShowPlaylist />} />
-      </Route>
-
-      {/* Search */}
-      <Route path="search" element={<h1>SEARCH</h1>} />
     </Route>
 
     {/* Debug routes */}

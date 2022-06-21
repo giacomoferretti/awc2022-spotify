@@ -386,17 +386,9 @@ export const Dashboard = () => {
         <title>Dashboard - {import.meta.env.VITE_SITE_TITLE}</title>
       </Helmet>
 
-      {/* Header */}
-      <header>
-        <Header />
-      </header>
-
-      {/* Main */}
-      <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <HelloSection />
-        <PersonalPlaylists />
-        <SavedPlaylists />
-      </main>
+      <HelloSection />
+      <PersonalPlaylists />
+      <SavedPlaylists />
     </>
   );
 };

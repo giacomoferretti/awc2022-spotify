@@ -305,29 +305,23 @@ export const ShowPlaylist = () => {
         </title>
       </Helmet>
 
-      <header>
-        <Header />
-      </header>
+      <div className="mt-8">
+        <PlaylistHeader
+          owner={owner}
+          playlist={playlist}
+          duration={playlistDuration}
+        />
 
-      <main className="mt-8">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <PlaylistHeader
-            owner={owner}
-            playlist={playlist}
-            duration={playlistDuration}
-          />
-
-          {playlist.tracks.map((key, index) => (
-            <div key={`${key.id}_${key.addedTimestamp}`} className="mt-2">
-              <TrackEntry playlist={playlist} trackId={key.id} index={index} />
-            </div>
-          ))}
-
-          <div className="mt-8">
-            <SongSearch playlist={playlist} />
+        {playlist.tracks.map((key, index) => (
+          <div key={`${key.id}_${key.addedTimestamp}`} className="mt-2">
+            <TrackEntry playlist={playlist} trackId={key.id} index={index} />
           </div>
+        ))}
+
+        <div className="mt-8">
+          <SongSearch playlist={playlist} />
         </div>
-      </main>
+      </div>
     </>
   );
 };
