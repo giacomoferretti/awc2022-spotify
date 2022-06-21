@@ -38,6 +38,7 @@ export default (
 
         {/* Playlist */}
         <Route path="playlist">
+          <Route index element={<NoMatch />} />
           <Route path="new" element={<CreatePlaylist />} />
           <Route path=":id" element={<ShowPlaylist />} />
         </Route>
