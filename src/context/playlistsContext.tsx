@@ -12,8 +12,16 @@ type PlaylistContextType = {
   createUserPlaylist: (owner: string) => string;
   // getUserPlaylists: (ownerId: string) => Playlist[];
   addTrackToPlaylist: (id: Playlist["id"], track: Track["id"]) => void;
-  setVisibilityPlaylist: (id: Playlist["id"], isPublic: boolean) => void;
+  setVisibilityPlaylist: (
+    id: Playlist["id"],
+    isPublic: Playlist["isPublic"]
+  ) => void;
   removeTrackFromPlaylistAtPos: (id: Playlist["id"], pos: number) => void;
+  setPlaylistName: (id: Playlist["id"], name: Playlist["name"]) => void;
+  setPlaylistDescription: (
+    id: Playlist["id"],
+    name: Playlist["description"]
+  ) => void;
 };
 
 const PlaylistsContext = createContext<PlaylistContextType>(
@@ -127,10 +135,32 @@ const useProvidePlaylists = (): PlaylistContextType => {
     });
   };
 
-  const setVisibilityPlaylist = (id: Playlist["id"], isPublic: boolean) => {
+  const setVisibilityPlaylist = (
+    id: Playlist["id"],
+    isPublic: Playlist["isPublic"]
+  ) => {
     setPlaylists((playlists) => {
       const copy = { ...playlists };
       copy[id].isPublic = isPublic;
+      return copy;
+    });
+  };
+
+  const setPlaylistName = (id: Playlist["id"], name: Playlist["name"]) => {
+    setPlaylists((playlists) => {
+      const copy = { ...playlists };
+      copy[id].name = name;
+      return copy;
+    });
+  };
+
+  const setPlaylistDescription = (
+    id: Playlist["id"],
+    description: Playlist["description"]
+  ) => {
+    setPlaylists((playlists) => {
+      const copy = { ...playlists };
+      copy[id].description = description;
       return copy;
     });
   };
@@ -144,5 +174,7 @@ const useProvidePlaylists = (): PlaylistContextType => {
     addTrackToPlaylist,
     setVisibilityPlaylist,
     removeTrackFromPlaylistAtPos,
+    setPlaylistName,
+    setPlaylistDescription,
   };
 };
