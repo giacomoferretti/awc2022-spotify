@@ -83,7 +83,7 @@ export const Header = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <Link
-                        to="/user"
+                        to={`/user/${user?.username}`}
                         className={classNames(
                           { "bg-[#ffffff1a]": active },
                           "block rounded px-4 py-2 text-sm"
