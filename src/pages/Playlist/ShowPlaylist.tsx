@@ -1,6 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
 import {
-  ExclamationCircleIcon,
   GlobeIcon,
   InformationCircleIcon,
   LockClosedIcon,
@@ -46,22 +45,6 @@ const PlaylistDetailsModal = ({
   };
 
   return (
-    // <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-    //   <Dialog.Panel>
-    //     <Dialog.Title>Deactivate account</Dialog.Title>
-    //     <Dialog.Description>
-    //       This will permanently deactivate your account
-    //     </Dialog.Description>
-
-    //     <p>
-    //       Are you sure you want to deactivate your account? All of your data
-    //       will be permanently removed. This action cannot be undone.
-    //     </p>
-
-    //     <button onClick={() => setIsOpen(false)}>Deactivate</button>
-    //     <button onClick={() => setIsOpen(false)}>Cancel</button>
-    //   </Dialog.Panel>
-    // </Dialog>
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog
         as="div"
@@ -75,7 +58,7 @@ const PlaylistDetailsModal = ({
           leave="ease-in duration-200"
           leaveFrom="opacity-100"
           leaveTo="opacity-0">
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
+          <div className="fixed inset-0 bg-black bg-opacity-50" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -88,15 +71,11 @@ const PlaylistDetailsModal = ({
               leave="ease-in duration-200"
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95">
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded bg-neutral-800 p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-neutral-800 p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title as="h3" className="text-lg font-medium leading-6">
                   Modifica dettagli playlist
                 </Dialog.Title>
                 <div className="mt-2">
-                  {/* <p className="text-sm">
-                    Your payment has been successfully submitted. We’ve sent you
-                    an email with all of the details of your order.
-                  </p> */}
                   <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="mt-4 flex flex-col gap-6">
@@ -157,15 +136,6 @@ const PlaylistDetailsModal = ({
                     </button>
                   </form>
                 </div>
-
-                {/* <div className="mt-4">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    onClick={() => setIsOpen(false)}>
-                    Got it, thanks!
-                  </button>
-                </div> */}
               </Dialog.Panel>
             </Transition.Child>
           </div>
@@ -199,13 +169,13 @@ const PlaylistHeader = ({
   return (
     <>
       <div className="flex gap-4">
-        <div className="h-40 w-40 flex-shrink-0 self-end bg-neutral-800">
+        <div className="h-48 w-48 flex-shrink-0 self-end bg-neutral-800">
           <div className="relative pb-[100%]">
             <img className="absolute h-full" src={noCoverImage} />
           </div>
         </div>
-        <div className="flex flex-1 flex-col justify-end">
-          {/* <button type="button" onClick={openModal} title="Modifica dettagli"> */}
+        <div className="flex min-w-0 flex-1 flex-col justify-end">
+          {/* Visibility indicator */}
           <button
             type="button"
             onClick={changePlaylistVisibility(!playlist.isPublic)}
@@ -213,19 +183,39 @@ const PlaylistHeader = ({
             className="mb-2 flex items-center gap-2 text-sm text-neutral-400 hover:underline">
             {playlist.isPublic ? (
               <>
-                <GlobeIcon className="h-4 w-4" /> {"Playlist pubblica"}
+                <GlobeIcon aria-hidden="true" className="h-4 w-4" />{" "}
+                {"Playlist pubblica"}
               </>
             ) : (
               <>
-                <LockClosedIcon className="h-4 w-4" /> {"Playlist privata"}
+                <LockClosedIcon aria-hidden="true" className="h-4 w-4" />{" "}
+                {"Playlist privata"}
               </>
             )}
           </button>
+
+          {/* Title */}
           <h1
+            className="group flex items-center gap-4 hover:cursor-pointer"
+            onClick={openDialog}>
+            <button
+              type="button"
+              className="overflow-hidden overflow-ellipsis whitespace-nowrap text-5xl font-bold  group-hover:underline">
+              {playlist.name}
+            </button>
+            <span>
+              <PencilIcon
+                aria-hidden="true"
+                className="invisible h-10 w-10 group-hover:visible"
+              />
+            </span>
+          </h1>
+
+          {/* <h1
             onClick={openDialog}
             className="flex items-center gap-4 py-1 text-left text-5xl font-bold line-clamp-3 hover:cursor-pointer hover:underline">
             {playlist.name}
-          </h1>
+          </h1> */}
           {/* <span onClick={openDialog} className="py-1 line-clamp-3">
             <h2 className="group flex items-center gap-4 text-left text-5xl font-bold hover:cursor-pointer hover:underline">
               {playlist.name}
@@ -501,6 +491,7 @@ export const ShowPlaylist = () => {
         ))}
 
         <div className="mt-8">
+          <h2>Cerchiamo qualcosa per la tua playlist</h2>
           <SongSearch playlist={playlist} />
         </div>
       </div>

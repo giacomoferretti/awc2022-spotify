@@ -18,10 +18,10 @@ export const Header = () => {
         <div className="flex items-center">
           <div className="flex-shrink-0">
             <Link to={"/dashboard"}>
-              <h1 className="flex items-center justify-center gap-2 text-2xl font-bold">
+              <span className="flex items-center justify-center gap-2 text-2xl font-bold">
                 <Logo />
                 <span>{import.meta.env.VITE_SITE_TITLE}</span>
-              </h1>
+              </span>
             </Link>
           </div>
           <div className="hidden md:block">
