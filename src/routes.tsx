@@ -14,7 +14,7 @@ import {
   UserProfile,
   UserRedirect,
 } from "@/pages";
-import { AuthDebug, Debug, SpotifyDebug } from "@/pages/Debug";
+import { AuthDebug, Debug, FlexDebug, SpotifyDebug } from "@/pages/Debug";
 
 export default (
   <Routes>
@@ -51,8 +51,10 @@ export default (
     {/* Debug routes */}
     {import.meta.env.DEV && (
       <Route path="debug" element={<Debug />}>
+        <Route index element={<NoMatch />} />
         <Route path="spotify" element={<SpotifyDebug />} />
         <Route path="auth" element={<AuthDebug />} />
+        <Route path="flex" element={<FlexDebug />} />
       </Route>
     )}
 
