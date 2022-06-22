@@ -14,6 +14,7 @@ import { Link, useParams } from "react-router-dom";
 import noCoverImage from "@/assets/nocover.png";
 import { ValidationError } from "@/components/ValidationError";
 import { usePlaylists, useSpotify, useTracks, useUsers } from "@/context";
+import { useDebounce } from "@/hooks/useDebounce";
 import { NoMatch } from "@/pages/NoMatch";
 import { Playlist, SpotifyTrack, Track, User } from "@/types";
 import { msToTime, msToTimeLong } from "@/utils/time";
@@ -333,26 +334,21 @@ const SongSearch = ({ playlist }: { playlist: Playlist }) => {
   const [query, setQuery] = useState("");
   const [result, setResult] = useState<SpotifyTrack[]>([]);
 
+  const debouncedQuery = useDebounce(query, 400);
+
   useEffect(() => {
-    if (query) {
-      const delayDebounceFn = setTimeout(() => {
-        console.log(query);
-
-        search(query)
-          .then((response) => {
-            console.log(response);
-            setResult(response);
-          })
-          .catch(() => {
-            setResult([]);
-          });
-      }, 400);
-
-      return () => clearTimeout(delayDebounceFn);
+    if (debouncedQuery) {
+      search(query)
+        .then((response) => {
+          setResult(response);
+        })
+        .catch(() => {
+          setResult([]);
+        });
     } else {
       setResult([]);
     }
-  }, [query]);
+  }, [debouncedQuery]);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
