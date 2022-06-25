@@ -3,12 +3,13 @@ import { createContext, useContext, useEffect } from "react";
 import { getClientCredentialsToken } from "@/api/spotify";
 import { BASE_API_URL } from "@/api/spotify/constants";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { SpotifyTrack } from "@/types";
+import { SpotifyArtist, SpotifyTrack } from "@/types";
 
 interface SpotifyContextType {
   token: string | null;
   tokenExpiration: number | null;
   search: (query: string) => Promise<SpotifyTrack[]>;
+  searchArtist: (query: string) => Promise<SpotifyArtist[]>;
 }
 
 const SpotifyContext = createContext<SpotifyContextType>(
@@ -41,7 +42,7 @@ const LS_KEYS = {
   EXPIRATION_TIMESTAMP: "SPOTIFY_TOKEN_EXPIRATION_TIMESTAMP",
 };
 
-const useProvideSpotify = () => {
+const useProvideSpotify = (): SpotifyContextType => {
   const [token, setToken] = useLocalStorage<string | null>(
     LS_KEYS.ACCESS_TOKEN,
     null
@@ -50,11 +51,6 @@ const useProvideSpotify = () => {
     LS_KEYS.EXPIRATION_TIMESTAMP,
     null
   );
-
-  useEffect(() => {
-    // Get new token if not available
-    getNewToken();
-  }, []);
 
   const getToken = () => {
     return token || window.localStorage.getItem(LS_KEYS.ACCESS_TOKEN);
@@ -130,9 +126,28 @@ const useProvideSpotify = () => {
     return response.tracks.items;
   };
 
+  const searchArtist = async (query: string) => {
+    const response = await callEndpoint(
+      "/search?" +
+        new URLSearchParams({
+          q: query,
+          type: "artist",
+          market: "IT",
+        })
+    );
+
+    return response.artists.items;
+  };
+
+  useEffect(() => {
+    // Get new token if not available
+    getNewToken();
+  }, []);
+
   return {
     token,
     tokenExpiration,
     search,
+    searchArtist,
   };
 };

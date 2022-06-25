@@ -11,6 +11,8 @@ export type SpotifyAlbum = {
 
 export type SpotifyArtist = {
   name: string;
+  id: string;
+  images: SpotifyImage[];
 };
 
 export type SpotifyTrack = {
