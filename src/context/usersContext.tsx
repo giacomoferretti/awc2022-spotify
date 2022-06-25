@@ -21,6 +21,12 @@ type UsersContextType = {
   updateDisplayName: (username: string, displayName: string) => void;
   addUserPlaylist: (username: string, playlistId: string) => void;
   addSavedPlaylist: (username: string, playlistId: string) => void;
+  addFavoriteArtist: (username: string, artistId: string) => void;
+  addFavoriteGenre: (username: string, genre: string) => void;
+  removeFavoriteArtist: (username: string, artistId: string) => void;
+  removeFavoriteGenre: (username: string, genre: string) => void;
+  updateProfilePicture: (username: string, pictureData: string) => void;
+  updateOnboarding: (username: string, onboarding: boolean) => void;
 };
 
 const UsersContext = createContext<UsersContextType>({} as UsersContextType);
@@ -192,6 +198,22 @@ const useProvideUsers = (): UsersContextType => {
     });
   };
 
+  const updateProfilePicture = (username: string, pictureData: string) => {
+    setUsers((users) => {
+      const copy = { ...users };
+      copy[username].pictureData = pictureData;
+      return copy;
+    });
+  };
+
+  const updateOnboarding = (username: string, onboarding: boolean) => {
+    setUsers((users) => {
+      const copy = { ...users };
+      copy[username].onboarding = onboarding;
+      return copy;
+    });
+  };
+
   const addUserPlaylist = (username: string, playlistId: string) => {
     setUsers((users) => {
       const copy = { ...users };
@@ -204,6 +226,46 @@ const useProvideUsers = (): UsersContextType => {
     setUsers((users) => {
       const copy = { ...users };
       copy[username].savedPlaylists.push(playlistId);
+      return copy;
+    });
+  };
+
+  const addFavoriteArtist = (username: string, artistId: string) => {
+    if (users[username].favoriteArtists.includes(artistId)) return;
+
+    setUsers((users) => {
+      const copy = { ...users };
+      copy[username].favoriteArtists.push(artistId);
+      return copy;
+    });
+  };
+
+  const addFavoriteGenre = (username: string, genre: string) => {
+    if (users[username].favoriteGenres.includes(genre)) return;
+
+    setUsers((users) => {
+      const copy = { ...users };
+      copy[username].favoriteGenres.push(genre);
+      return copy;
+    });
+  };
+
+  const removeFavoriteArtist = (username: string, artistId: string) => {
+    setUsers((users) => {
+      const copy = { ...users };
+      copy[username].favoriteArtists = copy[username].favoriteArtists.filter(
+        (x) => x !== artistId
+      );
+      return copy;
+    });
+  };
+
+  const removeFavoriteGenre = (username: string, genre: string) => {
+    setUsers((users) => {
+      const copy = { ...users };
+      copy[username].favoriteGenres = copy[username].favoriteGenres.filter(
+        (x) => x !== genre
+      );
       return copy;
     });
   };
@@ -224,7 +286,13 @@ const useProvideUsers = (): UsersContextType => {
     signup,
     clearAll,
     updateDisplayName,
+    updateProfilePicture,
+    updateOnboarding,
     addUserPlaylist,
     addSavedPlaylist,
+    addFavoriteArtist,
+    addFavoriteGenre,
+    removeFavoriteArtist,
+    removeFavoriteGenre,
   };
 };
