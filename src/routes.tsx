@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 
-import { RequireAuthWrapper } from "@/helpers/RequireAuthWrapper";
+import { Design } from "@/design/Design";
 import { MainLayout } from "@/layout/MainLayout";
 import {
   CreatePlaylist,
@@ -50,12 +50,16 @@ export default (
 
     {/* Debug routes */}
     {import.meta.env.DEV && (
-      <Route path="debug" element={<Debug />}>
-        <Route index element={<NoMatch />} />
-        <Route path="spotify" element={<SpotifyDebug />} />
-        <Route path="auth" element={<AuthDebug />} />
-        <Route path="flex" element={<FlexDebug />} />
-      </Route>
+      <>
+        <Route path="design" element={<Design />} />
+
+        <Route path="debug" element={<Debug />}>
+          <Route index element={<NoMatch />} />
+          <Route path="spotify" element={<SpotifyDebug />} />
+          <Route path="auth" element={<AuthDebug />} />
+          <Route path="flex" element={<FlexDebug />} />
+        </Route>
+      </>
     )}
 
     <Route path="*" element={<NoMatch />} />
