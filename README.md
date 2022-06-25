@@ -1,11 +1,11 @@
 # AWC2022 - Spotify GCMO
 
--   [ ] L'applicazione prevede una fase di registrazione utente dove verranno collezionate informazioni quali nome utente, indirizzo email, password, preferenze musicali, gruppi preferiti.
+-   [x] L'applicazione prevede una fase di registrazione utente dove verranno collezionate informazioni quali nome utente, indirizzo email, password, preferenze musicali, gruppi preferiti.
     -   [x] Nome utente
     -   [x] Indirizzo email
     -   [x] Password
-    -   [ ] Preferenze musicali
-    -   [ ] Gruppi preferiti (artisti)
+    -   [x] Preferenze musicali
+    -   [x] Gruppi preferiti (artisti)
 -   [ ] Gli utenti devono potersi collegare all'applicazione, modificare i propri dati/preferenze e cancellarsi.
     -   [x] Collegarsi
     -   [ ] Modificare i propri dati

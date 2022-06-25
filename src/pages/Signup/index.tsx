@@ -43,10 +43,12 @@ export const Signup = () => {
         email: data.email,
         password: data.password,
         displayName: data.username,
+        pictureData: null,
         personalPlaylists: [],
         savedPlaylists: [],
         favoriteArtists: [],
         favoriteGenres: [],
+        onboarding: true,
       },
       () => {
         navigate("/dashboard");

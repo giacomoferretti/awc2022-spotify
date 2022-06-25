@@ -23,10 +23,12 @@ const AddUserForm = () => {
       password,
       email,
       displayName: username,
+      pictureData: null,
       personalPlaylists: [],
       savedPlaylists: [],
       favoriteArtists: [],
       favoriteGenres: [],
+      onboarding: true,
     });
 
     e.currentTarget.reset();

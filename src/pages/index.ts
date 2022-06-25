@@ -6,3 +6,4 @@ export * from "./Dashboard";
 export * from "./Logout";
 export * from "./Playlist";
 export * from "./UserProfile";
+export * from "./Onboarding";

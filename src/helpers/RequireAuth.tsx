@@ -1,4 +1,9 @@
-import { Navigate, createSearchParams, useLocation } from "react-router-dom";
+import {
+  Navigate,
+  Outlet,
+  createSearchParams,
+  useLocation,
+} from "react-router-dom";
 
 import { useUsers } from "@/context";
 
@@ -19,5 +24,13 @@ export const RequireAuth = ({ children }: { children: React.ReactNode }) => {
       }
       replace
     />
+  );
+};
+
+export const RequireAuthWrapper = () => {
+  return (
+    <RequireAuth>
+      <Outlet />
+    </RequireAuth>
   );
 };

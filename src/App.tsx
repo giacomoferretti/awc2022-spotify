@@ -6,7 +6,7 @@ import routes from "@/routes";
 export const App = () => {
   return (
     <BrowserRouter>
-      {import.meta.env.DEV && <DebugAbsoluteNav />}
+      {/* {import.meta.env.DEV && <DebugAbsoluteNav />} */}
       {routes}
     </BrowserRouter>
   );

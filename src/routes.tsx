@@ -1,6 +1,7 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import { Design } from "@/design/Design";
+import { RequireAuthWrapper, RequireOnboardingWrapper } from "@/helpers";
 import { MainLayout } from "@/layout/MainLayout";
 import {
   CreatePlaylist,
@@ -9,6 +10,7 @@ import {
   Login,
   Logout,
   NoMatch,
+  Onboarding,
   ShowPlaylist,
   Signup,
   UserProfile,
@@ -27,24 +29,31 @@ export default (
 
     {/* Main app */}
     <Route element={<RequireAuthWrapper />}>
-      <Route element={<MainLayout />}>
-        <Route path="dashboard" element={<Dashboard />} />
+      <Route path="onboarding">
+        <Route index element={<Navigate to={"step1"} replace />} />
+        <Route path="step:stepId" element={<Onboarding />} />
+      </Route>
 
-        {/* User */}
-        <Route path="user">
-          <Route index element={<UserRedirect />} />
-          <Route path=":username" element={<UserProfile />} />
+      <Route element={<RequireOnboardingWrapper />}>
+        <Route element={<MainLayout />}>
+          <Route path="dashboard" element={<Dashboard />} />
+
+          {/* User */}
+          <Route path="user">
+            <Route index element={<UserRedirect />} />
+            <Route path=":username" element={<UserProfile />} />
+          </Route>
+
+          {/* Playlist */}
+          <Route path="playlist">
+            <Route index element={<NoMatch />} />
+            <Route path="new" element={<CreatePlaylist />} />
+            <Route path=":id" element={<ShowPlaylist />} />
+          </Route>
+
+          {/* Search */}
+          <Route path="search" element={<h1>SEARCH</h1>} />
         </Route>
-
-        {/* Playlist */}
-        <Route path="playlist">
-          <Route index element={<NoMatch />} />
-          <Route path="new" element={<CreatePlaylist />} />
-          <Route path=":id" element={<ShowPlaylist />} />
-        </Route>
-
-        {/* Search */}
-        <Route path="search" element={<h1>SEARCH</h1>} />
       </Route>
     </Route>
 
