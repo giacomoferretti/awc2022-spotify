@@ -11,11 +11,13 @@ export const RequireOnboarding = ({
 
   const user = getCurrentUser()!;
 
-  return user.onboarding ? (
-    <Navigate to="/onboarding?" replace />
+  /* return user.onboarding ? (
+    <Navigate to="/onboarding" replace />
   ) : (
     <>{children}</>
-  );
+  ); */
+
+  return <>{children}</>;
 };
 
 export const RequireOnboardingWrapper = () => {

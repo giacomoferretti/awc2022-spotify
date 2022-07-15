@@ -10,13 +10,14 @@ import {
   Login,
   Logout,
   NoMatch,
-  Onboarding,
   ShowPlaylist,
   Signup,
   UserProfile,
   UserRedirect,
 } from "@/pages";
 import { AuthDebug, Debug, FlexDebug, SpotifyDebug } from "@/pages/Debug";
+
+import { UseWizard } from "./components/UseWizard/UseWizard";
 
 export default (
   <Routes>
@@ -29,9 +30,19 @@ export default (
 
     {/* Main app */}
     <Route element={<RequireAuthWrapper />}>
+      {/* <Route path="/stepper">
+        <Route index element={<StepperPage />} />
+        <Route path=":stepId" element={<StepperPage />} />
+      </Route>
+
       <Route path="onboarding">
         <Route index element={<Navigate to={"step1"} replace />} />
         <Route path="step:stepId" element={<Onboarding />} />
+      </Route> */}
+
+      <Route path="/wizard">
+        <Route index element={<UseWizard />} />
+        <Route path=":stepId" element={<UseWizard />} />
       </Route>
 
       <Route element={<RequireOnboardingWrapper />}>

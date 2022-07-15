@@ -25,3 +25,9 @@
     background-color: hsla(0, 0%, 100%, 0.3);
   }
 }
+
+@layer utilities {
+  .one-line-ellipsis {
+    @apply overflow-hidden whitespace-nowrap overflow-ellipsis;
+  }
+}
