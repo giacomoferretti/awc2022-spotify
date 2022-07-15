@@ -11,6 +11,7 @@ type PlaylistContextType = {
   clearAll: () => void;
   createUserPlaylist: (owner: string) => string;
   // getUserPlaylists: (ownerId: string) => Playlist[];
+  removePlaylistById: (id: Playlist["id"]) => void;
   addTrackToPlaylist: (id: Playlist["id"], track: Track["id"]) => void;
   setVisibilityPlaylist: (
     id: Playlist["id"],
@@ -68,6 +69,14 @@ const useProvidePlaylists = (): PlaylistContextType => {
     setPlaylists((playlists) => {
       const copy = { ...playlists };
       copy[playlist.id] = playlist;
+      return copy;
+    });
+  };
+
+  const removePlaylistById = (id: Playlist["id"]) => {
+    setPlaylists((playlists) => {
+      const copy = { ...playlists };
+      delete copy[id];
       return copy;
     });
   };
@@ -170,6 +179,7 @@ const useProvidePlaylists = (): PlaylistContextType => {
     generatePlaylist,
     getPlaylistById,
     clearAll,
+    removePlaylistById,
     createUserPlaylist,
     addTrackToPlaylist,
     setVisibilityPlaylist,

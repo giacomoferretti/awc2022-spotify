@@ -4,15 +4,17 @@ import {
   InformationCircleIcon,
   LockClosedIcon,
   PencilIcon,
+  TrashIcon,
 } from "@heroicons/react/outline";
 import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import noCoverImage from "@/assets/nocover.png";
 import { ValidationError } from "@/components/ValidationError";
 import { usePlaylists, useSpotify, useTracks, useUsers } from "@/context";
+import { Button } from "@/design/Button";
 import { useDebounce } from "@/hooks/useDebounce";
 import { NoMatch } from "@/pages/NoMatch";
 import { Playlist, SpotifyTrack, Track, User } from "@/types";
@@ -145,6 +147,88 @@ const PlaylistDetailsModal = ({
   );
 };
 
+const PlaylistDeleteModal = ({
+  playlist,
+  isOpen,
+  setIsOpen,
+}: {
+  playlist: Playlist;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+  const navigate = useNavigate();
+
+  const { removePlaylistById } = usePlaylists();
+  const { removeUserPlaylist, getUserByUsername } = useUsers();
+
+  const owner = useMemo(
+    () => getUserByUsername(playlist.owner),
+    [getUserByUsername, playlist.owner]
+  );
+
+  const onPositive = () => {
+    removePlaylistById(playlist.id);
+    removeUserPlaylist(owner.username, playlist.id);
+    setIsOpen(false);
+    navigate("/dashboard");
+  };
+
+  const onNegative = () => {
+    setIsOpen(false);
+  };
+
+  return (
+    <Transition appear show={isOpen} as={Fragment}>
+      <Dialog
+        as="div"
+        className="relative z-10"
+        onClose={() => setIsOpen(false)}>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0">
+          <div className="fixed inset-0 bg-black bg-opacity-50" />
+        </Transition.Child>
+
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95">
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-neutral-800 p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Title as="h3" className="text-lg font-medium leading-6">
+                  Sicuro di voler eliminare &quot;{playlist.name}&quot;?
+                </Dialog.Title>
+
+                <div>
+                  <Button variant="secondary" onClick={onNegative}>
+                    Annulla
+                  </Button>
+                  <Button
+                    variant="primary"
+                    onClick={onPositive}
+                    className="bg-spotify-error hover:bg-spotify-error">
+                    Elimina
+                  </Button>
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
+    </Transition>
+  );
+};
+
 const PlaylistHeader = ({
   owner,
   playlist,
@@ -161,9 +245,14 @@ const PlaylistHeader = ({
   };
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const openDialog = () => {
     setIsOpen(true);
+  };
+
+  const openDeleteModal = () => {
+    setIsDeleteModalOpen(true);
   };
 
   return (
@@ -244,6 +333,15 @@ const PlaylistHeader = ({
                 </span>
               </>
             )}
+
+            <button
+              type="button"
+              data-before="•"
+              onClick={openDeleteModal}
+              title="Elimina playlist"
+              className="text-red-400 before:mx-1 before:text-white before:content-[attr(data-before)] hover:underline group-hover:before:no-underline">
+              Elimina playlist
+            </button>
           </div>
         </div>
       </div>
@@ -252,6 +350,12 @@ const PlaylistHeader = ({
         playlist={playlist}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+      />
+
+      <PlaylistDeleteModal
+        playlist={playlist}
+        isOpen={isDeleteModalOpen}
+        setIsOpen={setIsDeleteModalOpen}
       />
     </>
   );

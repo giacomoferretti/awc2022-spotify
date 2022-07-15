@@ -20,6 +20,7 @@ type UsersContextType = {
   clearAll: () => void;
   updateDisplayName: (username: string, displayName: string) => void;
   addUserPlaylist: (username: string, playlistId: string) => void;
+  removeUserPlaylist: (username: string, playlistId: string) => void;
   addSavedPlaylist: (username: string, playlistId: string) => void;
   addFavoriteArtist: (username: string, artistId: string) => void;
   addFavoriteGenre: (username: string, genre: string) => void;
@@ -222,6 +223,19 @@ const useProvideUsers = (): UsersContextType => {
     });
   };
 
+  const removeUserPlaylist = (username: string, playlistId: string) => {
+    setUsers((users) => {
+      const copy = { ...users };
+
+      const index = copy[username].personalPlaylists.indexOf(playlistId);
+      if (index !== -1) {
+        copy[username].personalPlaylists.splice(index, 1);
+      }
+
+      return copy;
+    });
+  };
+
   const addSavedPlaylist = (username: string, playlistId: string) => {
     setUsers((users) => {
       const copy = { ...users };
@@ -289,6 +303,7 @@ const useProvideUsers = (): UsersContextType => {
     updateProfilePicture,
     updateOnboarding,
     addUserPlaylist,
+    removeUserPlaylist,
     addSavedPlaylist,
     addFavoriteArtist,
     addFavoriteGenre,

@@ -20,9 +20,9 @@
     -   [ ] Genere
     -   [x] Durata
     -   [ ] Anno di pubblicazione
--   [ ] Un utente, successivamente, può collegarsi all'applicazione e modificare/cancellare playlist esistenti di cui è proprietario.
+-   [x] Un utente, successivamente, può collegarsi all'applicazione e modificare/cancellare playlist esistenti di cui è proprietario.
     -   [x] Modificare
-    -   [ ] Cancellare
+    -   [x] Cancellare
 -   [ ] Per ogni playlist un utente deve inserire una descrizione testuale e uno o più tag descrittivi.
     -   [x] Descrizione
     -   [ ] Tag descrittivi
