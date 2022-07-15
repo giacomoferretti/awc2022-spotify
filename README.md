@@ -10,10 +10,10 @@
     -   [x] Collegarsi
     -   [ ] Modificare i propri dati
     -   [ ] Cancellarsi
--   [ ] Un utente, una volta registrato, può collegarsi all'applicazione e creare/modificare/cancellare liste musicali contententi un elenco di canzoni.
+-   [x] Un utente, una volta registrato, può collegarsi all'applicazione e creare/modificare/cancellare liste musicali contententi un elenco di canzoni.
     -   [x] Creare
     -   [x] Modificare
-    -   [ ] Cancellare
+    -   [x] Cancellare
 -   [ ] Per ogni canzone dovranno essere gestite le informazioni principali quali titolo, cantante, genere, durata e anno di pubblicazione.
     -   [x] Titolo
     -   [x] Cantante
