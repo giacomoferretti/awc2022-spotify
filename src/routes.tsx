@@ -16,6 +16,7 @@ import {
   UserRedirect,
 } from "@/pages";
 import { AuthDebug, Debug, FlexDebug, SpotifyDebug } from "@/pages/Debug";
+import { UserSettings, UserSettingsRedirect } from "@/pages/UserSettings";
 
 import { UseWizard } from "./components/UseWizard/UseWizard";
 
@@ -53,6 +54,10 @@ export default (
           <Route path="user">
             <Route index element={<UserRedirect />} />
             <Route path=":username" element={<UserProfile />} />
+          </Route>
+          <Route path="settings">
+            <Route index element={<UserSettingsRedirect />} />
+            <Route path="user" element={<UserSettings />} />
           </Route>
 
           {/* Playlist */}

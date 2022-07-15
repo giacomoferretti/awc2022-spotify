@@ -9,7 +9,7 @@
 -   [ ] Gli utenti devono potersi collegare all'applicazione, modificare i propri dati/preferenze e cancellarsi.
     -   [x] Collegarsi
     -   [ ] Modificare i propri dati
-    -   [ ] Cancellarsi
+    -   [x] Cancellarsi
 -   [x] Un utente, una volta registrato, può collegarsi all'applicazione e creare/modificare/cancellare liste musicali contententi un elenco di canzoni.
     -   [x] Creare
     -   [x] Modificare
