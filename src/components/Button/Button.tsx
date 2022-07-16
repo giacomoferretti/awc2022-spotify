@@ -14,9 +14,9 @@ type TertiaryButton = {
 
 type Button = PrimaryButton | SecondaryButton | TertiaryButton;
 
-type Props = React.ComponentPropsWithoutRef<"button"> & Button;
+export type ButtonProps = React.ComponentPropsWithoutRef<"button"> & Button;
 
-export const Button = (props: Props) => {
+export const Button = (props: ButtonProps) => {
   const { variant, ...rest } = props;
 
   return (
@@ -40,7 +40,7 @@ export const Button = (props: Props) => {
         },
         rest.className
       )}>
-      {props.children}
+      {rest.children}
     </button>
   );
 };

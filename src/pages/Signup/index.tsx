@@ -3,8 +3,8 @@ import { Helmet } from "react-helmet-async";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
+import { PasswordInput } from "@/components/Input/PasswordInput";
 import { Logo } from "@/components/Logo";
-import { PasswordInput } from "@/components/PasswordInput";
 import { Spinner } from "@/components/Spinner";
 import { ValidationError } from "@/components/ValidationError";
 import { useUsers } from "@/context/usersContext";

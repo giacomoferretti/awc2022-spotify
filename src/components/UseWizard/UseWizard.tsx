@@ -3,7 +3,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-import { Button } from "@/design/Button";
+import { Button } from "@/components/Button/Button";
 import { NoMatch } from "@/pages";
 
 import { ErrorFallback } from "../ErrorFallback";

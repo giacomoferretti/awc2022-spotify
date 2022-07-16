@@ -12,9 +12,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import noCoverImage from "@/assets/nocover.png";
+import { Button } from "@/components/Button/Button";
 import { ValidationError } from "@/components/ValidationError";
 import { usePlaylists, useSpotify, useTracks, useUsers } from "@/context";
-import { Button } from "@/design/Button";
 import { useDebounce } from "@/hooks/useDebounce";
 import { NoMatch } from "@/pages/NoMatch";
 import { Playlist, SpotifyTrack, Track, User } from "@/types";

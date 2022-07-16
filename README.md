@@ -36,16 +36,16 @@
 Le operazioni base che devono essere presentate al momento della discussione del progetto sono le seguenti:
 
 -   [x] Registrazione e login al sito
--   [ ] Aggiunta/Modifica/Cancellazione delle playlist private.
+-   [x] Aggiunta/Modifica/Cancellazione delle playlist private.
     -   [x] Aggiunta
     -   [x] Modifica
-    -   [ ] Cancellazione
--   [ ] Aggiunta/Cancellazione delle playlist pubbliche.
+    -   [x] Cancellazione
+-   [x] Aggiunta/Cancellazione delle playlist pubbliche.
     -   [x] Aggiunta
-    -   [ ] Cancellazione
--   [ ] Visualizzazione di informazioni relative alle playlist, alle canzoni, agli utenti.
+    -   [x] Cancellazione
+-   [x] Visualizzazione di informazioni relative alle playlist, alle canzoni, agli utenti.
     -   [x] Playlist
-    -   [ ] Canzoni
+    -   [x] Canzoni
     -   [x] Utenti
 -   [ ] Visualizzazione delle canzoni.
 -   [x] Ricerca delle canzoni (ad es., tipologia, autore, cantante, genere).
