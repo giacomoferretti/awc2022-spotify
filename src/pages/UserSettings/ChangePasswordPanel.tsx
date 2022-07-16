@@ -3,10 +3,10 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { Button, LoadingButton } from "@/components/Button";
-import { PasswordInput } from "@/components/PasswordInput";
+import { Input } from "@/components/Input";
+import { PasswordInput } from "@/components/Input/PasswordInput";
 import { ValidationError } from "@/components/ValidationError";
 import { useUsers } from "@/context";
-import { Input } from "@/design/Input";
 
 import NoMatch from "../NoMatch";
 
@@ -40,7 +40,7 @@ export const ChangePasswordPanel = () => {
         {/* Fields */}
         <div className="mt-8 flex flex-1 flex-col justify-end gap-8">
           <PasswordInput
-            label="La tua password"
+            // label="La tua password"
             id="currentPassword"
             type="password"
             placeholder="Inserisci la tua password."

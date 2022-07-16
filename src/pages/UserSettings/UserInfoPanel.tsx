@@ -2,9 +2,9 @@ import classNames from "classnames";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { Button } from "@/components/Button/Button";
+import { Input } from "@/components/Input";
 import { ValidationError } from "@/components/ValidationError";
 import { useUsers } from "@/context";
-import { Input } from "@/design/Input";
 
 import NoMatch from "../NoMatch";
 

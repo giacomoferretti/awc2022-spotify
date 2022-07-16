@@ -9,8 +9,8 @@ import {
 import classNames from "classnames";
 import { useEffect, useMemo, useState } from "react";
 
+import { Input } from "@/components/Input";
 import { useSpotify, useUsers } from "@/context";
-import { Input } from "@/design/Input";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useTrimmed } from "@/hooks/useTrimmed";
 import { SpotifyArtist } from "@/types";

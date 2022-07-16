@@ -3,9 +3,9 @@ import classNames from "classnames";
 import React from "react";
 import { useForm } from "react-hook-form";
 
+import { Input } from "@/components/Input";
 import { ValidationError } from "@/components/ValidationError";
 import { useUsers } from "@/context";
-import { Input } from "@/design/Input";
 import { NoMatch } from "@/pages/NoMatch";
 import { readImageAsDataURL } from "@/utils";
 
