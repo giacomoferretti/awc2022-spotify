@@ -1,9 +1,7 @@
-import classNames from "classnames";
 import { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { Button, LoadingButton } from "@/components/Button";
-import { Input } from "@/components/Input";
+import { LoadingButton } from "@/components/Button";
 import { InputWithError } from "@/components/Input/InputWithError";
 import { PasswordInput } from "@/components/Input/PasswordInput";
 import { ValidationError } from "@/components/ValidationError";
@@ -26,7 +24,7 @@ export const ChangePasswordPanel = () => {
     handleSubmit,
     watch,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<ChangePasswordInputs>({ mode: "onChange" });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -35,11 +33,14 @@ export const ChangePasswordPanel = () => {
   const user = getCurrentUser()!;
 
   const onSubmit: SubmitHandler<ChangePasswordInputs> = async (data) => {
-    if (import.meta.env.DEV) await wait(500);
+    setIsLoading(true);
+
+    if (import.meta.env.DEV) await wait(1000);
 
     updatePassword(user.username, data.newPassword);
 
     setIsSuccess(true);
+    setIsLoading(false);
 
     reset();
   };
@@ -55,6 +56,7 @@ export const ChangePasswordPanel = () => {
       <form
         className="mt-4 flex max-w-xl flex-col gap-6"
         onSubmit={handleSubmit(onSubmit)}>
+        {/* Current password */}
         <InputWithError
           label="La tua password attuale"
           errors={
@@ -77,6 +79,8 @@ export const ChangePasswordPanel = () => {
             })}
           />
         </InputWithError>
+
+        {/* New password */}
         <InputWithError
           label="La tua nuova password"
           errors={
@@ -101,6 +105,8 @@ export const ChangePasswordPanel = () => {
             })}
           />
         </InputWithError>
+
+        {/* Submit */}
         <div className="flex items-center gap-4">
           <LoadingButton type="submit" variant="primary" isLoading={isLoading}>
             Cambia password

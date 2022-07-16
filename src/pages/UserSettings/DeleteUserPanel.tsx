@@ -54,7 +54,7 @@ const UserDeleteModal = ({
                   Sei sicuro? Questa azione è irreversibile.
                 </Dialog.Title>
 
-                <div>
+                <div className="mt-4 flex justify-between">
                   <Button variant="secondary" onClick={onNegative}>
                     Annulla
                   </Button>
@@ -83,15 +83,17 @@ export const DeleteUserPanel = () => {
 
   return (
     <>
-      <div>
-        <h2>Elimina account</h2>
-        <Button
-          variant="primary"
-          onClick={openDialog}
-          className="bg-spotify-error hover:bg-spotify-error">
-          Elimina definitivamente
-        </Button>
-      </div>
+      <h2 className="text-xl font-bold">Elimina account</h2>
+      <p>
+        Una volta cancellato l&apos;account, non è più possibile tornare
+        indietro.
+      </p>
+      <Button
+        variant="primary"
+        onClick={openDialog}
+        className="mt-4 bg-spotify-error hover:bg-spotify-error">
+        Elimina definitivamente
+      </Button>
 
       <UserDeleteModal isOpen={isOpen} setIsOpen={setIsOpen} />
     </>

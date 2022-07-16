@@ -1,10 +1,15 @@
 import classNames from "classnames";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
+import { LoadingButton } from "@/components/Button";
 import { Button } from "@/components/Button/Button";
 import { Input } from "@/components/Input";
+import { InputWithError } from "@/components/Input/InputWithError";
 import { ValidationError } from "@/components/ValidationError";
+import { ValidationSuccess } from "@/components/ValidationSuccess";
 import { useUsers } from "@/context";
+import { wait } from "@/utils";
 
 import NoMatch from "../NoMatch";
 
@@ -15,88 +20,154 @@ type UserSettingsInputs = {
 
 export const UserInfoPanel = () => {
   const {
+    getCurrentUser,
+    updateDisplayName,
+    updateProfilePicture,
+    updateEmail,
+  } = useUsers();
+
+  const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<UserSettingsInputs>({ mode: "onChange" });
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const onSubmit: SubmitHandler<UserSettingsInputs> = async (data) => {
-    console.log("submitted!");
+    setIsLoading(true);
+
+    if (import.meta.env.DEV) await wait(1000);
+
+    updateDisplayName(user.username, data.displayName);
+    updateEmail(user.username, data.email);
+
+    setIsSuccess(true);
+    setIsLoading(false);
   };
 
-  const { getCurrentUser } = useUsers();
   const user = getCurrentUser()!;
 
   if (!user) return <NoMatch />;
 
   return (
-    <div>
-      <h2>Modifica informazioni account</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {/* Fields */}
-        <div className="mt-8 flex flex-1 flex-col justify-end gap-8">
-          {/* Display name */}
-          <div>
-            <label>
-              <span className="mb-2 block text-sm font-medium">
-                Il tuo nome visualizzato
-              </span>
-              <Input
-                id="displayName"
-                placeholder="Il tuo nome visualizzato"
-                defaultValue={user.displayName}
-                aria-invalid={errors.displayName ? "true" : "false"}
-                className={classNames(
-                  "w-full transition duration-100 motion-reduce:transition-none",
-                  {
-                    "ring-2 ring-inset ring-spotify-error": errors.displayName,
-                  }
-                )}
-                {...register("displayName", {
-                  required: "Inserisci un nome visualizzato",
-                })}
-              />
-            </label>
-            {errors.displayName && (
+    <>
+      <h2 className="text-xl font-bold">Modifica informazioni account</h2>
+      <form
+        className="mt-4 flex max-w-xl flex-col gap-6"
+        onSubmit={handleSubmit(onSubmit)}>
+        <InputWithError
+          label="Il tuo nome visualizzato"
+          errors={
+            errors.displayName && (
               <ValidationError message={errors.displayName.message} />
-            )}
-          </div>
+            )
+          }>
+          <Input
+            placeholder="Il tuo nome visualizzato"
+            defaultValue={user.displayName}
+            aria-invalid={errors.displayName ? "true" : "false"}
+            className={classNames("w-full", {
+              "ring-2 ring-inset ring-spotify-error": errors.displayName,
+            })}
+            {...register("displayName", {
+              required: "Inserisci un nome visualizzato",
+            })}
+          />
+        </InputWithError>
 
-          {/* Email */}
-          <div>
-            <label>
-              <span className="mb-2 block text-sm font-medium">
-                La tua email
-              </span>
-              <Input
-                id="email"
-                type="email"
-                placeholder="La tua email"
-                defaultValue={user.email}
-                aria-invalid={errors.email ? "true" : "false"}
-                className={classNames(
-                  "w-full transition duration-100 motion-reduce:transition-none",
-                  {
-                    "ring-2 ring-inset ring-spotify-error": errors.email,
-                  }
-                )}
-                {...register("email", {
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Email non valida",
-                  },
-                  required: "Inserisci una email",
-                })}
-              />
-            </label>
-            {errors.email && <ValidationError message={errors.email.message} />}
-          </div>
+        <InputWithError
+          label="La tua email"
+          errors={
+            errors.email && <ValidationError message={errors.email.message} />
+          }>
+          <Input
+            type="email"
+            placeholder="La tua email"
+            defaultValue={user.email}
+            aria-invalid={errors.email ? "true" : "false"}
+            className={classNames("w-full", {
+              "ring-2 ring-inset ring-spotify-error": errors.email,
+            })}
+            {...register("email", {
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Email non valida",
+              },
+              required: "Inserisci una email",
+            })}
+          />
+        </InputWithError>
+
+        {/* Submit */}
+        <div className="flex items-center gap-4">
+          <LoadingButton type="submit" variant="primary" isLoading={isLoading}>
+            Salva
+          </LoadingButton>
+          {isSuccess && (
+            <ValidationSuccess message="Dati aggiornati correttamente." />
+          )}
         </div>
-
-        <Button type="submit" variant="primary">
-          Salva
-        </Button>
       </form>
-    </div>
+    </>
   );
 };
+
+// {/* Display name */}
+// <div>
+// <label>
+//   <span className="mb-2 block text-sm font-medium">
+//     Il tuo nome visualizzato
+//   </span>
+//   <Input
+//     id="displayName"
+//     placeholder="Il tuo nome visualizzato"
+//     defaultValue={user.displayName}
+//     aria-invalid={errors.displayName ? "true" : "false"}
+//     className={classNames(
+//       "w-full transition duration-100 motion-reduce:transition-none",
+//       {
+//         "ring-2 ring-inset ring-spotify-error": errors.displayName,
+//       }
+//     )}
+//     {...register("displayName", {
+//       required: "Inserisci un nome visualizzato",
+//     })}
+//   />
+// </label>
+// {errors.displayName && (
+//   <ValidationError message={errors.displayName.message} />
+// )}
+// </div>
+
+// {/* Email */}
+// <div>
+// <label>
+//   <span className="mb-2 block text-sm font-medium">
+//     La tua email
+//   </span>
+//   <Input
+//     id="email"
+//     type="email"
+//     placeholder="La tua email"
+//     defaultValue={user.email}
+//     aria-invalid={errors.email ? "true" : "false"}
+//     className={classNames(
+//       "w-full transition duration-100 motion-reduce:transition-none",
+//       {
+//         "ring-2 ring-inset ring-spotify-error": errors.email,
+//       }
+//     )}
+//     {...register("email", {
+//       pattern: {
+//         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+//         message: "Email non valida",
+//       },
+//       required: "Inserisci una email",
+//     })}
+//   />
+// </label>
+// {errors.email && <ValidationError message={errors.email.message} />}
+// </div>

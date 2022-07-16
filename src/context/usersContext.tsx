@@ -29,6 +29,7 @@ type UsersContextType = {
   removeFavoriteGenre: (username: string, genre: string) => void;
   updateProfilePicture: (username: string, pictureData: string) => void;
   updateOnboarding: (username: string, onboarding: boolean) => void;
+  updateEmail: (username: string, email: string) => void;
 };
 
 const UsersContext = createContext<UsersContextType>({} as UsersContextType);
@@ -224,6 +225,14 @@ const useProvideUsers = (): UsersContextType => {
     });
   };
 
+  const updateEmail = (username: string, email: string) => {
+    setUsers((users) => {
+      const copy = { ...users };
+      copy[username].email = email;
+      return copy;
+    });
+  };
+
   const addUserPlaylist = (username: string, playlistId: string) => {
     setUsers((users) => {
       const copy = { ...users };
@@ -312,6 +321,7 @@ const useProvideUsers = (): UsersContextType => {
     updateProfilePicture,
     updatePassword,
     updateOnboarding,
+    updateEmail,
     addUserPlaylist,
     removeUserPlaylist,
     addSavedPlaylist,

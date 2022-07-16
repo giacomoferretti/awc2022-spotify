@@ -16,11 +16,17 @@ export const UserSettings = () => {
         <title>Impostazioni - {import.meta.env.VITE_SITE_TITLE}</title>
       </Helmet>
 
-      {/* <UserInfoPanel /> */}
+      <div>
+        <UserInfoPanel />
+      </div>
 
-      <ChangePasswordPanel />
+      <div className="mt-8">
+        <ChangePasswordPanel />
+      </div>
 
-      {/* <DeleteUserPanel /> */}
+      <div className="mt-8">
+        <DeleteUserPanel />
+      </div>
     </>
   );
 };
