@@ -1,7 +1,9 @@
 import { Dialog, Transition } from "@headlessui/react";
 import {
+  EmojiSadIcon,
   GlobeIcon,
   InformationCircleIcon,
+  LightBulbIcon,
   LockClosedIcon,
   PencilIcon,
   TrashIcon,
@@ -13,9 +15,11 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 import noCoverImage from "@/assets/nocover.png";
 import { Button } from "@/components/Button/Button";
+import { SearchInput } from "@/components/Input/SearchInput";
 import { ValidationError } from "@/components/ValidationError";
 import { usePlaylists, useSpotify, useTracks, useUsers } from "@/context";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useTrimmed } from "@/hooks/useTrimmed";
 import { NoMatch } from "@/pages/NoMatch";
 import { Playlist, SpotifyTrack, Track, User } from "@/types";
 import { msToTime, msToTimeLong } from "@/utils/time";
@@ -325,7 +329,7 @@ const PlaylistHeader = ({
             <h2 className="mt-2">{playlist.description}</h2>
           )}
           {/* </button> */}
-          <div className="mt-2 flex flex-wrap text-sm">
+          <div className="mt-2 flex text-sm">
             <Link
               to={`/user/${owner.username}`}
               className="overflow-hidden overflow-ellipsis whitespace-nowrap font-bold hover:underline">
@@ -435,10 +439,21 @@ const SearchResult = ({
 const SongSearch = ({ playlist }: { playlist: Playlist }) => {
   const { search } = useSpotify();
 
-  const [query, setQuery] = useState("");
+  const [query, trimmedQuery, setQuery] = useTrimmed("");
   const [result, setResult] = useState<SpotifyTrack[]>([]);
 
-  const debouncedQuery = useDebounce(query, 400);
+  const debouncedQuery = useDebounce(trimmedQuery, 400);
+
+  const showClearButton = () => {
+    return query != null && query !== "";
+  };
+
+  const clearInput = (e: React.PointerEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    setQuery("");
+    setResult([]);
+  };
 
   useEffect(() => {
     if (debouncedQuery) {
@@ -452,10 +467,13 @@ const SongSearch = ({ playlist }: { playlist: Playlist }) => {
     } else {
       setResult([]);
     }
-  }, [debouncedQuery]);
+  }, [debouncedQuery, search, query, setResult]);
 
-  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+  const onChangeHandler = (
+    value: string,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setQuery(value);
   };
 
   const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
@@ -464,31 +482,40 @@ const SongSearch = ({ playlist }: { playlist: Playlist }) => {
 
   return (
     <>
-      <form onSubmit={onSubmitHandler}>
-        <input
+      <form role="search" onSubmit={onSubmitHandler}>
+        {/* <input
           type="text"
           placeholder="Cerca brani"
           className="w-full rounded border-0 bg-[#ffffff1a] p-2.5 text-sm text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:border-spotify-accent-base focus:ring-2 focus:ring-inset focus:ring-spotify-accent-base"
           value={query}
           onChange={onChangeHandler}
+        /> */}
+        <SearchInput
+          value={query}
+          placeholder="Cerca brani"
+          onChangeValue={onChangeHandler}
+          displayClearButton={showClearButton}
+          clearButton={clearInput}
+          className="w-full"
         />
       </form>
 
       {query && result.length === 0 && (
-        <>
-          <h2>
+        <div className="mt-4 text-center">
+          <h2 className="text-lg font-bold">
             Nessun risultato trovato per &quot;
-            <span className="whitespace-pre">{query}</span>&quot;
+            <span>{trimmedQuery}</span>
+            &quot;
           </h2>
           <h3>
             Controlla di aver digitato tutte le parole correttamente o usa meno
             parole chiave o parole diverse.
           </h3>
-        </>
+        </div>
       )}
 
       {result.length > 0 && (
-        <div className="mt-4 flex flex-col">
+        <div className="mt-4 flex flex-col pb-16">
           {result.map((entry) => (
             <SearchResult key={entry.id} entry={entry} playlist={playlist} />
           ))}
@@ -598,14 +625,23 @@ export const ShowPlaylist = () => {
           duration={playlistDuration}
         />
 
+        {playlist.tracks.length === 0 && (
+          <h2 className="my-24 flex items-center justify-center text-neutral-500">
+            <EmojiSadIcon className="mr-2 inline h-6 w-6" />
+            Non ci sono canzoni. Cercane qualcuna!
+          </h2>
+        )}
+
         {playlist.tracks.map((key, index) => (
           <div key={`${key.id}_${key.addedTimestamp}`} className="mt-2">
             <TrackEntry playlist={playlist} trackId={key.id} index={index} />
           </div>
         ))}
 
-        <div className="mt-8">
-          <h2>Cerchiamo qualcosa per la tua playlist</h2>
+        <div className="mt-24">
+          <h2 className="mb-2 text-xl font-bold">
+            Cerchiamo qualcosa per la tua playlist
+          </h2>
           <SongSearch playlist={playlist} />
         </div>
       </div>
