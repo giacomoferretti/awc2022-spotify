@@ -209,7 +209,7 @@ const PlaylistDeleteModal = ({
                   Sicuro di voler eliminare &quot;{playlist.name}&quot;?
                 </Dialog.Title>
 
-                <div>
+                <div className="mt-4 flex justify-between">
                   <Button variant="secondary" onClick={onNegative}>
                     Annulla
                   </Button>
@@ -264,6 +264,16 @@ const PlaylistHeader = ({
           </div>
         </div>
         <div className="flex min-w-0 flex-1 flex-col justify-end">
+          {/* Delete playlist */}
+          <button
+            type="button"
+            onClick={openDeleteModal}
+            title="Elimina playlist"
+            className="mb-2 flex items-center gap-2 text-sm text-red-400 hover:underline">
+            <TrashIcon aria-hidden="true" className="h-4 w-4" /> Elimina
+            playlist
+          </button>
+
           {/* Visibility indicator */}
           <button
             type="button"
@@ -334,14 +344,14 @@ const PlaylistHeader = ({
               </>
             )}
 
-            <button
+            {/* <button
               type="button"
               data-before="•"
               onClick={openDeleteModal}
               title="Elimina playlist"
               className="text-red-400 before:mx-1 before:text-white before:content-[attr(data-before)] hover:underline group-hover:before:no-underline">
               Elimina playlist
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
