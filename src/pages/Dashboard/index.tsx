@@ -361,7 +361,7 @@ const PlaylistFeed = () => {
       })}
       <Link to="/playlist/new">
         <div className="flex h-full w-40 flex-col items-center justify-center rounded border-2 border-dashed border-neutral-500 p-4 text-neutral-500 hover:border-neutral-400 hover:text-neutral-400">
-          <PlusIcon className="h-24 w-24 fill-current" />
+          <PlusIcon className="h-24 w-24 fill-current p-4" />
           <span className="text-center">Crea nuova playlist</span>
         </div>
       </Link>

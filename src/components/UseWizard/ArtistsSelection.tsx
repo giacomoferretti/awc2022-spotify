@@ -9,11 +9,11 @@ import {
 import classNames from "classnames";
 import { useEffect, useMemo, useState } from "react";
 
+import { SpotifyArtist } from "@/api/spotify/types";
 import { Input } from "@/components/Input";
 import { useSpotify, useUsers } from "@/context";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useTrimmed } from "@/hooks/useTrimmed";
-import { SpotifyArtist } from "@/types";
 
 export const Artist = ({ artist }: { artist: SpotifyArtist }) => {
   const { getCurrentUser, addFavoriteArtist, removeFavoriteArtist } =

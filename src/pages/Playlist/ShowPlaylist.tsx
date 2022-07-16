@@ -13,6 +13,7 @@ import { Helmet } from "react-helmet-async";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
+import { SpotifyTrack } from "@/api/spotify/types";
 import noCoverImage from "@/assets/nocover.png";
 import { Button } from "@/components/Button/Button";
 import { SearchInput } from "@/components/Input/SearchInput";
@@ -21,7 +22,7 @@ import { usePlaylists, useSpotify, useTracks, useUsers } from "@/context";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useTrimmed } from "@/hooks/useTrimmed";
 import { NoMatch } from "@/pages/NoMatch";
-import { Playlist, SpotifyTrack, Track, User } from "@/types";
+import { Playlist, Track, User } from "@/types";
 import { msToTime, msToTimeLong } from "@/utils/time";
 
 type UserFormInputs = Pick<Playlist, "name" | "description">;
@@ -393,6 +394,8 @@ const SearchResult = ({
       artists: entry.artists,
       album: entry.album,
       duration: entry.duration_ms,
+      genres: entry.genres,
+      release: entry.album.release_date,
     });
   };
 
@@ -437,7 +440,7 @@ const SearchResult = ({
 };
 
 const SongSearch = ({ playlist }: { playlist: Playlist }) => {
-  const { search } = useSpotify();
+  const { search, getArtist } = useSpotify();
 
   const [query, trimmedQuery, setQuery] = useTrimmed("");
   const [result, setResult] = useState<SpotifyTrack[]>([]);
@@ -457,9 +460,30 @@ const SongSearch = ({ playlist }: { playlist: Playlist }) => {
 
   useEffect(() => {
     if (debouncedQuery) {
-      search(query)
+      search(debouncedQuery)
         .then((response) => {
           setResult(response);
+
+          // Get genres
+          if (response.length !== 0) {
+            const asd = response
+              .map(function (elem) {
+                return elem.artists[0].id;
+              })
+              .join(",");
+
+            getArtist(asd).then((x) => {
+              setResult((current) => {
+                for (let i = 0; i < current.length; i++) {
+                  current[i].genres = x[i].genres;
+                }
+
+                console.log(current);
+
+                return current;
+              });
+            });
+          }
         })
         .catch(() => {
           setResult([]);
@@ -467,7 +491,7 @@ const SongSearch = ({ playlist }: { playlist: Playlist }) => {
     } else {
       setResult([]);
     }
-  }, [debouncedQuery, search, query, setResult]);
+  }, [debouncedQuery]);
 
   const onChangeHandler = (
     value: string,

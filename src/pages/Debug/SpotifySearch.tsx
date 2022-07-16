@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { SpotifyTrack } from "@/api/spotify/types";
 import { useSpotify } from "@/context";
-import { SpotifyTrack } from "@/types";
 import { msToTime } from "@/utils/time";
 
 export const SpotifySearch = () => {

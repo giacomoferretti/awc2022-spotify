@@ -1,4 +1,4 @@
-import { SpotifyAlbum, SpotifyArtist } from "./spotify";
+import { SpotifyAlbum, SpotifyArtist } from "@/api/spotify/types";
 
 export type Track = {
   id: string;
@@ -6,4 +6,6 @@ export type Track = {
   artists: SpotifyArtist[];
   album: SpotifyAlbum;
   duration: number;
+  genres: string[];
+  release: string;
 };

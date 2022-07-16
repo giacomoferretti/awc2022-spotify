@@ -14,12 +14,12 @@
     -   [x] Creare
     -   [x] Modificare
     -   [x] Cancellare
--   [ ] Per ogni canzone dovranno essere gestite le informazioni principali quali titolo, cantante, genere, durata e anno di pubblicazione.
+-   [x] Per ogni canzone dovranno essere gestite le informazioni principali quali titolo, cantante, genere, durata e anno di pubblicazione.
     -   [x] Titolo
     -   [x] Cantante
-    -   [ ] Genere
+    -   [x] Genere
     -   [x] Durata
-    -   [ ] Anno di pubblicazione
+    -   [x] Anno di pubblicazione
 -   [x] Un utente, successivamente, può collegarsi all'applicazione e modificare/cancellare playlist esistenti di cui è proprietario.
     -   [x] Modificare
     -   [x] Cancellare

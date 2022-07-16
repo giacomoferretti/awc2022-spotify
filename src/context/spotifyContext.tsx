@@ -2,18 +2,20 @@ import { createContext, useContext, useEffect } from "react";
 
 import { getClientCredentialsToken } from "@/api/spotify";
 import { BASE_API_URL } from "@/api/spotify/constants";
+import { SpotifyArtist, SpotifyTrack } from "@/api/spotify/types";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+
 // import {
 //   genres,
 //   spotifyGenres,
 // } from "@/pages/Onboarding/Step2/GenresSelection";
-import { SpotifyArtist, SpotifyTrack } from "@/types";
 
 interface SpotifyContextType {
   token: string | null;
   tokenExpiration: number | null;
   search: (query: string) => Promise<SpotifyTrack[]>;
   searchArtist: (query: string) => Promise<SpotifyArtist[]>;
+  getArtist: (artistId: string) => Promise<SpotifyArtist[]>;
   // getRandomArtist: () => Promise<SpotifyArtist>;
 }
 
@@ -144,6 +146,17 @@ const useProvideSpotify = (): SpotifyContextType => {
     return response.artists.items;
   };
 
+  const getArtist = async (artistId: string) => {
+    const response = await callEndpoint(
+      "/artists?" +
+        new URLSearchParams({
+          ids: artistId,
+        })
+    );
+
+    return response.artists;
+  };
+
   // const getRandomArtist = async (): Promise<SpotifyArtist> => {
   //   const response = await callEndpoint(
   //     "/search?" +
@@ -171,6 +184,7 @@ const useProvideSpotify = (): SpotifyContextType => {
     tokenExpiration,
     search,
     searchArtist,
+    getArtist,
     // getRandomArtist,
   };
 };
