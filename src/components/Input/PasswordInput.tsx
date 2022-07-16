@@ -21,7 +21,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
         <Input
           ref={ref}
           type={passwordShown ? "text" : type}
-          className="bg-transparent pr-0 focus:ring-0"
+          className="flex-1 bg-transparent pr-0 focus:ring-0"
           {...rest}
         />
         <button

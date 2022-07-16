@@ -19,6 +19,7 @@ type UsersContextType = {
   signup: (newUser: User, callback: VoidFunction) => void;
   clearAll: () => void;
   updateDisplayName: (username: string, displayName: string) => void;
+  updatePassword: (username: string, password: string) => void;
   addUserPlaylist: (username: string, playlistId: string) => void;
   removeUserPlaylist: (username: string, playlistId: string) => void;
   addSavedPlaylist: (username: string, playlistId: string) => void;
@@ -207,6 +208,14 @@ const useProvideUsers = (): UsersContextType => {
     });
   };
 
+  const updatePassword = (username: string, password: string) => {
+    setUsers((users) => {
+      const copy = { ...users };
+      copy[username].password = password;
+      return copy;
+    });
+  };
+
   const updateOnboarding = (username: string, onboarding: boolean) => {
     setUsers((users) => {
       const copy = { ...users };
@@ -301,6 +310,7 @@ const useProvideUsers = (): UsersContextType => {
     clearAll,
     updateDisplayName,
     updateProfilePicture,
+    updatePassword,
     updateOnboarding,
     addUserPlaylist,
     removeUserPlaylist,

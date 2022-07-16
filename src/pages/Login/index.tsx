@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
+import { InputWithError } from "@/components/Input/InputWithError";
 import { PasswordInput } from "@/components/Input/PasswordInput";
 import { Logo } from "@/components/Logo";
 import { Spinner } from "@/components/Spinner";
@@ -64,15 +65,23 @@ export const Login = () => {
     register,
     handleSubmit,
     setValue,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormInputs>({ mode: "onBlur" });
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
     if (import.meta.env.DEV) await wait(500);
 
-    login(data, () => {
-      navigate(navigatePathname);
-    });
+    try {
+      login(data, () => {
+        navigate(navigatePathname);
+      });
+    } catch (e) {
+      console.error(e);
+      if (e instanceof Error) {
+        setError("password", { type: "custom", message: "Password errata." });
+      }
+    }
   };
 
   return (
@@ -127,10 +136,15 @@ export const Login = () => {
                   )}
                 </div>
 
-                <div>
+                <InputWithError
+                  label="La tua password"
+                  errors={
+                    errors.password && (
+                      <ValidationError message={errors.password.message} />
+                    )
+                  }>
                   <PasswordInput
                     id="password"
-                    label="La tua password"
                     placeholder="Inserisci la tua password."
                     type="password"
                     aria-invalid={errors.password ? "true" : "false"}
@@ -143,10 +157,7 @@ export const Login = () => {
                       required: "Inserisci una password",
                     })}
                   />
-                  {errors.password && (
-                    <ValidationError message={errors.password.message} />
-                  )}
-                </div>
+                </InputWithError>
 
                 <div className="flex justify-center">
                   <button
