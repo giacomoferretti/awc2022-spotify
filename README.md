@@ -6,9 +6,9 @@
     -   [x] Password
     -   [x] Preferenze musicali
     -   [x] Gruppi preferiti (artisti)
--   [ ] Gli utenti devono potersi collegare all'applicazione, modificare i propri dati/preferenze e cancellarsi.
+-   [x] Gli utenti devono potersi collegare all'applicazione, modificare i propri dati/preferenze e cancellarsi.
     -   [x] Collegarsi
-    -   [ ] Modificare i propri dati
+    -   [x] Modificare i propri dati
     -   [x] Cancellarsi
 -   [x] Un utente, una volta registrato, può collegarsi all'applicazione e creare/modificare/cancellare liste musicali contententi un elenco di canzoni.
     -   [x] Creare
