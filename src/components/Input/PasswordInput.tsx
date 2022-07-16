@@ -17,7 +17,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
     };
 
     return (
-      <div className="flex rounded bg-neutral-800 transition focus-within:ring-2 focus-within:ring-inset focus-within:ring-spotify-accent-base">
+      <div className="flex rounded bg-neutral-800 transition duration-100 focus-within:ring-2 focus-within:ring-inset focus-within:ring-spotify-accent-base">
         <Input
           ref={ref}
           type={passwordShown ? "text" : type}
