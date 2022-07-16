@@ -318,7 +318,7 @@ const PlaylistHeader = ({
           <div className="mt-2 flex flex-wrap text-sm">
             <Link
               to={`/user/${owner.username}`}
-              className="whitespace-nowrap font-bold hover:underline">
+              className="overflow-hidden overflow-ellipsis whitespace-nowrap font-bold hover:underline">
               {owner.displayName}
             </Link>
             {playlist.tracks.length !== 0 && (
