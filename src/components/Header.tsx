@@ -55,7 +55,9 @@ export const Header = () => {
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3">
               <div>
-                <Menu.Button className="flex max-w-[10rem] items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-neutral-900">
+                <Menu.Button
+                  //focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-neutral-900
+                  className="flex max-w-[10rem] items-center rounded-full text-sm">
                   <span className="sr-only">Open user menu</span>
                   {/* <img
                       className="h-8 w-8 rounded-full"
@@ -89,6 +91,18 @@ export const Header = () => {
                           "block rounded px-4 py-2 text-sm"
                         )}>
                         Il tuo profilo
+                      </Link>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <Link
+                        to="/settings/user"
+                        className={classNames(
+                          { "bg-[#ffffff1a]": active },
+                          "block rounded px-4 py-2 text-sm"
+                        )}>
+                        Impostazioni
                       </Link>
                     )}
                   </Menu.Item>
