@@ -23,6 +23,10 @@ type PlaylistContextType = {
     id: Playlist["id"],
     name: Playlist["description"]
   ) => void;
+  updateCoverData: (
+    id: Playlist["id"],
+    coverData: Playlist["coverData"]
+  ) => void;
 };
 
 const PlaylistsContext = createContext<PlaylistContextType>(
@@ -176,6 +180,17 @@ const useProvidePlaylists = (): PlaylistContextType => {
     });
   };
 
+  const updateCoverData = (
+    id: Playlist["id"],
+    coverData: Playlist["coverData"]
+  ) => {
+    setPlaylists((playlists) => {
+      const copy = { ...playlists };
+      copy[id].coverData = coverData;
+      return copy;
+    });
+  };
+
   return {
     playlists,
     generatePlaylist,
@@ -188,5 +203,6 @@ const useProvidePlaylists = (): PlaylistContextType => {
     removeTrackFromPlaylistAtPos,
     setPlaylistName,
     setPlaylistDescription,
+    updateCoverData,
   };
 };

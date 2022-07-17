@@ -1,5 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import {
+  CameraIcon,
   EmojiSadIcon,
   GlobeIcon,
   InformationCircleIcon,
@@ -7,6 +8,7 @@ import {
   LockClosedIcon,
   PencilIcon,
   TrashIcon,
+  XIcon,
 } from "@heroicons/react/outline";
 import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -17,6 +19,7 @@ import { SpotifyTrack } from "@/api/spotify/types";
 import noCoverImage from "@/assets/nocover.png";
 import { Button } from "@/components/Button/Button";
 import { SearchInput } from "@/components/Input/SearchInput";
+import { PlaylistCoverImage } from "@/components/PlaylistCoverImage";
 import { ValidationError } from "@/components/ValidationError";
 import { usePlaylists, useSpotify, useTracks, useUsers } from "@/context";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -263,11 +266,9 @@ const PlaylistHeader = ({
   return (
     <>
       <div className="flex gap-4">
-        <div className="h-48 w-48 flex-shrink-0 self-end bg-neutral-800">
-          <div className="relative pb-[100%]">
-            <img className="absolute h-full" src={noCoverImage} />
-          </div>
-        </div>
+        {/* Playlist cover */}
+        <PlaylistCoverImage playlist={playlist} />
+
         <div className="flex min-w-0 flex-1 flex-col justify-end">
           {/* Delete playlist */}
           <button
