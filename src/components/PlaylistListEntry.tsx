@@ -16,7 +16,7 @@ export const PlaylistListEntry = ({ playlist }: { playlist: Playlist }) => {
             />
           </div>
         </div>
-        <div className="min-h-[1em]">
+        <div className="min-h-[4em]">
           <div className="lin overflow-hidden overflow-ellipsis whitespace-nowrap font-bold">
             {playlist.name}
           </div>

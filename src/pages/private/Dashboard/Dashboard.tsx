@@ -1,4 +1,9 @@
-import { EmojiSadIcon, PlusIcon } from "@heroicons/react/outline";
+import {
+  EmojiSadIcon,
+  PlusIcon,
+  SearchCircleIcon,
+  SearchIcon,
+} from "@heroicons/react/outline";
 import { useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
@@ -43,43 +48,65 @@ const Dashboard = () => {
         <title>Dashboard - {import.meta.env.VITE_SITE_TITLE}</title>
       </Helmet>
 
-      <WelcomeMessage />
+      <div className="pb-8">
+        <WelcomeMessage />
 
-      <section className="mt-4">
-        <PlaylistSection
-          title="Le tue playlist personali"
-          playlists={user.personalPlaylists}
-          empty={
-            <NoPlaylists
-              message="Non hai nessuna playlist."
-              actionMessage="Creane una!"
-              action="/playlist/new"
-            />
-          }
-          newAction={
-            <Link to="/playlist/new">
-              <div className="flex h-full w-40 flex-col items-center justify-center rounded border-2 border-dashed border-neutral-500 p-4 text-neutral-500 hover:border-neutral-400 hover:text-neutral-400">
-                <PlusIcon className="h-24 w-24 fill-current p-4" />
-                <span className="text-center">Crea nuova playlist</span>
-              </div>
-            </Link>
-          }
-        />
-      </section>
+        <section className="mt-4">
+          <PlaylistSection
+            title="Le tue playlist personali"
+            playlists={user.personalPlaylists}
+            empty={
+              // <NoPlaylists
+              //   message="Non hai nessuna playlist."
+              //   actionMessage="Creane una!"
+              //   action="/playlist/new"
+              // />
+              <Link to="/playlist/new">
+                <div className="flex h-full min-h-[15em] w-40 flex-col items-center justify-center rounded border-2 border-dashed border-neutral-500 p-4 text-neutral-500 hover:border-neutral-400 hover:text-neutral-400">
+                  <PlusIcon className="h-24 w-24 fill-current p-4" />
+                  <span className="text-center">Crea nuova playlist</span>
+                </div>
+              </Link>
+            }
+            newAction={
+              <Link to="/playlist/new">
+                <div className="flex h-full min-h-[15em] w-40 flex-col items-center justify-center rounded border-2 border-dashed border-neutral-500 p-4 text-neutral-500 hover:border-neutral-400 hover:text-neutral-400">
+                  <PlusIcon className="h-24 w-24 fill-current p-4" />
+                  <span className="text-center">Crea nuova playlist</span>
+                </div>
+              </Link>
+            }
+          />
+        </section>
 
-      <section className="mt-4">
-        <PlaylistSection
-          title="Le tue playlist salvate"
-          playlists={user.savedPlaylists}
-          empty={
-            <NoPlaylists
-              message="Non hai salvato nessuna playlist."
-              actionMessage="Cercane una!"
-              action="/search"
-            />
-          }
-        />
-      </section>
+        <section className="mt-4">
+          <PlaylistSection
+            title="Le tue playlist salvate"
+            playlists={user.savedPlaylists}
+            empty={
+              // <NoPlaylists
+              //   message="Non hai salvato nessuna playlist."
+              //   actionMessage="Cercane una!"
+              //   action="/search"
+              // />
+              <Link to="/search">
+                <div className="flex h-full min-h-[15em] w-40 flex-col items-center justify-center rounded border-2 border-dashed border-neutral-500 p-4 text-neutral-500 hover:border-neutral-400 hover:text-neutral-400">
+                  <SearchIcon className="h-24 w-24 stroke-current p-4" />
+                  <span className="text-center">Cerca playlist</span>
+                </div>
+              </Link>
+            }
+            newAction={
+              <Link to="/playlist/new">
+                <div className="flex h-full min-h-[15em] w-40 flex-col items-center justify-center rounded border-2 border-dashed border-neutral-500 p-4 text-neutral-500 hover:border-neutral-400 hover:text-neutral-400">
+                  <PlusIcon className="h-24 w-24 fill-current p-4" />
+                  <span className="text-center">Crea nuova playlist</span>
+                </div>
+              </Link>
+            }
+          />
+        </section>
+      </div>
     </>
   );
 };

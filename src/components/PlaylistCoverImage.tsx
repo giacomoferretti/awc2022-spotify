@@ -28,7 +28,7 @@ export const PlaylistCoverImage = ({ playlist }: { playlist: Playlist }) => {
   };
 
   return (
-    <span className="block h-48 w-48 flex-shrink-0 bg-neutral-800">
+    <span className="block h-48 w-48 flex-shrink-0 self-end bg-neutral-800">
       <span className="relative block pb-[100%]">
         <img
           className="absolute h-full w-full transform-gpu object-cover object-center"

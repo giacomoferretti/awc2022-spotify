@@ -120,6 +120,7 @@ const PlaylistDetailsModal = ({
                         <textarea
                           id="name"
                           placeholder="Inserisci la descrizione della playlist."
+                          defaultValue={playlist.description}
                           rows={4}
                           onKeyPress={(e) => {
                             if (e.key === "Enter") {
