@@ -4,7 +4,6 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { LoadingButton } from "@/components/Button";
-import { Button } from "@/components/Button/Button";
 import { Input } from "@/components/Input";
 import { InputWithError } from "@/components/Input/InputWithError";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
@@ -19,7 +18,7 @@ type UserSettingsInputs = {
   email: string;
 };
 
-export const UserInfoPanel = () => {
+export const UserInfoSection = () => {
   const {
     getCurrentUser,
     updateDisplayName,
@@ -30,7 +29,6 @@ export const UserInfoPanel = () => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<UserSettingsInputs>({ mode: "onChange" });
 

@@ -22,7 +22,9 @@ type UsersContextType = {
   updatePassword: (username: string, password: string) => void;
   addUserPlaylist: (username: string, playlistId: string) => void;
   removeUserPlaylist: (username: string, playlistId: string) => void;
+  isSavedPlaylist: (username: string, playlistId: string) => boolean;
   addSavedPlaylist: (username: string, playlistId: string) => void;
+  removeSavedPlaylist: (username: string, playlistId: string) => void;
   addFavoriteArtist: (username: string, artistId: string) => void;
   addFavoriteGenre: (username: string, genre: string) => void;
   removeFavoriteArtist: (username: string, artistId: string) => void;
@@ -260,10 +262,26 @@ const useProvideUsers = (): UsersContextType => {
     });
   };
 
+  const isSavedPlaylist = (username: string, playlistId: string) => {
+    return getUserByUsername(username).savedPlaylists.some((v) => {
+      return v === playlistId;
+    });
+  };
+
   const addSavedPlaylist = (username: string, playlistId: string) => {
     setUsers((users) => {
       const copy = { ...users };
       copy[username].savedPlaylists.push(playlistId);
+      return copy;
+    });
+  };
+
+  const removeSavedPlaylist = (username: string, playlistId: string) => {
+    setUsers((users) => {
+      const copy = { ...users };
+      copy[username].savedPlaylists = copy[username].savedPlaylists.filter(
+        (x) => x !== playlistId
+      );
       return copy;
     });
   };
@@ -330,7 +348,9 @@ const useProvideUsers = (): UsersContextType => {
     updateEmail,
     addUserPlaylist,
     removeUserPlaylist,
+    isSavedPlaylist,
     addSavedPlaylist,
+    removeSavedPlaylist,
     addFavoriteArtist,
     addFavoriteGenre,
     removeFavoriteArtist,

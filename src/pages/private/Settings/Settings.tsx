@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 
 import { ChangePasswordPanel } from "./ChangePasswordPanel";
 import { DeleteUserPanel } from "./DeleteUserPanel";
-import { UserInfoPanel } from "./UserInfoPanel";
+import { UserInfoSection } from "./UserInfoSection";
 
 export const UserSettingsRedirect = () => {
   return <Navigate to="/settings/user" replace />;
@@ -17,7 +17,7 @@ const UserSettings = () => {
       </Helmet>
 
       <div>
-        <UserInfoPanel />
+        <UserInfoSection />
       </div>
 
       <div className="mt-8">

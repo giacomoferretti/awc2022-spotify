@@ -27,11 +27,11 @@
     -   [x] Descrizione
     -   [ ] Tag descrittivi
 -   [x] Gli utenti possono decidere quale delle playlist da loro composte rendere pubbliche ad altri utenti.
--   [ ] In un’area dedicata del portale gli utenti possono ricercare le playlist pubbliche, visualizzare le informazioni principali (elenco delle canzoni, durata, tag e descrizione) e decidere se importarle nel proprio profilo.
-    -   [ ] Ricercare playlist pubbliche
+-   [x] In un’area dedicata del portale gli utenti possono ricercare le playlist pubbliche, visualizzare le informazioni principali (elenco delle canzoni, durata, tag e descrizione) e decidere se importarle nel proprio profilo.
+    -   [x] Ricercare playlist pubbliche
     -   [x] Visualizzare informazioni principali
-    -   [ ] Importare playlist
--   [ ] La ricerca delle playlist pubbliche deve fornire come criteri di ricerca almeno i tag associati e le canzoni in esse contenute.
+    -   x] Importare playlist
+-   [x] La ricerca delle playlist pubbliche deve fornire come criteri di ricerca almeno i tag associati e le canzoni in esse contenute.
 
 Le operazioni base che devono essere presentate al momento della discussione del progetto sono le seguenti:
 
