@@ -3,7 +3,11 @@ import { Helmet } from "react-helmet-async";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
+import ButtonSolid from "@/components/Button/ButtonSolid";
+import { EmailInput } from "@/components/Input/EmailInput";
+import { PassInput } from "@/components/Input/PassInput";
 import { PasswordInput } from "@/components/Input/PasswordInput";
+import { UsernameInput } from "@/components/Input/UsernameInput";
 import { Logo } from "@/components/Logo";
 import { Spinner } from "@/components/Spinner";
 import { ValidationError } from "@/components/ValidationError";
@@ -20,8 +24,7 @@ type CustomizedState = {
   email?: string;
 };
 
-// TODO: Wizard signup, split into different steps
-export const Signup = () => {
+const Signup = () => {
   const { session, signup, usernameExists } = useUsers();
   const location = useLocation();
   const navigate = useNavigate();
@@ -74,6 +77,7 @@ export const Signup = () => {
       <Helmet>
         <title>Crea un account - {import.meta.env.VITE_SITE_TITLE}</title>
       </Helmet>
+
       <div className="flex min-h-screen flex-col">
         <div className="flex flex-1 items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
           <div className="flex w-full max-w-md flex-col gap-8">
@@ -81,13 +85,113 @@ export const Signup = () => {
               <Logo className="h-10 w-10" /> {import.meta.env.VITE_SITE_TITLE}
             </h1>
 
-            <div className="rounded-lg bg-spotify-elevated-base p-4 sm:p-6 lg:p-8">
+            {/* Main form */}
+            <div className="rounded-lg border-2 border-neutral-700 p-8">
               <form
                 className="flex flex-col gap-6"
                 onSubmit={handleSubmit(onSubmit)}>
                 <h2 className="text-xl font-medium">Crea un account</h2>
 
+                {/* Username */}
                 <div>
+                  <label
+                    htmlFor="username"
+                    className="mb-2 block text-sm font-medium">
+                    Il tuo username
+                  </label>
+                  <UsernameInput
+                    id="username"
+                    name="username"
+                    className="w-full"
+                    register={register}
+                    errors={errors}
+                    rules={{
+                      validate: {
+                        checkUser: (v) =>
+                          !usernameExists(v) ||
+                          "Il nome utente inserito è già stato preso",
+                      },
+                    }}
+                    required
+                  />
+                  {errors.username && (
+                    <ValidationError message={errors.username.message} />
+                  )}
+                </div>
+
+                {/* Email */}
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="mb-2 block text-sm font-medium">
+                    La tua email
+                  </label>
+                  <EmailInput
+                    id="email"
+                    name="email"
+                    placeholder="Inserisci la tua email."
+                    className="w-full"
+                    register={register}
+                    errors={errors}
+                    required
+                  />
+                  {errors.email && (
+                    <ValidationError message={errors.email.message} />
+                  )}
+                </div>
+
+                {/* Password */}
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="mb-2 block text-sm font-medium">
+                    La tua password
+                  </label>
+                  <PassInput
+                    id="password"
+                    name="password"
+                    className="w-full"
+                    register={register}
+                    errors={errors}
+                    required
+                  />
+                  {errors.password && (
+                    <ValidationError message={errors.password.message} />
+                  )}
+                </div>
+
+                {/* Submit button */}
+                <div className="flex justify-center">
+                  <ButtonSolid
+                    variant="primary"
+                    className="rounded-full px-8"
+                    disabled={isSubmitting}>
+                    {isSubmitting && (
+                      <Spinner className="-ml-1 mr-3 h-5 w-5 animate-spin" />
+                    )}
+                    Crea il tuo account
+                  </ButtonSolid>
+                </div>
+
+                <div className="text-center text-sm font-medium text-neutral-300">
+                  Hai già un account?{" "}
+                  <Link to="/login" className="text-green-500 hover:underline">
+                    Accedi qui
+                  </Link>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Signup;
+
+{
+  /* <div>
                   <label>
                     <span className="mb-2 block text-sm font-medium">
                       Il tuo username
@@ -182,12 +286,5 @@ export const Signup = () => {
                     className="text-spotify-accent-base hover:underline">
                     Accedi qui
                   </Link>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
+                </div> */
+}

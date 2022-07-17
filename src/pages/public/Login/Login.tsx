@@ -3,8 +3,9 @@ import { Helmet } from "react-helmet-async";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { InputWithError } from "@/components/Input/InputWithError";
-import { PasswordInput } from "@/components/Input/PasswordInput";
+import ButtonSolid from "@/components/Button/ButtonSolid";
+import { PassInput } from "@/components/Input/PassInput";
+import { UsernameInput } from "@/components/Input/UsernameInput";
 import { Logo } from "@/components/Logo";
 import { Spinner } from "@/components/Spinner";
 import { ValidationError } from "@/components/ValidationError";
@@ -20,7 +21,7 @@ type CustomizedState = {
   username?: string;
 };
 
-export const Login = () => {
+const Login = () => {
   const { login, usernameExists, session } = useUsers();
 
   const navigate = useNavigate();
@@ -87,8 +88,9 @@ export const Login = () => {
   return (
     <>
       <Helmet>
-        <title>Entra - {import.meta.env.VITE_SITE_TITLE}</title>
+        <title>Accedi - {import.meta.env.VITE_SITE_TITLE}</title>
       </Helmet>
+
       <div className="flex min-h-screen flex-col">
         <div className="flex flex-1 items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
           <div className="flex w-full max-w-md flex-col gap-8">
@@ -96,85 +98,79 @@ export const Login = () => {
               <Logo className="h-10 w-10" /> {import.meta.env.VITE_SITE_TITLE}
             </h1>
 
-            <div className="rounded-lg bg-spotify-elevated-base p-4 sm:p-6 lg:p-8">
+            {/* Main form */}
+            <div className="rounded-lg border-2 border-neutral-700 p-8">
               <form
                 className="flex flex-col gap-6"
                 onSubmit={handleSubmit(onSubmit)}>
                 <h2 className="text-xl font-medium">
                   {navigatePathname === "/dashboard"
                     ? "Bentornato!"
-                    : "Accedi per visualizzare il contenuto!"}
+                    : "Accedi per visualizzare il contenuto."}
                 </h2>
 
+                {/* Username */}
                 <div>
-                  <label>
-                    <span className="mb-2 block text-sm font-medium">
-                      Il tuo username
-                    </span>
-                    <input
-                      id="username"
-                      type="text"
-                      placeholder="Inserisci il tuo username."
-                      aria-invalid={errors.username ? "true" : "false"}
-                      className="w-full rounded border-0 bg-[#ffffff1a] p-2.5 text-sm text-[#ffffffb3] placeholder:text-[#ffffffb3] focus:border-spotify-accent-base focus:ring-2 focus:ring-inset focus:ring-spotify-accent-base"
-                      {...register("username", {
-                        pattern: {
-                          value: /^[a-z0-9._]+$/i,
-                          message:
-                            "Sono consentiti solo lettere (a-z), numeri (0-9), punti (.) e i trattini bassi (_)",
-                        },
-                        required: "Inserisci un nome utente",
-                        validate: {
-                          checkUser: (v) =>
-                            usernameExists(v) || "L'utente inserito non esiste",
-                        },
-                      })}
-                    />
+                  <label
+                    htmlFor="username"
+                    className="mb-2 block text-sm font-medium">
+                    Il tuo username
                   </label>
+                  <UsernameInput
+                    id="username"
+                    name="username"
+                    className="w-full"
+                    register={register}
+                    errors={errors}
+                    rules={{
+                      validate: {
+                        checkUser: (v) =>
+                          usernameExists(v) || "L'utente inserito non esiste",
+                      },
+                    }}
+                    required
+                  />
                   {errors.username && (
                     <ValidationError message={errors.username.message} />
                   )}
                 </div>
 
-                <InputWithError
-                  label="La tua password"
-                  errors={
-                    errors.password && (
-                      <ValidationError message={errors.password.message} />
-                    )
-                  }>
-                  <PasswordInput
+                {/* Password */}
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="mb-2 block text-sm font-medium">
+                    La tua password
+                  </label>
+                  <PassInput
                     id="password"
-                    placeholder="Inserisci la tua password."
-                    type="password"
-                    aria-invalid={errors.password ? "true" : "false"}
-                    {...register("password", {
-                      minLength: {
-                        value: 8,
-                        message:
-                          "La tua password deve contenere almeno 8 caratteri.",
-                      },
-                      required: "Inserisci una password",
-                    })}
+                    name="password"
+                    className="w-full"
+                    register={register}
+                    errors={errors}
+                    required
                   />
-                </InputWithError>
+                  {errors.password && (
+                    <ValidationError message={errors.password.message} />
+                  )}
+                </div>
 
+                {/* Submit button */}
                 <div className="flex justify-center">
-                  <button
-                    className="flex items-center self-center rounded-full bg-spotify-accent-base py-3 px-8 font-bold text-black hover:bg-spotify-accent-highlight"
+                  <ButtonSolid
+                    variant="primary"
+                    className="rounded-full px-8"
                     disabled={isSubmitting}>
                     {isSubmitting && (
                       <Spinner className="-ml-1 mr-3 h-5 w-5 animate-spin" />
                     )}
                     Entra
-                  </button>
+                  </ButtonSolid>
                 </div>
 
-                <div className="text-center text-sm font-medium text-[#ffffffb3]">
+                <div className="text-center text-sm font-medium text-neutral-300">
                   Non hai un account?{" "}
-                  <Link
-                    to="/signup"
-                    className="text-spotify-accent-base hover:underline">
+                  <Link to="/signup" className="text-green-500 hover:underline">
                     Creane uno
                   </Link>
                 </div>
@@ -186,3 +182,5 @@ export const Login = () => {
     </>
   );
 };
+
+export default Login;

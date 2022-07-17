@@ -69,13 +69,17 @@ const reducers: {
   [ActionTypes.RegisterStep]: (state, action) => {
     const steps = [...state.steps, action.step];
 
-    // console.log("[ActionTypes.RegisterItem]", action.step);
-    // console.log("[ActionTypes.RegisterItem]", steps);
+    console.log("[ActionTypes.RegisterStep]", action.step);
+    console.log("[ActionTypes.RegisterStep]", steps);
 
     return { ...state, steps };
   },
   [ActionTypes.UnregisterStep]: (state, action) => {
     const steps = state.steps.slice();
+
+    console.log("[ActionTypes.UnregisterStep]", action.id);
+    console.log("[ActionTypes.UnregisterStep]", steps);
+
     const idx = state.steps.findIndex((step) => step.id === action.id);
     if (idx === -1) return state;
     steps.splice(idx, 1);
@@ -130,7 +134,12 @@ type WizardContextType = {
   activeStep: Step | null;
   activeStepId: string | null;
   activeStepIndex: number;
+  hasNextStep: boolean;
+  hasPreviousStep: boolean;
   registerOption: (step: Step) => () => void;
+  doNextStep: () => void;
+  goToNextStep: () => void;
+  goToPreviousStep: () => void;
 };
 
 const WizardContext = createContext<WizardContextType | null>(null);
@@ -184,6 +193,7 @@ const WizardRoot: React.FunctionComponent<PropsWithChildren> = (props) => {
   }, []);
 
   const activeStep = useMemo(() => {
+    console.log(state.steps.length !== 0);
     return state.steps.length !== 0 ? state.steps[state.activeStepIndex] : null;
   }, [state.activeStepIndex, state.steps]);
 
@@ -211,7 +221,18 @@ const WizardRoot: React.FunctionComponent<PropsWithChildren> = (props) => {
     }
   }, [hasPreviousStep]);
 
-  const doNextStep = useCallback(() => {
+  const doNextStep = () => {
+    console.log("doNextStep", "!!!");
+
+    console.log("doNextStep", state.steps);
+    console.log("doNextStep", state.activeStepIndex);
+
+    if (activeStep && activeStep.onNext) {
+      if (activeStep.onNext()) {
+        goToNextStep();
+      }
+    }
+
     // if (hasNextStep.current && nextStepHandler.current) {
     //   try {
     //     setIsLoading(true);
@@ -226,7 +247,7 @@ const WizardRoot: React.FunctionComponent<PropsWithChildren> = (props) => {
     // } else {
     //   goToNextStep.current();
     // }
-  }, []);
+  };
 
   const api: WizardContextType = {
     registerOption,
@@ -234,14 +255,19 @@ const WizardRoot: React.FunctionComponent<PropsWithChildren> = (props) => {
     activeStepId,
     activeStepIndex: state.activeStepIndex,
     stepCount: state.steps.length,
+    hasNextStep,
+    hasPreviousStep,
+    doNextStep,
+    goToNextStep,
+    goToPreviousStep,
   };
 
-  console.log("[Wizard]", "Rendered!");
-  console.log(" ├─", "hasNextStep", hasNextStep);
-  console.log(" ├─", "hasPreviousStep", hasPreviousStep);
-  console.log(" ├─", "goToNextStep", goToNextStep);
-  console.log(" ├─", "goToPreviousStep", goToPreviousStep);
-  console.log(" └─", "api", api);
+  // console.log("[Wizard]", "Rendered!");
+  // console.log(" ├─", "hasNextStep", hasNextStep);
+  // console.log(" ├─", "hasPreviousStep", hasPreviousStep);
+  // console.log(" ├─", "goToNextStep", goToNextStep);
+  // console.log(" ├─", "goToPreviousStep", goToPreviousStep);
+  // console.log(" └─", "api", api);
 
   return (
     <WizardContext.Provider value={api}>
@@ -260,6 +286,7 @@ type StepProps = {
   path: string;
   title: string;
   subtitle: string;
+  onNext: (() => boolean) | null;
   children?: ReactNode | ((props: StepRenderPropArg) => ReactElement);
 };
 
@@ -268,6 +295,7 @@ const Step: React.FunctionComponent<StepProps> = ({
   path,
   title,
   subtitle,
+  onNext,
   ...props
 }) => {
   // console.log("[Wizard.Step]", props);
@@ -294,8 +322,8 @@ const Step: React.FunctionComponent<StepProps> = ({
   }, [id, activeStepId]);
 
   useEffect(
-    () => registerOption({ id, path, title, subtitle }),
-    [id, registerOption, path, title, subtitle]
+    () => registerOption({ id, path, title, subtitle, onNext }),
+    [id, registerOption, path, title, subtitle, onNext]
   );
 
   const resolvedChildren = (
@@ -370,6 +398,8 @@ const Info: React.FunctionComponent<{
 type NavigationRenderPropArg = {
   onNext: VoidFunction;
   onPrevious: VoidFunction;
+  hasNextStep: boolean;
+  hasPreviousStep: boolean;
 };
 
 const Navigation: React.FunctionComponent<{
@@ -378,20 +408,30 @@ const Navigation: React.FunctionComponent<{
   // console.log("[Wizard.Navigation]", props);
 
   // const [, dispatch] = useWizardContext("Wizard.Navigation");
+  const {
+    doNextStep,
+    goToNextStep,
+    goToPreviousStep,
+    hasNextStep,
+    hasPreviousStep,
+  } = useWizardContext("Wizard.Navigation");
 
   const slot = useMemo<NavigationRenderPropArg>(() => {
     const onNext = () => {
       // dispatch({ type: ActionTypes.NextStep });
+      doNextStep();
+      // goToNextStep();
       console.log("[Wizard.Navigation]", "onNext");
     };
 
     const onPrevious = () => {
       // dispatch({ type: ActionTypes.PreviousStep });
+      goToPreviousStep();
       console.log("[Wizard.Navigation]", "onPrevious");
     };
 
-    return { onNext, onPrevious };
-  }, []);
+    return { onNext, onPrevious, hasNextStep, hasPreviousStep };
+  }, [hasNextStep, hasPreviousStep, doNextStep, goToPreviousStep]);
 
   const resolvedChildren = (
     typeof children === "function" ? children(slot) : children

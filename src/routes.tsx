@@ -19,6 +19,7 @@ import { AuthDebug, Debug, FlexDebug, SpotifyDebug } from "@/pages/Debug";
 import { UserSettings, UserSettingsRedirect } from "@/pages/UserSettings";
 
 import { UseWizard } from "./components/UseWizard/UseWizard";
+import Onboarding from "./pages/private/Onboarding";
 
 export default (
   <Routes>
@@ -41,9 +42,9 @@ export default (
         <Route path="step:stepId" element={<Onboarding />} />
       </Route> */}
 
-      <Route path="/wizard">
-        <Route index element={<UseWizard />} />
-        <Route path=":stepId" element={<UseWizard />} />
+      <Route path="/onboarding">
+        <Route index element={<Onboarding />} />
+        <Route path=":stepId" element={<Onboarding />} />
       </Route>
 
       <Route element={<RequireOnboardingWrapper />}>

@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { forwardRef } from "react";
 
-type InputProps = React.ComponentPropsWithoutRef<"input">;
+export type InputProps = React.ComponentPropsWithoutRef<"input">;
 
 export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const { className, ...rest } = props;
