@@ -48,10 +48,17 @@ export const Header = () => {
                       src={user.imageUrl}
                       alt=""
                     /> */}
-                <UserIcon
-                  className="h-8 w-8 shrink-0 rounded-full bg-[#282828] p-1"
-                  aria-hidden="true"
-                />
+                {user?.pictureData ? (
+                  <img
+                    className="h-8 w-8 transform-gpu rounded-full object-cover object-center"
+                    src={user.pictureData}
+                  />
+                ) : (
+                  <UserIcon
+                    className="h-8 w-8 shrink-0 rounded-full bg-[#282828] p-1"
+                    aria-hidden="true"
+                  />
+                )}
                 <span className="ml-3 overflow-hidden overflow-ellipsis whitespace-nowrap">
                   {user?.displayName}
                 </span>
