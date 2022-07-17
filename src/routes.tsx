@@ -13,12 +13,12 @@ import {
   ShowPlaylist,
   Signup,
   UserProfile,
-  UserRedirect,
 } from "@/pages";
 import { AuthDebug, Debug, FlexDebug, SpotifyDebug } from "@/pages/Debug";
 import { UserSettings, UserSettingsRedirect } from "@/pages/UserSettings";
 
 import { UseWizard } from "./components/UseWizard/UseWizard";
+import { UserRedirect } from "./pages/UserProfile";
 import Onboarding from "./pages/private/Onboarding";
 
 export default (

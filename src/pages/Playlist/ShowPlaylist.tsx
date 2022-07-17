@@ -304,7 +304,7 @@ const PlaylistHeader = ({
             onClick={openDialog}>
             <button
               type="button"
-              className="overflow-hidden overflow-ellipsis whitespace-nowrap text-5xl font-bold  group-hover:underline">
+              className="overflow-hidden overflow-ellipsis whitespace-nowrap text-5xl font-bold group-hover:underline">
               {playlist.name}
             </button>
             <span>

@@ -41,7 +41,7 @@ export const Header = () => {
             <div>
               <Menu.Button
                 //focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-neutral-900
-                className="flex max-w-[10rem] items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-neutral-900">
+                className="flex max-w-[10rem] items-center rounded-full text-sm">
                 <span className="sr-only">Open user menu</span>
                 {/* <img
                       className="h-8 w-8 rounded-full"
