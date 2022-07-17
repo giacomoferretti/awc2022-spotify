@@ -1,3 +1,4 @@
+import { XIcon } from "@heroicons/react/outline";
 import classNames from "classnames";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -6,6 +7,7 @@ import { LoadingButton } from "@/components/Button";
 import { Button } from "@/components/Button/Button";
 import { Input } from "@/components/Input";
 import { InputWithError } from "@/components/Input/InputWithError";
+import { UserProfilePicture } from "@/components/UserProfilePicture";
 import { ValidationError } from "@/components/ValidationError";
 import { ValidationSuccess } from "@/components/ValidationSuccess";
 import { useUsers } from "@/context";
@@ -48,6 +50,10 @@ export const UserInfoPanel = () => {
     setIsLoading(false);
   };
 
+  const removePhoto = () => {
+    updateProfilePicture(user.username, null);
+  };
+
   const user = getCurrentUser()!;
 
   if (!user) return <NoMatch />;
@@ -58,6 +64,17 @@ export const UserInfoPanel = () => {
       <form
         className="mt-4 flex max-w-xl flex-col gap-6"
         onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex items-center gap-4">
+          <UserProfilePicture user={user} />
+          <button
+            type="button"
+            onClick={removePhoto}
+            title="Elimina playlist"
+            className="mb-2 flex items-center gap-2 text-red-400 hover:underline">
+            <XIcon aria-hidden="true" className="h-4 w-4" /> Rimuovi foto
+          </button>
+        </div>
+
         <InputWithError
           label="Il tuo nome visualizzato"
           errors={

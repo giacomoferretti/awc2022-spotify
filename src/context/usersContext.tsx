@@ -27,7 +27,10 @@ type UsersContextType = {
   addFavoriteGenre: (username: string, genre: string) => void;
   removeFavoriteArtist: (username: string, artistId: string) => void;
   removeFavoriteGenre: (username: string, genre: string) => void;
-  updateProfilePicture: (username: string, pictureData: string) => void;
+  updateProfilePicture: (
+    username: string,
+    pictureData: User["pictureData"]
+  ) => void;
   updateOnboarding: (username: string, onboarding: boolean) => void;
   updateEmail: (username: string, email: string) => void;
 };
@@ -201,7 +204,10 @@ const useProvideUsers = (): UsersContextType => {
     });
   };
 
-  const updateProfilePicture = (username: string, pictureData: string) => {
+  const updateProfilePicture = (
+    username: string,
+    pictureData: User["pictureData"]
+  ) => {
     setUsers((users) => {
       const copy = { ...users };
       copy[username].pictureData = pictureData;

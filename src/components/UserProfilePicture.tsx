@@ -21,7 +21,7 @@ export const UserProfilePicture = ({ user }: { user: User }) => {
   };
 
   return (
-    <label className="self-end">
+    <label>
       <span
         className={cx(
           "block h-32 w-32 overflow-hidden rounded-full bg-neutral-800 shadow-xl",
