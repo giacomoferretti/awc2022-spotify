@@ -10,6 +10,7 @@ export type Playlist = {
   name: string;
   description: string;
   owner: string;
+  coverData: string | null;
   isPublic: boolean;
   tracks: PlaylistTrack[];
 };
