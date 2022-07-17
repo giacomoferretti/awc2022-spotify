@@ -35,7 +35,7 @@ export const UserProfilePicture = ({ user }: { user: User }) => {
               src={user.pictureData}
             />
           ) : (
-            <UserIcon className="absolute stroke-neutral-400 p-8" />
+            <UserIcon className="absolute h-full w-full stroke-neutral-400 p-8" />
           )}
 
           {/* Action */}
