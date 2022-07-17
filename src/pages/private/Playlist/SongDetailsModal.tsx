@@ -56,6 +56,17 @@ export const SongDetailsModal = ({
                   Dettagli canzone
                 </Dialog.Title>
 
+                <div>
+                  <img
+                    className="h-12 w-12 rounded"
+                    src={track.album.images[2].url}
+                  />
+                  <p>{track.name}</p>
+                  <p>{track.album.name}</p>
+                  <p>{track.release}</p>
+                  <p>{track.genres.join(" • ")}</p>
+                </div>
+
                 {/* <div className="mt-2">
                   <form
                     onSubmit={handleSubmit(onSubmit)}
