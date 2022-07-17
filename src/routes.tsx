@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import { Design } from "@/design/Design";
 import { RequireAuthWrapper, RequireOnboardingWrapper } from "@/helpers";
@@ -10,6 +10,7 @@ import {
   Login,
   Logout,
   NoMatch,
+  Onboarding,
   ShowPlaylist,
   Signup,
   UserProfile,
@@ -17,9 +18,7 @@ import {
 import { AuthDebug, Debug, FlexDebug, SpotifyDebug } from "@/pages/Debug";
 import { UserSettings, UserSettingsRedirect } from "@/pages/UserSettings";
 
-import { UseWizard } from "./components/UseWizard/UseWizard";
-import { UserRedirect } from "./pages/UserProfile";
-import Onboarding from "./pages/private/Onboarding";
+import { UserRedirect } from "./pages/private/UserProfile";
 
 export default (
   <Routes>

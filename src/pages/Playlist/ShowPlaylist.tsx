@@ -653,7 +653,7 @@ export const ShowPlaylist = () => {
         {playlist.tracks.length === 0 && (
           <h2 className="my-24 flex items-center justify-center text-neutral-500">
             <EmojiSadIcon className="mr-2 inline h-6 w-6" />
-            Non ci sono canzoni. Cercane qualcuna!
+            Non ci sono canzoni. Aggiungine qualcuna!
           </h2>
         )}
 
