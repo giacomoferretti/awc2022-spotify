@@ -6,6 +6,7 @@ export { default as Logout } from "./public/Logout";
 export { default as UserProfile } from "./private/UserProfile";
 export { default as Dashboard } from "./private/Dashboard";
 export { default as Onboarding } from "./private/Onboarding";
+export { default as Search } from "./private/Search";
 
 export * from "./NoMatch";
 export * from "./Playlist";

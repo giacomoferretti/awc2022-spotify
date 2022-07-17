@@ -11,6 +11,7 @@ import {
   Logout,
   NoMatch,
   Onboarding,
+  Search,
   ShowPlaylist,
   Signup,
   UserProfile,
@@ -68,7 +69,7 @@ export default (
           </Route>
 
           {/* Search */}
-          <Route path="search" element={<h1>SEARCH</h1>} />
+          <Route path="search" element={<Search />} />
         </Route>
       </Route>
     </Route>
