@@ -11,9 +11,8 @@ import { UserProfilePicture } from "@/components/UserProfilePicture";
 import { ValidationError } from "@/components/ValidationError";
 import { ValidationSuccess } from "@/components/ValidationSuccess";
 import { useUsers } from "@/context";
+import NoMatch from "@/pages/NoMatch";
 import { wait } from "@/utils";
-
-import NoMatch from "../NoMatch";
 
 type UserSettingsInputs = {
   displayName: string;

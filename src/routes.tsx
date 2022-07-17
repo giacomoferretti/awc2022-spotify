@@ -4,7 +4,6 @@ import { Design } from "@/design/Design";
 import { RequireAuthWrapper, RequireOnboardingWrapper } from "@/helpers";
 import { MainLayout } from "@/layout/MainLayout";
 import {
-  CreatePlaylist,
   Dashboard,
   Home,
   Login,
@@ -15,11 +14,12 @@ import {
   ShowPlaylist,
   Signup,
   UserProfile,
+  UserSettings,
 } from "@/pages";
 import { AuthDebug, Debug, FlexDebug, SpotifyDebug } from "@/pages/Debug";
-import { UserSettings, UserSettingsRedirect } from "@/pages/UserSettings";
-
-import { UserRedirect } from "./pages/private/UserProfile";
+import { CreatePlaylist } from "@/pages/private/Playlist";
+import { UserSettingsRedirect } from "@/pages/private/Settings";
+import { UserRedirect } from "@/pages/private/UserProfile";
 
 export default (
   <Routes>
