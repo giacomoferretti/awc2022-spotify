@@ -3,9 +3,10 @@ import classNames from "classnames";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { LoadingButton } from "@/components/Button";
+import ButtonSolid from "@/components/Button/ButtonSolid";
 import { Input } from "@/components/Input";
 import { InputWithError } from "@/components/Input/InputWithError";
+import { Spinner } from "@/components/Spinner";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
 import { ValidationError } from "@/components/ValidationError";
 import { ValidationSuccess } from "@/components/ValidationSuccess";
@@ -36,6 +37,7 @@ export const UserInfoSection = () => {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const onSubmit: SubmitHandler<UserSettingsInputs> = async (data) => {
+    setIsSuccess(false);
     setIsLoading(true);
 
     if (import.meta.env.DEV) await wait(1000);
@@ -117,9 +119,12 @@ export const UserInfoSection = () => {
 
         {/* Submit */}
         <div className="flex items-center gap-4">
-          <LoadingButton type="submit" variant="primary" isLoading={isLoading}>
+          <ButtonSolid type="submit" variant="primary" disabled={isLoading}>
+            {isLoading && (
+              <Spinner className="-ml-1 mr-3 h-5 w-5 animate-spin" />
+            )}
             Salva
-          </LoadingButton>
+          </ButtonSolid>
           {isSuccess && (
             <ValidationSuccess message="Dati aggiornati correttamente." />
           )}

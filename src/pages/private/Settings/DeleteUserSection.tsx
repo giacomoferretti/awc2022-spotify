@@ -1,7 +1,8 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 
-import { Button } from "@/components/Button/Button";
+import ButtonOutline from "@/components/Button/ButtonOutline";
+import ButtonSolid from "@/components/Button/ButtonSolid";
 import { useUsers } from "@/context";
 
 const UserDeleteModal = ({
@@ -55,15 +56,12 @@ const UserDeleteModal = ({
                 </Dialog.Title>
 
                 <div className="mt-4 flex justify-between">
-                  <Button variant="secondary" onClick={onNegative}>
+                  <ButtonOutline variant="primary" onClick={onNegative}>
                     Annulla
-                  </Button>
-                  <Button
-                    variant="primary"
-                    onClick={onPositive}
-                    className="bg-spotify-error hover:bg-spotify-error">
+                  </ButtonOutline>
+                  <ButtonSolid variant="danger" onClick={onPositive}>
                     Elimina
-                  </Button>
+                  </ButtonSolid>
                 </div>
               </Dialog.Panel>
             </Transition.Child>
@@ -74,7 +72,7 @@ const UserDeleteModal = ({
   );
 };
 
-export const DeleteUserPanel = () => {
+export const DeleteUserSection = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openDialog = () => {
@@ -84,16 +82,13 @@ export const DeleteUserPanel = () => {
   return (
     <>
       <h2 className="text-xl font-bold">Elimina account</h2>
-      <p>
+      <p className="mb-4">
         Una volta cancellato l&apos;account, non è più possibile tornare
         indietro.
       </p>
-      <Button
-        variant="primary"
-        onClick={openDialog}
-        className="mt-4 bg-spotify-error hover:bg-spotify-error">
+      <ButtonSolid type="submit" variant="danger" onClick={openDialog}>
         Elimina definitivamente
-      </Button>
+      </ButtonSolid>
 
       <UserDeleteModal isOpen={isOpen} setIsOpen={setIsOpen} />
     </>

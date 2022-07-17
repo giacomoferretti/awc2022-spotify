@@ -1,9 +1,10 @@
 import { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { LoadingButton } from "@/components/Button";
+import ButtonSolid from "@/components/Button/ButtonSolid";
 import { InputWithError } from "@/components/Input/InputWithError";
 import { PasswordInput } from "@/components/Input/PasswordInput";
+import { Spinner } from "@/components/Spinner";
 import { ValidationError } from "@/components/ValidationError";
 import { ValidationSuccess } from "@/components/ValidationSuccess";
 import { useUsers } from "@/context";
@@ -15,7 +16,7 @@ type ChangePasswordInputs = {
   newPassword: string;
 };
 
-export const ChangePasswordPanel = () => {
+export const ChangePasswordSection = () => {
   const { getCurrentUser, updatePassword } = useUsers();
 
   const {
@@ -32,6 +33,7 @@ export const ChangePasswordPanel = () => {
   const user = getCurrentUser()!;
 
   const onSubmit: SubmitHandler<ChangePasswordInputs> = async (data) => {
+    setIsSuccess(false);
     setIsLoading(true);
 
     if (import.meta.env.DEV) await wait(1000);
@@ -107,9 +109,12 @@ export const ChangePasswordPanel = () => {
 
         {/* Submit */}
         <div className="flex items-center gap-4">
-          <LoadingButton type="submit" variant="primary" isLoading={isLoading}>
+          <ButtonSolid type="submit" variant="primary" disabled={isLoading}>
+            {isLoading && (
+              <Spinner className="-ml-1 mr-3 h-5 w-5 animate-spin" />
+            )}
             Cambia password
-          </LoadingButton>
+          </ButtonSolid>
           {isSuccess && (
             <ValidationSuccess message="Password cambiata correttamente." />
           )}

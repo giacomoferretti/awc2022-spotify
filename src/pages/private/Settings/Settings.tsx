@@ -1,8 +1,8 @@
 import { Helmet } from "react-helmet-async";
 import { Navigate } from "react-router-dom";
 
-import { ChangePasswordPanel } from "./ChangePasswordPanel";
-import { DeleteUserPanel } from "./DeleteUserPanel";
+import { ChangePasswordSection } from "./ChangePasswordSection";
+import { DeleteUserSection } from "./DeleteUserSection";
 import { UserInfoSection } from "./UserInfoSection";
 
 export const UserSettingsRedirect = () => {
@@ -16,16 +16,18 @@ const UserSettings = () => {
         <title>Impostazioni - {import.meta.env.VITE_SITE_TITLE}</title>
       </Helmet>
 
-      <div>
-        <UserInfoSection />
-      </div>
+      <div className="pb-8">
+        <div>
+          <UserInfoSection />
+        </div>
 
-      <div className="mt-8">
-        <ChangePasswordPanel />
-      </div>
+        <div className="mt-8">
+          <ChangePasswordSection />
+        </div>
 
-      <div className="mt-8">
-        <DeleteUserPanel />
+        <div className="mt-8">
+          <DeleteUserSection />
+        </div>
       </div>
     </>
   );
