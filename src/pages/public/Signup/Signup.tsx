@@ -54,7 +54,7 @@ const Signup = () => {
         onboarding: true,
       },
       () => {
-        navigate("/dashboard");
+        navigate("/onboarding");
       }
     );
   };

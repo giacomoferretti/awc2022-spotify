@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import { Wizard } from "@/components/UseWizard/wizard";
 
 import { ArtistsSelection } from "./ArtistsSelection";
@@ -8,6 +10,12 @@ import { WizardNavigation } from "./WizardNavigation";
 import { WizardRouter } from "./WizardRouter";
 
 const Onboarding = () => {
+  const navigate = useNavigate();
+
+  const onFinish = () => {
+    navigate("/dashboard");
+  };
+
   return (
     <Wizard>
       <WizardRouter>
@@ -55,7 +63,7 @@ const Onboarding = () => {
             {({ onNext, onPrevious, hasPreviousStep, hasNextStep }) => (
               <WizardNavigation
                 onPrevious={onPrevious}
-                onNext={onNext}
+                onNext={hasNextStep ? onNext : onFinish}
                 hasPreviousStep={hasPreviousStep}
                 hasNextStep={hasNextStep}
               />

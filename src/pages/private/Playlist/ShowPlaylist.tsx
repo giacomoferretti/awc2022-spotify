@@ -746,18 +746,33 @@ const ShowPlaylist = () => {
           duration={playlistDuration}
         />
 
-        {playlist.tracks.length === 0 && (
-          <h2 className="my-24 flex items-center justify-center text-neutral-500">
-            <EmojiSadIcon className="mr-2 inline h-6 w-6" />
-            Non ci sono canzoni. Aggiungine qualcuna!
-          </h2>
+        {(isOwner || playlist.isPublic) && (
+          <>
+            {playlist.tracks.length === 0 && (
+              <h2 className="my-24 flex items-center justify-center text-neutral-500">
+                <EmojiSadIcon className="mr-2 inline h-6 w-6" />
+                Non ci sono canzoni. Aggiungine qualcuna!
+              </h2>
+            )}
+
+            {playlist.tracks.map((key, index) => (
+              <div key={`${key.id}_${key.addedTimestamp}`} className="mt-2">
+                <TrackEntry
+                  playlist={playlist}
+                  trackId={key.id}
+                  index={index}
+                />
+              </div>
+            ))}
+          </>
         )}
 
-        {playlist.tracks.map((key, index) => (
-          <div key={`${key.id}_${key.addedTimestamp}`} className="mt-2">
-            <TrackEntry playlist={playlist} trackId={key.id} index={index} />
-          </div>
-        ))}
+        {!isOwner && !playlist.isPublic && (
+          <h2 className="my-24 flex items-center justify-center text-neutral-500">
+            <LockClosedIcon className="mr-2 inline h-6 w-6" />
+            Questa playlist è privata.
+          </h2>
+        )}
 
         {isOwner && (
           <div className="mt-24">
