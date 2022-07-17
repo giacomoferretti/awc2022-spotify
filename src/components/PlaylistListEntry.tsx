@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { Link } from "react-router-dom";
 
 import noCoverImage from "@/assets/nocover.png";
@@ -8,8 +9,11 @@ export const PlaylistListEntry = ({ playlist }: { playlist: Playlist }) => {
     <Link to={`/playlist/${playlist.id}`}>
       <div className="w-40 rounded bg-neutral-800 p-4 hover:bg-neutral-700">
         <div className="relative mb-4">
-          <div className="w-full rounded bg-[#ffffff1a] pb-[100%]">
-            <img className="absolute h-full rounded" src={noCoverImage} />
+          <div className={"w-full rounded bg-neutral-800 pb-[100%]"}>
+            <img
+              className="absolute h-full w-full rounded object-cover object-center"
+              src={playlist.coverData ? playlist.coverData : noCoverImage}
+            />
           </div>
         </div>
         <div className="min-h-[1em]">
