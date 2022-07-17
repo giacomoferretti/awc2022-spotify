@@ -5,6 +5,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 
 import noCoverImage from "@/assets/nocover.png";
 import { PlaylistList } from "@/components/PlaylistList";
+import { PlaylistSection } from "@/components/PlaylistSection";
 import { usePlaylists, useUsers } from "@/context";
 import NoMatch from "@/pages/NoMatch";
 import { User } from "@/types";
@@ -19,26 +20,35 @@ export const UserRedirect = () => {
   return <Navigate to={`/user/${session}`} replace />;
 };
 
-const PlaylistSection = ({
-  title,
-  playlists,
-}: {
-  title: React.ReactNode;
-  playlists: string[];
-}) => {
-  return (
-    <>
-      <h2 className="mb-4 text-xl font-bold">{title}</h2>
+// const PlaylistSection = ({
+//   title,
+//   playlists,
+// }: {
+//   title: React.ReactNode;
+//   playlists: string[];
+// }) => {
+//   return (
+//     <>
+//       <h2 className="mb-4 text-xl font-bold">{title}</h2>
 
-      {playlists.length !== 0 ? (
-        <PlaylistList playlists={playlists} />
-      ) : (
-        <div className="flex items-center text-neutral-500">
-          <EmojiSadIcon className="h-8 w-8" />
-          <span className="ml-4">Non ci sono playlist.</span>
-        </div>
-      )}
-    </>
+//       {playlists.length !== 0 ? (
+//         <PlaylistList playlists={playlists} />
+//       ) : (
+//         <div className="flex items-center text-neutral-500">
+//           <EmojiSadIcon className="h-8 w-8" />
+//           <span className="ml-4">Non ci sono playlist.</span>
+//         </div>
+//       )}
+//     </>
+//   );
+// };
+
+const EmptyMessage = () => {
+  return (
+    <div className="flex items-center text-neutral-500">
+      <EmojiSadIcon className="h-8 w-8" />
+      <span className="ml-4">Non ci sono playlist.</span>
+    </div>
   );
 };
 
@@ -76,6 +86,7 @@ const UserProfile = () => {
           playlists={user.personalPlaylists.filter(
             (playlist) => getPlaylistById(playlist).isPublic
           )}
+          empty={<EmptyMessage />}
         />
       </div>
 
@@ -93,6 +104,7 @@ const UserProfile = () => {
             playlists={user.personalPlaylists.filter(
               (playlist) => !getPlaylistById(playlist).isPublic
             )}
+            empty={<EmptyMessage />}
           />
         </div>
       )}
@@ -101,6 +113,7 @@ const UserProfile = () => {
         <PlaylistSection
           title="Playlist salvate"
           playlists={user.savedPlaylists}
+          empty={<EmptyMessage />}
         />
       </div>
     </>

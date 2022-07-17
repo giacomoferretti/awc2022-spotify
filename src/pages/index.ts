@@ -4,9 +4,9 @@ export { default as Signup } from "./public/Signup";
 export { default as Logout } from "./public/Logout";
 
 export { default as UserProfile } from "./private/UserProfile";
+export { default as Dashboard } from "./private/Dashboard";
 
 export * from "./NoMatch";
-export * from "./Dashboard";
 export * from "./Playlist";
 // export * from "./UserProfile";
 // export * from "./Onboarding";
