@@ -1,6 +1,6 @@
 import { CameraIcon, UserIcon } from "@heroicons/react/outline";
 import classNames from "classnames";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { Input } from "@/components/Input";
@@ -43,11 +43,10 @@ export const UserPreview = ({
 
   // const [photo, setPhoto] = useState<string | null>(null);
 
-  const { getCurrentUser, updateProfilePicture } = useUsers();
+  const { getCurrentUser, updateProfilePicture, updateDisplayName } =
+    useUsers();
 
   const user = getCurrentUser()!;
-  if (!user) return <NoMatch />;
-
   const watchDisplayName = watch("displayName", user.displayName);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,6 +54,12 @@ export const UserPreview = ({
       updateProfilePicture(user.username, result);
     });
   };
+
+  useEffect(() => {
+    updateDisplayName(user.username, watchDisplayName);
+  }, [watchDisplayName]);
+
+  if (!user) return <NoMatch />;
 
   if (!isActive) return null;
 
